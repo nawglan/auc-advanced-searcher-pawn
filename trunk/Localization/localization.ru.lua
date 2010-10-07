@@ -1,4 +1,5 @@
 ﻿-- Russian text strings
+-- Last update 7-10-2010
 
 Localization.RegisterAddonStrings("ruRU", "Localization", 
   {
