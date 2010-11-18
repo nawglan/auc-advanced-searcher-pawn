@@ -26,6 +26,7 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
   {
     -- Config
     MAIN_TITLE        = "Search for items which Pawn considers an upgrade";
+    OPTIONS           = "Options:";
     HELP_ID           = "Pawn Searcher";
     HELP_QUESTION     = "What does this searcher do?";
     HELP_ANSWER       = "This searcher will use a scale that has been defined in the Pawn addon to locate upgrades for your currently equipped items.";
@@ -42,6 +43,22 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     AFFORD_ONLY_TIP   = "Only show what you can currently afford to buy.";
     USE_BUYOUT        = "Use buyout";
     USE_BUYOUT_TIP    = "Use buyout instead of bid when checking auction prices.";
+    INCLUDE_IN_SEARCH = "Include these slots when searching:";
+    SHOW_HEAD         = "Head";
+    SHOW_NECK         = "Neck";
+    SHOW_SHOULDER     = "Shoulder";
+    SHOW_BACK         = "Back";
+    SHOW_CHEST        = "Chest";
+    SHOW_WRIST        = "Wrist";
+    SHOW_HANDS        = "Hands";
+    SHOW_WAIST        = "Waist";
+    SHOW_LEGS         = "Legs";
+    SHOW_FEET         = "Feet";
+    SHOW_FINGER       = "Finger";
+    SHOW_TRINKET      = "Trinket";
+    SHOW_WEAPON       = "Weapon";
+    SHOW_OFFHAND      = "Off-Hand";
+    SHOW_RANGED       = "Ranged";
     SHOW_DEBUG        = "Show debug messages";
     SHOW_DEBUG_TIP    = "WARNING: Produces lots of output.";
     ONLY_FALSE        = "Only false";
@@ -85,6 +102,9 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     CANNOT_AFFORD_BUYOUT = "Can't afford buyout";
     CANNOT_AFFORD_BID    = "Can't afford bid";
     CANNOT_AFFORD_DBG    = "DBG: Can't afford this item";
+
+    NOT_WANTED     = "Item slot not wanted";
+    NOT_WANTED_DBG = "DBG: Item slot not wanted";
 
     REASON_BUY = "buy";
     REASON_BID = "bid";

@@ -46,21 +46,6 @@ default("search.pawn.current", false)
 default("search.pawn.canuse", false)
 default("search.pawn.forcemh", false)
 default("search.pawn.debug", false)
-default("search.pawn.head", true)
-default("search.pawn.neck", true)
-default("search.pawn.shoulder", true)
-default("search.pawn.back", true)
-default("search.pawn.chest", true)
-default("search.pawn.wrist", true)
-default("search.pawn.hands", true)
-default("search.pawn.waist", true)
-default("search.pawn.legs", true)
-default("search.pawn.feet", true)
-default("search.pawn.finger", true)
-default("search.pawn.trinket", true)
-default("search.pawn.weapon", true)
-default("search.pawn.offhand", true)
-default("search.pawn.ranged", true)
 
 local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn", key) end
 
@@ -176,7 +161,6 @@ local convertSlot = {
   }, -- [26] ranged
 }
 
-
 local function Debug(Reason, Text)
   local showdbg = get("search.pawn.debug")
   local showfalse = get("search.pawn.debugfalse")
@@ -196,6 +180,7 @@ local function Debug(Reason, Text)
 
   print(string.format("%s", Text))
 end
+
 
 function updateScales()
   local scalecopy = {}
@@ -221,44 +206,35 @@ function lib:MakeGuiConfig(gui)
 
   gui:AddControl(id, "Header", 0, TEXT("CONFIG_HEADER"))
   local last = gui:GetLast(id)
-  gui:AddControl(id, "Subhead", 0, TEXT("OPTIONS"))
   gui:AddControl(id, "Selectbox",  0, 1, updateScales, "search.pawn.scalename", TEXT("SCALE_SELECT"))
   gui:AddTip(id, TEXT("SCALE_SELECT_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.current", TEXT("CHECK_CURRENT"))
+  local cont = gui:GetLast(id)
+  last = cont
+  gui:SetLast(id, last)
+  gui:AddControl(id, "Checkbox",   0.25, 0, "search.pawn.current", TEXT("CHECK_CURRENT"))
   gui:AddTip(id, TEXT("CHECK_CURRENT_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.canuse", TEXT("USEABLE_ONLY"))
-  gui:AddTip(id, TEXT("USEABLE_ONLY_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.forcemh", TEXT("FORCE_MAIN"))
-  gui:AddTip(id, TEXT("FORCE_MAIN_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.impoor", TEXT("AFFORD_ONLY"))
-  gui:AddTip(id, TEXT("AFFORD_ONLY_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.buyout", TEXT("USE_BUYOUT"))
-  gui:AddTip(id, TEXT("USE_BUYOUT_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.debug", TEXT("SHOW_DEBUG"))
-  gui:AddTip(id, TEXT("SHOW_DEBUG_TIP"))
-  gui:AddControl(id, "Checkbox",   0.08, 0, "search.pawn.debugfalse", TEXT("ONLY_FALSE"))
-  gui:AddTip(id, TEXT("ONLY_FALSE_TIP"))
-  gui:AddControl(id, "Checkbox",   0.08, 0, "search.pawn.debugtrue", TEXT("ONLY_TRUE"))
-  gui:AddTip(id, TEXT("ONLY_TRUE_TIP"))
-  gui:SetLast(id,last)
-  gui:AddControl(id, "Subhead", 0.40, TEXT("INCLUDE_IN_SEARCH"))
   last = gui:GetLast(id)
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.head", TEXT("SHOW_HEAD"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.neck", TEXT("SHOW_NECK"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.shoulder", TEXT("SHOW_SHOULDER"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.back", TEXT("SHOW_BACK"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.chest", TEXT("SHOW_CHEST"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.wrist", TEXT("SHOW_WRIST"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.hands", TEXT("SHOW_HANDS"))
-  gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.waist", TEXT("SHOW_WAIST"))
-  gui:SetLast(id,last)
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.legs", TEXT("SHOW_LEGS"))
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.feet", TEXT("SHOW_FEET"))
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.finger", TEXT("SHOW_FINGER"))
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.trinket", TEXT("SHOW_TRINKET"))
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.weapon", TEXT("SHOW_WEAPON"))
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.offhand", TEXT("SHOW_OFFHAND"))
-  gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.ranged", TEXT("SHOW_RANGED"))
+  gui:SetLast(id, last)
+  gui:AddControl(id, "Checkbox",   0.25, 0, "search.pawn.canuse", TEXT("USEABLE_ONLY"))
+  gui:AddTip(id, TEXT("USEABLE_ONLY_TIP"))
+  last = gui:GetLast(id)
+  gui:AddControl(id, "Checkbox",   0.25, 0, "search.pawn.forcemh", TEXT("FORCE_MAIN"))
+  gui:AddTip(id, TEXT("FORCE_MAIN_TIP"))
+  last = gui:GetLast(id)
+  gui:AddControl(id, "Checkbox",   0.25, 0, "search.pawn.impoor", TEXT("AFFORD_ONLY"))
+  gui:AddTip(id, TEXT("AFFORD_ONLY_TIP"))
+  last = gui:GetLast(id)
+  gui:AddControl(id, "Checkbox",   0.25, 0, "search.pawn.buyout", TEXT("USE_BUYOUT"))
+  gui:AddTip(id, TEXT("USE_BUYOUT_TIP"))
+  last = gui:GetLast(id)
+  gui:AddControl(id, "Checkbox",   0.25, 0, "search.pawn.debug", TEXT("SHOW_DEBUG"))
+  gui:AddTip(id, TEXT("SHOW_DEBUG_TIP"))
+  last = gui:GetLast(id)
+  gui:AddControl(id, "Checkbox",   0.28, 0, "search.pawn.debugfalse", TEXT("ONLY_FALSE"))
+  gui:AddTip(id, TEXT("ONLY_FALSE_TIP"))
+  last = gui:GetLast(id)
+  gui:AddControl(id, "Checkbox",   0.28, 0, "search.pawn.debugtrue", TEXT("ONLY_TRUE"))
+  gui:AddTip(id, TEXT("ONLY_TRUE_TIP"))
 end
 
 local function RGBPercToHex(r, g, b)
@@ -353,50 +329,6 @@ local function ConvertSlot(pos,itype,subtype)
   end
 
   return mainslot, otherslot
-end
-
-function isSlotOK(slot)
-  -- short-circuit if slot is out of bounds
-  if slot == nil or slot < 0 or slot > 18 then
-    return false
-  end
-
-  local retval = false
-
-  local slotOK = {
-      get("search.pawn.head"),     -- [1] head
-      get("search.pawn.neck"),     -- [2] neck
-      get("search.pawn.shoulder"), -- [3] shoulder
-      false,                       -- [4] body
-      get("search.pawn.chest"),    -- [5] chest
-      get("search.pawn.waist"),    -- [6] waist
-      get("search.pawn.legs"),     -- [7] legs
-      get("search.pawn.feet"),     -- [8] feet
-      get("search.pawn.wrist"),    -- [9] wrist
-      get("search.pawn.hands"),    -- [10] hand
-      get("search.pawn.finger"),   -- [11] finger
-      get("search.pawn.finger"),   -- [12] finger
-      get("search.pawn.trinket"),  -- [13] trinket
-      get("search.pawn.trinket"),  -- [14] trinket
-      get("search.pawn.back"),     -- [15] cloak
-      get("search.pawn.weapon"),   -- [16] weapon
-      get("search.pawn.offhand"),  -- [17] offhand
-      get("search.pawn.ranged"),   -- [18] ranged
-  }
-
-  retval = slotOK[slot]
-
-  if retval == nil then
-    Debug(true, string.format("DBG:  Slot %d = nil, setting to false", slot))
-    retval = false
-  end
-
-  if type(retval) ~= "boolean" then
-    Debug(true, string.format("DBG: Retval is not boolean it is %s", type(retval)))
-    retval = false
-  end
-  
-  return retval
 end
 
 function lib.Search(itemData)
@@ -528,17 +460,6 @@ function lib.Search(itemData)
   local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
   local mItem = PawnGetItemDataForInventorySlot(mainslot)
 
-  -- Check to see if item is wanted
-  local wanted = isSlotOK(mainslot)
-  if not wanted then
-    -- check other slot
-    wanted = isSlotOK(otherslot)
-    if not wanted then 
-      Debug(false, TEXT("NOT_WANTED_DBG"))
-      return false, TEXT("NOT_WANTED")
-    end
-  end
-
   -- If there is no item equipped in that slot, then any item is an upgrade
   if not mItem then
     Debug(true, string.format("DBG:(%d)%s aVal[%07.2f] > %s", ipos,iname,aVal, TEXT("EMPTY_SLOT")))
@@ -655,4 +576,5 @@ function lib.Search(itemData)
     Debug(false, string.format("%s: (%d)%s aVal[%07.2f]", TEXT("NOT_UPGRADE_DBG"), ipos,iname,aVal))
     return false, TEXT("NOT_UPGRADE")
   end
+
 end
