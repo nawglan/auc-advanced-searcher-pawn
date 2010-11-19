@@ -38,14 +38,16 @@ local get,set,default,Const = AucSearchUI.GetSearchLocals()
 
 Localization.SetAddonDefault("Auc-Searcher-Pawn", "enUS");
 
+-------------------------------------------------------------------
+-- Set the name of the Auctioneer Search Option
 lib.tabname = "Pawn"
+-------------------------------------------------------------------
 
+-------------------------------------------------------------------
 -- Set our defaults
-default("search.pawn.scalename", "")
-default("search.pawn.current", false)
+default("search.pawn.scalenum", "")
 default("search.pawn.canuse", false)
-default("search.pawn.forcemh", false)
-default("search.pawn.debug", false)
+default("search.pawn.force2h", false)
 default("search.pawn.head", true)
 default("search.pawn.neck", true)
 default("search.pawn.shoulder", true)
@@ -61,14 +63,31 @@ default("search.pawn.trinket", true)
 default("search.pawn.weapon", true)
 default("search.pawn.offhand", true)
 default("search.pawn.ranged", true)
+-------------------------------------------------------------------
 
 local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn", key) end
 
+-------------------------------------------------------------------
+-- DEBUGGING
+local showdbg = false -- set to true to enable debugging
+local showfalse = false
+local showtrue = false
+-- Sprinkle these throughout the code to debug.
+-- Debug(false, string.format("%s [%s]", somevar, somevar))
+-- Debug(true, string.format("%s [%s]", somevar, somevar))
+--
+-- Items with false for first debug message only get printed if showfalse above is true
+-- Items with true for first debug message only get printed if showtrue above is true
+-------------------------------------------------------------------
 
-local pclass = UnitClass("player")
-local plevel = UnitLevel("player")
+
+-------------------------------------------------------------------
+-- Cache the Scale Table from Pawn
 local scaletable = {}
+-------------------------------------------------------------------
 
+-------------------------------------------------------------------
+-- Map between Auctioneer and Pawn values
 local convertSlot = {
   {
     1, -- [1] mainslot
@@ -83,7 +102,7 @@ local convertSlot = {
     -1, -- [2] otherslot
   }, -- [3] shoulder
   {
-    4, -- [1] mainslot
+    -1, -- [1] mainslot
     -1, -- [2] otherslot
   }, -- [4] body
   {
@@ -136,7 +155,7 @@ local convertSlot = {
   }, -- [16] cloak
   {
     16, -- [1] mainslot
-    17, -- [2] otherslot
+    -1, -- [2] otherslot
   }, -- [17] 2hweapon
   {
     -1, -- [1] mainslot
@@ -163,7 +182,7 @@ local convertSlot = {
     -1, -- [2] otherslot
   }, -- [23] holdable
   {
-    0, -- [1] mainslot
+    -1, -- [1] mainslot
     -1, -- [2] otherslot
   }, -- [24] ammo
   {
@@ -175,13 +194,12 @@ local convertSlot = {
     -1, -- [2] otherslot
   }, -- [26] ranged
 }
+-------------------------------------------------------------------
 
-
+-------------------------------------------------------------------
+-- Debug Output Function
+-------------------------------------------------------------------
 local function Debug(Reason, Text)
-  local showdbg = get("search.pawn.debug")
-  local showfalse = get("search.pawn.debugfalse")
-  local showtrue = get("search.pawn.debugtrue")
-
   if not showdbg then
     return
   end
@@ -197,7 +215,18 @@ local function Debug(Reason, Text)
   print(string.format("%s", Text))
 end
 
+-------------------------------------------------------------------
+-- Cache for valid scales
+local validScales = {}
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+-- Refetch Pawn Scales
+-------------------------------------------------------------------
 function updateScales()
+  -- reset the valid scale cache
+  validScales = {}
+
   local scalecopy = {}
   scaletable = PawnGetAllScales()
 
@@ -210,7 +239,9 @@ function updateScales()
   return scalecopy
 end
 
+-------------------------------------------------------------------
 -- This function is automatically called when we need to create our search generals
+-------------------------------------------------------------------
 function lib:MakeGuiConfig(gui)
   -- Get our tab and populate it with our controls
   local id = gui:AddTab(lib.tabname, "Searchers")
@@ -219,29 +250,29 @@ function lib:MakeGuiConfig(gui)
   gui:AddSearcher("Pawn", TEXT("MAIN_TITLE"), 100)
   gui:AddHelp(id, TEXT("HELP_ID"), TEXT("HELP_QUESTION"), TEXT("HELP_ANSWER"))
 
+  -- Add Header
   gui:AddControl(id, "Header", 0, TEXT("CONFIG_HEADER"))
+
+  -- Store Top of Column position
   local last = gui:GetLast(id)
   gui:AddControl(id, "Subhead", 0, TEXT("OPTIONS"))
-  gui:AddControl(id, "Selectbox",  0, 1, updateScales, "search.pawn.scalename", TEXT("SCALE_SELECT"))
+  gui:AddControl(id, "Subhead", 0, TEXT("SCALE_SELECT"))
+  gui:AddControl(id, "Selectbox",  0, 1, updateScales, "search.pawn.scalenum", "")
   gui:AddTip(id, TEXT("SCALE_SELECT_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.current", TEXT("CHECK_CURRENT"))
-  gui:AddTip(id, TEXT("CHECK_CURRENT_TIP"))
   gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.canuse", TEXT("USEABLE_ONLY"))
   gui:AddTip(id, TEXT("USEABLE_ONLY_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.forcemh", TEXT("FORCE_MAIN"))
-  gui:AddTip(id, TEXT("FORCE_MAIN_TIP"))
   gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.impoor", TEXT("AFFORD_ONLY"))
   gui:AddTip(id, TEXT("AFFORD_ONLY_TIP"))
   gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.buyout", TEXT("USE_BUYOUT"))
   gui:AddTip(id, TEXT("USE_BUYOUT_TIP"))
-  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.debug", TEXT("SHOW_DEBUG"))
-  gui:AddTip(id, TEXT("SHOW_DEBUG_TIP"))
-  gui:AddControl(id, "Checkbox",   0.08, 0, "search.pawn.debugfalse", TEXT("ONLY_FALSE"))
-  gui:AddTip(id, TEXT("ONLY_FALSE_TIP"))
-  gui:AddControl(id, "Checkbox",   0.08, 0, "search.pawn.debugtrue", TEXT("ONLY_TRUE"))
-  gui:AddTip(id, TEXT("ONLY_TRUE_TIP"))
+  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.force2h", TEXT("FORCE2H_WEAP"))
+  gui:AddTip(id, TEXT("FORCE2H_TIP"))
+
+  -- Reposition to top for next column
   gui:SetLast(id,last)
   gui:AddControl(id, "Subhead", 0.40, TEXT("INCLUDE_IN_SEARCH"))
+
+  -- Store new Top of Column position
   last = gui:GetLast(id)
   gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.head", TEXT("SHOW_HEAD"))
   gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.neck", TEXT("SHOW_NECK"))
@@ -251,6 +282,8 @@ function lib:MakeGuiConfig(gui)
   gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.wrist", TEXT("SHOW_WRIST"))
   gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.hands", TEXT("SHOW_HANDS"))
   gui:AddControl(id, "Checkbox",   0.40, 0, "search.pawn.waist", TEXT("SHOW_WAIST"))
+
+  -- Reposition to top for next column
   gui:SetLast(id,last)
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.legs", TEXT("SHOW_LEGS"))
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.feet", TEXT("SHOW_FEET"))
@@ -261,6 +294,66 @@ function lib:MakeGuiConfig(gui)
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.ranged", TEXT("SHOW_RANGED"))
 end
 
+-------------------------------------------------------------------
+-- Global cache
+local _scalename = ""
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+-- Return the name of the scale
+-------------------------------------------------------------------
+function GetScaleName(scalenum)
+  local scalename = ""
+
+  -- Does the stored scale exist
+  for i, j in pairs(scaletable) do
+    if i == (scalenum - 1) then -- subtract 1, due to offset introduced in menu
+      scalename = j
+      break
+    end
+  end
+
+  _scalename = scalename
+
+  return _scalename
+end
+
+-------------------------------------------------------------------
+-- Validate the user's choice of scale
+-------------------------------------------------------------------
+function ValidateScale()
+  -- Did the user pick a scale
+  local scalenum = get("search.pawn.scalenum")
+
+  if not scalenum then
+    Debug(false, TEXT("NO_SCALE_DBG"))
+    return false
+  end
+
+  local isValid = validScales[scalenum]
+  if not isValid then
+    local scalename = GetScaleName(scalenum)
+
+    if scalename == "" then
+      Debug(false, TEXT("SCALE_BLANK_DBG"))
+      return false
+    end
+
+    local scalefound = PawnDoesScaleExist(scalename)
+    if not scalefound or scalefound ~= true then
+      Debug(false, string.format("%s [%s]", TEXT("SCALE_NOT_FOUND_DBG"), scalename))
+      return false
+    end
+
+    validScales[scalenum] = true
+  end
+
+  return true
+end
+
+-------------------------------------------------------------------
+-- Convert RGB to Hex
+-------------------------------------------------------------------
 local function RGBPercToHex(r, g, b)
   r = r <= 1 and r >= 0 and r or 0
   g = g <= 1 and g >= 0 and g or 0
@@ -268,8 +361,10 @@ local function RGBPercToHex(r, g, b)
   return string.format("%02x%02x%02x", r*255, g*255, b*255)
 end
 
+-------------------------------------------------------------------
+-- Create and scan a tooltip looking for red text.
+-------------------------------------------------------------------
 local function CanUse(link)
-
   MyScanningTooltip:ClearLines()
   MyScanningTooltip:SetHyperlink(link)
   local retval = true
@@ -301,68 +396,73 @@ local function CanUse(link)
   return retval
 end
 
--- Convert between auctioneer equip positions and Pawn equip positions
-local function ConvertSlot(pos,itype,subtype)
-  local mainslot, otherslot
+-------------------------------------------------------------------
+-- Limit one-handed weapon checks to main hand unless class can dual wield
+-------------------------------------------------------------------
+local function CanDualWield()
+  local pclass = UnitClass("player")
+  local plevel = UnitLevel("player")
 
-  local candual = 0
-  local hasammo = 0
-  local forcemh = get("search.pawn.forcemh")
-
-  -- Limit one-handed weapon checks to main hand unless class can dual wield
   if (pclass == TEXT("WARRIOR") or pclass == TEXT("HUNTER") and plevel >= 20) then
-    candual = 1
+    return true
   end
   if (pclass == TEXT("SHAMAN") and plevel >= 40) then
-    candual = 1
+    return true
   end
   if (pclass == TEXT("ROGUE") and plevel >= 10) then
-    candual = 1
+    return true
   end
   if (pclass == TEXT("DEATH_KNIGHT")) then
-    candual = 1
+    return true
   end
 
-  local slots = convertSlot[pos]
-  mainslot = slots[1]
-  otherslot = slots[2]
-  if otherslot == -1 then
-    otherslot = nil
-  end
+  return false
+end
 
-  if pos == 13 then -- One Hand Weapon
-    if candual and not forcemh then
-      otherslot = 17
-    end
-  end
-
-  if pos == 22 then -- Off hand
-    if forcemh then
-      mainslot = 16
-    end
-  end
-
-  if pos == 23 then -- Holdable
-    if forcemh then
-      mainslot = 16
-    end
-  end
+-------------------------------------------------------------------
+-- Convert between auctioneer equip positions and Pawn equip positions
+-------------------------------------------------------------------
+local function ConvertSlot(ipos,itype,subtype)
+  local mainslot = nil
+  local otherslot = nil
 
   if (itype == TEXT("ARMOR")) and ((subtype == TEXT("TOTEMS")) or (subtype == TEXT("LIBRAMS")) or (subtype == TEXT("IDOLS")) or (subtype == TEXT("SIGILS"))) then -- Relics
     mainslot = 18
+  else
+    local candual = CanDualWield()
+
+    local slots = convertSlot[ipos]
+    mainslot = slots[1]
+    otherslot = slots[2]
+
+    if mainslot == -1 then
+      mainslot = nil
+    end
+
+    if otherslot == -1 then
+      otherslot = nil
+    end
+
+    -- Ensure they can dual wield before
+    -- allowing them to compare against offhand
+    if ipos == 13 and not candual then
+      otherslot = nil
+    end
   end
 
   return mainslot, otherslot
 end
 
-function isSlotOK(slot)
+-------------------------------------------------------------------
+-- Check to see if the user checked the box for this slot
+-------------------------------------------------------------------
+function SlotOK(slot)
   -- short-circuit if slot is out of bounds
   if slot == nil or slot < 0 or slot > 18 then
     return false
   end
 
-  local retval = false
-
+  -- Build table so that we avoid a large if/else
   local slotOK = {
       get("search.pawn.head"),     -- [1] head
       get("search.pawn.neck"),     -- [2] neck
@@ -384,91 +484,101 @@ function isSlotOK(slot)
       get("search.pawn.ranged"),   -- [18] ranged
   }
 
-  retval = slotOK[slot]
+  -- See if the user wants the slot that this item would occupy
+  local retval = slotOK[slot]
 
+  -- sanity check the result
   if retval == nil then
-    Debug(true, string.format("DBG:  Slot %d = nil, setting to false", slot))
+    Debug(false, string.format("DBG:  Slot %d = nil, setting to false", slot))
     retval = false
-  end
-
-  if type(retval) ~= "boolean" then
-    Debug(true, string.format("DBG: Retval is not boolean it is %s", type(retval)))
-    retval = false
+  else
+    if type(retval) ~= "boolean" then
+      Debug(false, string.format("DBG: Retval is not boolean it is %s", type(retval)))
+      retval = false
+    end
   end
   
   return retval
 end
 
-function lib.Search(itemData)
-  local link = itemData[Const.LINK]
-  local itype = itemData[Const.ITYPE]
-  local ipos  = itemData[Const.IEQUIP]
-  local iname = itemData[Const.NAME]
-  local subtype = itemData[Const.ISUB]
-  local bid = itemData[Const.MINBID]
-  local buyout = itemData[Const.BUYOUT]
-  local debugfalse = get("search.pawn.debugfalse")
-  local debugtrue = get("search.pawn.debugtrue")
-  local pmoney = GetMoney()
-
+-------------------------------------------------------------------
+-- Ensure that we have a valid ipos from Auctioneer
+-------------------------------------------------------------------
+function ConvertIpos(ipos)
   -- Must have ipos
-  if ipos == nil then return end
-
-  -- Set name to blank for nil names.  This is only used for debugging.
-  if not iname then iname = " " end
-
-  -- Don't let bags through
-  if ipos == 18 then return end
+  if ipos == nil then
+    return nil
+  end
 
   -- Realtime search support
   if type(ipos) == "string" then
     ipos = Const.InvTypes[ipos]
   end
 
-  -- Did the user pick a scale
-  local scalenum = get("search.pawn.scalename")
-  local scalename = ""
+  return ipos 
+end
 
-  if not scalenum then
-    Debug(false, TEXT("NO_SCALE_DBG"))
-    return false, TEXT("NO_SCALE")
-  end
+-------------------------------------------------------------------
+-- See if the user can afford the item
+-------------------------------------------------------------------
+function FilterPrice(itemData)
+  local impoor = get("search.pawn.impoor")
 
-  -- Does the stored scale exist
-  for i, j in pairs(scaletable) do
-    if i == (scalenum - 1) then -- subtract 1, due to offset introduced in menu
-      scalename = j
-      break
+  if impoor then
+    local pmoney = GetMoney()
+    local usebuyout = get("search.pawn.buyout")
+    local buyout = itemData[Const.BUYOUT]
+    local bid = itemData[Const.MINBID]
+
+    if usebuyout then
+      if pmoney < buyout then
+        return false
+      end
+    else
+      if pmoney < bid then
+        return false
+      end
     end
   end
 
-  if scalename == "" then
-    Debug(false, TEXT("SCALE_BLANK_DBG"))
-    return false, TEXT("SCALE_BLANK")
-  end
+  return true
+end
 
-  local scalefound = PawnDoesScaleExist(scalename)
-  if not scalefound or scalefound ~= true then
-    Debug(false, string.format("%s [%s]", TEXT("SCALE_NOT_FOUND_DBG"), scalename))
-    return false, TEXT("SCALE_NOT_FOUND")
+-------------------------------------------------------------------
+-- Ensure that we have a valid ipos from Auctioneer
+-------------------------------------------------------------------
+function FilterItem(itemData)
+  local link = itemData[Const.LINK]
+  local iname = itemData[Const.NAME]
+  local ipos  = ConvertIpos(itemData[Const.IEQUIP])
+  local itype = itemData[Const.ITYPE]
+  local subtype = itemData[Const.ISUB]
+
+  -- Must have ipos
+  if ipos == nil then
+    return false 
   end
 
   -- Does the item have a link
   if not link then
     Debug(false, TEXT("NO_LINK_DBG"))
-    return false, TEXT("NO_LINK")
+    return false
+  end
+
+  -- Don't let bags through
+  if ipos == 18 then
+    return false
   end
 
   -- Don't show Ammo/thrown for non ammo classes
+  local pclass = UnitClass("player")
   if ((pclass ~= TEXT("HUNTER") and pclass ~= TEXT("ROGUE") and pclass ~= TEXT("WARRIOR")) and (ipos == 24 or ipos == 25)) then
-    Debug(false, string.format("%s [%s]", TEXT("CANNOT_USE_DBG"), iname))
-    return false, TEXT("CANNOT_USE")
+    return false
   end
 
   -- Only filter stuff that can be equipped
   if (not IsEquippableItem(link)) then
-    Debug(false, string.format("%s [%s]", TEXT("NOT_EQUIPPABLE_DBG"), iname))
-    return false, TEXT("NOT_EQUIPPABLE")
+    return false
   end
 
   -- Check to see if we can use the item
@@ -477,42 +587,85 @@ function lib.Search(itemData)
 
   if canuse and icanuse ~= true then
     Debug(false, string.format("%s [%s]", TEXT("CANNOT_USE_DBG"), iname))
-    return false, TEXT("CANNOT_USE")
+    return false
+  end
+
+  local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
+
+  -- Is there a slot to be compared
+  if not mainslot and not otherslot then
+    return false
+  end
+
+  local force2h = get("search.pawn.force2h")
+  if force2h and mainslot == 16 and ipos ~= 17 then
+    return false
+  end
+
+  -- Check to see if item is wanted
+  local wanted = SlotOK(mainslot)
+  if not wanted then
+    -- check other slot
+    wanted = SlotOK(otherslot)
+    if not wanted then 
+      return false
+    end
   end
 
   -- Check to see if we can afford the item
-  local impoor = get("search.pawn.impoor")
-  local usebuyout = get("search.pawn.buyout")
-
-  if impoor then
-    if usebuyout and pmoney < buyout then
-      Debug(false, string.format("%s %s ahPrice[%d] pMoney[%d]", TEXT("CANNOT_AFFORD_DBG"), iname, buyout, pmoney))
-      return false, TEXT("CANNOT_AFFORD_BUYOUT")
-    end
-    if not usebuyout and pmoney < bid then
-      Debug(false, string.format("%s %s ahPrice[%d] pMoney[%d]", TEXT("CANNOT_AFFORD_DBG"), iname, bid, pmoney))
-      return false, TEXT("CANNOT_AFFORD_BID")
-    end
+  if not FilterPrice(itemData) then
+    return false
   end
 
-  local reason = TEXT("REASON_BUY")
-  if (not usebuyout) then
-    reason = TEXT("REASON_BID")
+  return true
+end
+
+-------------------------------------------------------------------
+-- Returns pawn values for a given equipped slot
+-------------------------------------------------------------------
+function GetPawnValueEquipped(slot)
+  local mItem = PawnGetItemDataForInventorySlot(slot,false)
+  local mVal = 0
+  local mValE = 0
+
+  -- If there is no item equipped in that slot, then any item is an upgrade
+  if not mItem then
+    return mValE, mVal
   end
 
-  -----------------------------------------------------------------
-  --Ok At this point we can use the item and possibly can afford it
-  -----------------------------------------------------------------
+  -- Grab the values for the item equipped in the main slot
+  mValE, mVal = PawnGetSingleValueFromItem(mItem, _scalename)
+
+  -- ensure we have valid values
+  if mVal == nil then
+    mVal = 0
+  end
+  if mValE == nil then
+    mValE = 0
+  end
+
+  return mValE, mVal
+end
+
+-------------------------------------------------------------------
+-- Returns pawn values from a itemData structure
+-------------------------------------------------------------------
+function GetPawnValueItem(itemData)
+  local iname = itemData[Const.NAME]
+  local link = itemData[Const.LINK]
+
+  -- Set name to blank for nil names.  This is only used for debugging.
+  if not iname then iname = " " end
 
   -- Get the signature of this item and find it's stats.
   local item = PawnGetItemData(link)
 
   if not item then
     Debug(false, string.format("%s: %s", TEXT("NO_ITEM_DBG"), iname))
-    return false, TEXT("NO_ITEM")
+    return false
   end
 
-  local aValE, aVal = PawnGetSingleValueFromItem(item, scalename)
+  local aValE, aVal = PawnGetSingleValueFromItem(item, _scalename)
 
   if aVal == nil then
     aVal = 0
@@ -521,138 +674,129 @@ function lib.Search(itemData)
     aValE = 0
   end
 
-  local aStr = string.format("%07.2f", aVal)
-  local aStrE = string.format("(E)%07.2f", aValE)
+  return aValE, aVal
+end
 
-  -- Get value of equivalent slot(s).
-  local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
+
+function Is2hEquipped()
+  local mainslot = 16 -- Main Hand Inventory Slot
   local mItem = PawnGetItemDataForInventorySlot(mainslot)
-
-  -- Check to see if item is wanted
-  local wanted = isSlotOK(mainslot)
-  if not wanted then
-    -- check other slot
-    wanted = isSlotOK(otherslot)
-    if not wanted then 
-      Debug(false, TEXT("NOT_WANTED_DBG"))
-      return false, TEXT("NOT_WANTED")
+  if mItem.Stats then
+    for StatName, Value in pairs(mItem.Stats) do
+      if StatName == "TwoHandDps" then
+        return true 
+      end
     end
   end
 
-  -- If there is no item equipped in that slot, then any item is an upgrade
-  if not mItem then
-    Debug(true, string.format("DBG:(%d)%s aVal[%07.2f] > %s", ipos,iname,aVal, TEXT("EMPTY_SLOT")))
-    --return aStr,nil,nil
-    return reason,nil,aVal,aStr
+  return false
+end
+
+-------------------------------------------------------------------
+-- Check to see if the item is an upgrade or not
+-------------------------------------------------------------------
+function IsUpgrade(itemData)
+  local iname = itemData[Const.NAME]
+
+  -- Get value of Item in Search Results
+  local aValE, aVal = GetPawnValueItem(itemData) 
+
+  -- Get value of equivalent slot(s).
+  local itype = itemData[Const.ITYPE]
+  local ipos  = ConvertIpos(itemData[Const.IEQUIP])
+  local subtype = itemData[Const.ISUB]
+  -- we can assume mainslot is defined and otherslot might be defined at this point
+  local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
+  local is2hweap = Is2hEquipped()
+
+  if is2hweap and mainslot == 17 then
+    return false, ""
   end
 
-  -- Grab the values for the item equipped in the main slot
-  local mValE, mVal = PawnGetSingleValueFromItem(mItem, scalename)
-  local oItem = nil
+  -- Get value for main slot
+  local mValE, mVal = GetPawnValueEquipped(mainslot)
   local oVal = 0
   local oValE = 0
 
+  -- Get value for other slot
   if (otherslot) then
-    oItem = PawnGetItemDataForInventorySlot(otherslot)
-    if oItem then
-      oValE, oVal = PawnGetSingleValueFromItem(oItem, scalename)
-    end
-  end
-
-  -- ensure we have valid values for comparisons
-
-  if mVal == nil then
-    mVal = 0
-  end
-  if mValE == nil then
-    mValE = 0
-  end
-  if oVal == nil then
-    oVal = 0
-  end
-  if oValE == nil then
-    oValE = 0
-  end
-
-  local current = get("search.pawn.current")
-
-  -- use the bigger of the two numbers for items that are equipped.
-  -- This will assume that you intend to socket items with appropriate
-  -- gems.  Pawn will fill in values for sockets that are empty when
-  -- calculating the unenchanted value of the item.  If that value is
-  -- bigger, use that.
-  local mainValue = 0
-  local offValue = 0
-  local bValue = 0
-
-  if current then
-    mainValue = mValE
-    offValue = oValE
-    bValue = mValE + oValE
-  else
-    mainValue = mVal
-    offValue = oVal
-    bValue = mVal + oVal
+    oValE, oVal = GetPawnValueEquipped(otherslot)
   end
 
   local slots = convertSlot[ipos]
+
   local retval = false
   local dStr = ""
 
-  -- If current is checked, check it first.
-  if (enchant) then
-    -- compare 2-handed weapons against both main hand and off hand
-    if ipos == 17 then
-      if aValE > bValue then
-        dStr = string.format("%07.2f", aValE - bValue)
-	retval = true
-        Debug(retval, string.format("DBG:(%d)%s aVal[%07.2f] > bValue[%07.2f]", ipos, iname, aValE, bValue))
-      end
-    else
-      if aValE > mainValue then
-        dStr = ("%07.2f"):format(aValE - mainValue)
-	retval = true
-        Debug(retval, string.format("DBG:(%d)%s aVal[%07.2f] > mainValue[%07.2f]", ipos, iname, aValE, mainValue))
-      end
-      if otherslot and aValE > offValue then
-        dStr = ("%07.2f"):format(aValE - offValue)
-	retval = true
-        Debug(retval, string.format("DBG:(%d)%s aVal[%07.2f] > offValue[%07.2f]", ipos, iname, aValE, offValue))
-      end
+  local mainValue = mValE
+  local otherValue = oValE
+
+  -- compare 2-handed weapons against both main hand and off hand
+  if ipos == 17 then
+    local bValue = mainValue + otherValue
+    if aValE > bValue then
+      dStr = string.format("%07.2f", aValE - bValue)
+      retval = true
     end
   else
-    -- compare 2-handed weapons against both main hand and off hand
-    if ipos == 17 then
-      if aVal > bValue then
-        dStr = ("%07.2f"):format(aVal - bValue)
-        retval = true
-        Debug(retval, string.format("DBG:(%d)%s aVal[%07.2f] > bValue[%07.2f]", ipos, iname, aVal, bValue))
-      end
-    else
-      if aVal > mainValue then
-        dStr = ("%07.2f"):format(aVal - mainValue)
-	retval = true
-        Debug(retval, string.format("DBG:(%d)%s aVal[%07.2f] > mainValue[%07.2f]", ipos, iname, aVal, mainValue))
-      else
-        if otherslot and aVal > offValue then
-          dStr = ("%07.2f"):format(aVal - offValue)
-	  retval = true
-          Debug(retval, string.format("DBG:(%d)%s aVal[%07.2f] > offValue[%07.2f]", ipos, iname, aVal, offValue))
+    -- Check Main Slot
+    if aValE > mainValue then
+      dStr = ("%07.2f"):format(aValE - mainValue)
+      retval = true
+    else -- Check Other Slot
+      if mainslot ~= 16 or (mainslot == 16 and not is2hweap) then
+        if otherslot and aValE > otherValue then
+          dStr = ("%07.2f"):format(aValE - otherValue)
+          retval = true
         end
       end
     end
   end
 
-  Debug(retval, string.format("DBG: iPos: %d mSlot: %d oSlot: %d", ipos, slots[1], slots[2]))
+  return retval, dStr
+end
 
-  if retval then
+-------------------------------------------------------------------
+-- Auctioneer interface.  Each search result is passed into this function
+-- Return values: 
+--      boolean - true / false
+--      reason - string if boolean is false, nil otherwise
+--             ####  The following return values are only present if boolean is true
+--      profit - 0 if AucAdvanced.Modules.Util.PriceLevel is not loaded, nil otherwise
+--      delta -  zero padded pawn delta
+-------------------------------------------------------------------
+function lib.Search(itemData)
+  local debugfalse = get("search.pawn.debugfalse")
+  local debugtrue = get("search.pawn.debugtrue")
+  local usebuyout = get("search.pawn.buyout")
+
+
+  -- What kind of choice should we present
+  local reason = TEXT("REASON_BID")
+  if usebuyout then
+    reason = TEXT("REASON_BUY")
+  end
+
+  -- Ensure we have a valid scale chosen
+  if not ValidateScale() then
+    return false, TEXT("BAD_SCALE")
+  end
+
+  -- Check to see if the item is valid and that the user wants it evaluated
+  if not FilterItem(itemData) then
+    return false, TEXT("NOT_WANTED")
+  end
+
+  -- Ok At this point we can use the item and possibly can afford it
+  -- Check to see if it is an upgrade
+  local isUpgrade, dStr = IsUpgrade(itemData)
+  if isUpgrade then
     if not AucAdvanced.Modules.Util.PriceLevel then
       return reason,nil,0,dStr
     else
       return reason,nil,nil,dStr
     end
   else
-    Debug(false, string.format("%s: (%d)%s aVal[%07.2f]", TEXT("NOT_UPGRADE_DBG"), ipos,iname,aVal))
     return false, TEXT("NOT_UPGRADE")
   end
 end
