@@ -18,7 +18,7 @@ Localization.RegisterAddonStrings("enUS", "Localization",
     --Earth Button
     Localization  = "Localization";
     ShowPrompt    = "Show Prompt";
-    EarthTooltip  = "Show Locale Sellection Dialogue."
+    EarthTooltip  = "Show Locale Selection Dialogue."
   },
 nil, true) -- Protected
 
