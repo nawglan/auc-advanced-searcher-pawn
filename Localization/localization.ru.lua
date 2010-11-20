@@ -1,6 +1,6 @@
 ﻿-- Russian text strings
 
-Localization.RegisterAddonStrings("ruRU", "Localization", 
+Localization.RegisterAddonStrings("ruRU", "Localization",
   {
     -- Locales
     enUS      = "English";
@@ -8,14 +8,14 @@ Localization.RegisterAddonStrings("ruRU", "Localization",
     frFR      = "French";
     deDE      = "German";
     ruRU      = "Русская";
-    
+
     -- Frame Strings
     Confirm         = "Подтвердить";
     Cancel          = "Отмена";
     RemoveUnused    = "Удалить неиспользуемые локали из памяти.";
     SelectPreferred = "Выберите локализацию:";
     AvailLangs      = "Доступные языки";
-    
+
     --Earth Button
     Localization  = "Локализация";
     ShowPrompt    = "Паказать запрос";
@@ -23,14 +23,15 @@ Localization.RegisterAddonStrings("ruRU", "Localization",
   },
 nil, true) -- Protected
 
-Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn", 
+Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
   {
     -- Config
     MAIN_TITLE        = "Искать вещи которые Pawn считает улучшением";
-    HELP_ID           = "Поисковик Pawn";
+	OPTIONS           = "Настройки:";
+    HELP_ID           = "Поисковик Auc Searcher Pawn";
     HELP_QUESTION     = "Что делает поисковик?";
     HELP_ANSWER       = "Этот поисковик ищет улучшения для одетых вещей используя шкалы аддона Pawn.";
-    CONFIG_HEADER     = "Критерии поиска Pawn";
+    CONFIG_HEADER     = "Критерии поиска";
     SCALE_SELECT      = "Имя шкалы Pawn";
     SCALE_SELECT_TIP  = "Шкала Pawn будет ипользована для определения значения вещи";
     CHECK_CURRENT     = "Использовать текущее значение";
@@ -42,13 +43,33 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     AFFORD_ONLY       = "Только то что я могу купить";
     AFFORD_ONLY_TIP   = "Отображать только те вещи которые я могу купить.";
     USE_BUYOUT        = "Ипользовать выкуп";
-    USE_BUYOUT_TIP    = "Ипользовать метод выкупа вместо ставок при просмотре цен аукциона.";
-    SHOW_DEBUG        = "Отображать информацию отладки";
-    SHOW_DEBUG_TIP    = "Внимание: при включении отладки вы получите огромное количество информации (возможно ненужной) в чате.";
-    ONLY_FALSE        = "только false";
-    ONLY_FALSE_TIP    = "Отображать отладочную информацию только для вещей которые НЕ подошли.";
-    ONLY_TRUE         = "только true";
-    ONLY_TRUE_TIP     = "Отображать отладочную информацию только для вещей которые подошли.";
+    USE_BUYOUT_TIP    = "Ипользовать метод выкупа вместо ставок при просмотре цен аукциона";
+    FORCE2H_WEAP      = "только 2H";
+    FORCE2H_TIP       = "Вы хотите найти ДВУРУЧНОЕ оружие, которое будет лучше чем то, что вами используется в данный момент.";
+
+	INCLUDE_IN_SEARCH = "Искать предметы из отмеченных слотов:";
+    SHOW_HEAD         = "Голова";
+    SHOW_NECK         = "Шея";
+    SHOW_SHOULDER     = "Плечи";
+    SHOW_BACK         = "Спина";
+    SHOW_CHEST        = "Грудь";
+    SHOW_WRIST        = "Запястья";
+    SHOW_HANDS        = "Перчатки";
+    SHOW_WAIST        = "Пояс";
+    SHOW_LEGS         = "Ноги";
+    SHOW_FEET         = "Обувь";
+    SHOW_FINGER       = "Кольца";
+    SHOW_TRINKET      = "Аксессуары";
+    SHOW_WEAPON       = "Правая рука";
+    SHOW_OFFHAND      = "Левая рука";
+    SHOW_RANGED       = "Дальний бой";
+
+	--SHOW_DEBUG        = "Отображать информацию отладки";
+    --SHOW_DEBUG_TIP    = "Внимание: при включении отладки вы получите огромное количество информации (возможно ненужной) в чате.";
+    --ONLY_FALSE        = "только false";
+    --ONLY_FALSE_TIP    = "Отображать отладочную информацию только для вещей которые НЕ подошли.";
+    --ONLY_TRUE         = "только true";
+    --ONLY_TRUE_TIP     = "Отображать отладочную информацию только для вещей которые подошли.";
 
     --Classes
     WARRIOR      = "Воин";
