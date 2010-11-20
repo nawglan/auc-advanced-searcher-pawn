@@ -58,12 +58,6 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SHOW_WEAPON       = "Weapon";
     SHOW_OFFHAND      = "Off-Hand";
     SHOW_RANGED       = "Ranged";
-    SHOW_DEBUG        = "Show debug messages";
-    SHOW_DEBUG_TIP    = "WARNING: Produces lots of output.";
-    ONLY_FALSE        = "Only false";
-    ONLY_FALSE_TIP    = "Only show debug messages for items that do not match.";
-    ONLY_TRUE         = "Only true";
-    ONLY_TRUE_TIP     = "Only show debug messages for items that match.";
 
     --Classes
     WARRIOR      = "Warrior";
@@ -80,22 +74,10 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SIGILS  = "Sigils";
 
     -- Messages
-    NO_SCALE_DBG = "DBG: No scale defined, please pick a scale from the dropdown list.  If none exist you will need to define a scale in Pawn first.";
-
-    SCALE_BLANK_DBG = "DBG: No scale defined, please pick a scale from the dropdown list.  If none exist you will need to define a scale in Pawn first.";
-
-    SCALE_NOT_FOUND_DBG = "DBG: Error! Pawn cannot find scale";
-
-    NO_LINK_DBG = "DBG: No link";
-
-    CANNOT_USE_DBG = "DBG: Can't use this item";
-
     NOT_WANTED     = "Item slot not wanted";
 
     REASON_BUY = "buy";
     REASON_BID = "bid";
-
-    NO_ITEM_DBG = "DBG: Pawn has no data for this item";
 
     NOT_UPGRADE     = "Pawn value is too low.";
   },
