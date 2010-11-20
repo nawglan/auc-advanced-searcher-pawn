@@ -80,7 +80,6 @@ local showtrue = false
 -- Items with true for first debug message only get printed if showtrue above is true
 -------------------------------------------------------------------
 
-
 -------------------------------------------------------------------
 -- Cache the Scale Table from Pawn
 local scaletable = {}
@@ -326,7 +325,6 @@ function ValidateScale()
   local scalenum = get("search.pawn.scalenum")
 
   if not scalenum then
-    Debug(false, TEXT("NO_SCALE_DBG"))
     return false
   end
 
@@ -335,13 +333,11 @@ function ValidateScale()
     local scalename = GetScaleName(scalenum)
 
     if scalename == "" then
-      Debug(false, TEXT("SCALE_BLANK_DBG"))
       return false
     end
 
     local scalefound = PawnDoesScaleExist(scalename)
     if not scalefound or scalefound ~= true then
-      Debug(false, string.format("%s [%s]", TEXT("SCALE_NOT_FOUND_DBG"), scalename))
       return false
     end
 
@@ -489,15 +485,13 @@ function SlotOK(slot)
 
   -- sanity check the result
   if retval == nil then
-    Debug(false, string.format("DBG:  Slot %d = nil, setting to false", slot))
     retval = false
   else
     if type(retval) ~= "boolean" then
-      Debug(false, string.format("DBG: Retval is not boolean it is %s", type(retval)))
       retval = false
     end
   end
-  
+
   return retval
 end
 
@@ -515,7 +509,7 @@ function ConvertIpos(ipos)
     ipos = Const.InvTypes[ipos]
   end
 
-  return ipos 
+  return ipos
 end
 
 -------------------------------------------------------------------
@@ -566,12 +560,11 @@ function FilterItem(itemData)
 
   -- Must have ipos
   if ipos == nil then
-    return false 
+    return false
   end
 
   -- Does the item have a link
   if not link then
-    Debug(false, TEXT("NO_LINK_DBG"))
     return false
   end
 
@@ -617,7 +610,7 @@ function FilterItem(itemData)
   if not wanted then
     -- check other slot
     wanted = SlotOK(otherslot)
-    if not wanted then 
+    if not wanted then
       return false
     end
   end
@@ -698,7 +691,7 @@ function Is2hEquipped()
   if mItem.Stats then
     for StatName, Value in pairs(mItem.Stats) do
       if StatName == "TwoHandDps" then
-        return true 
+        return true
       end
     end
   end
@@ -713,7 +706,7 @@ function IsUpgrade(itemData)
   local iname = itemData[Const.NAME]
 
   -- Get value of Item in Search Results
-  local aValE, aVal = GetPawnValueItem(itemData) 
+  local aValE, aVal = GetPawnValueItem(itemData)
 
   -- Get value of equivalent slot(s).
   local itype = itemData[Const.ITYPE]
@@ -769,7 +762,7 @@ function IsUpgrade(itemData)
       end
     end
   end
-  
+
   -- example output
   -- if false: return back false, ""
   -- if true: return back true, "20.5204"
@@ -779,7 +772,7 @@ end
 
 -------------------------------------------------------------------
 -- Auctioneer interface.  Each search result is passed into this function
--- Return values: 
+-- Return values:
 --      boolean - true / false
 --      reason - string if boolean is false, nil otherwise
 --             ####  The following return values are only present if boolean is true
