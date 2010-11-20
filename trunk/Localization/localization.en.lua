@@ -74,11 +74,11 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SIGILS  = "Sigils";
 
     -- Messages
-    NOT_WANTED     = "Item slot not wanted";
+    BAD_SCALE   = "Please select a valid scale.";
+    NOT_WANTED  = "Item slot not wanted";
+    NOT_UPGRADE = "Pawn value is too low.";
 
     REASON_BUY = "buy";
     REASON_BID = "bid";
-
-    NOT_UPGRADE     = "Pawn value is too low.";
   },
 nil, true) -- Protected
