@@ -545,7 +545,17 @@ function FilterPrice(itemData)
 end
 
 -------------------------------------------------------------------
--- Ensure that we have a valid ipos from Auctioneer
+-- Filter out an item if
+--
+-- 1) ipos from Auctioneer is undefined
+-- 2) if the item does not have a link
+-- 3) if the item is a bag
+-- 4) if the item cannot be equipped
+-- 5) if the user checked "Only What I Can Use" and the item is not useable
+-- 6) if the object doesn't go to a slot we care about (nil / ignore slot)
+-- 7) if the user only wants 2h weapons and we get a weapon that isn't 2h
+-- 8) if the user unchecked the slot
+-- 9) if the user cannot afford the item and they only want to see what they can afford
 -------------------------------------------------------------------
 function FilterItem(itemData)
   local link = itemData[Const.LINK]
@@ -570,11 +580,12 @@ function FilterItem(itemData)
     return false
   end
 
+  -- deprecated
   -- Don't show Ammo/thrown for non ammo classes
-  local pclass = UnitClass("player")
-  if ((pclass ~= TEXT("HUNTER") and pclass ~= TEXT("ROGUE") and pclass ~= TEXT("WARRIOR")) and (ipos == 24 or ipos == 25)) then
-    return false
-  end
+  --local pclass = UnitClass("player")
+  --if ((pclass ~= TEXT("HUNTER") and pclass ~= TEXT("ROGUE") and pclass ~= TEXT("WARRIOR")) and (ipos == 24 or ipos == 25)) then
+  --  return false
+  --end
 
   -- Only filter stuff that can be equipped
   if (not IsEquippableItem(link)) then
@@ -583,15 +594,14 @@ function FilterItem(itemData)
 
   -- Check to see if we can use the item
   local canuse = get("search.pawn.canuse")
-  local icanuse = CanUse(link)
-
-  if canuse and icanuse ~= true then
-    Debug(false, string.format("%s [%s]", TEXT("CANNOT_USE_DBG"), iname))
-    return false
+  if canuse then
+    local icanuse = CanUse(link)
+    if icanuse ~= true then
+      return false
+    end
   end
 
   local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
-
   -- Is there a slot to be compared
   if not mainslot and not otherslot then
     return false
@@ -654,19 +664,21 @@ function GetPawnValueItem(itemData)
   local iname = itemData[Const.NAME]
   local link = itemData[Const.LINK]
 
-  -- Set name to blank for nil names.  This is only used for debugging.
+  -- Set name to blank for nil names.
   if not iname then iname = " " end
 
   -- Get the signature of this item and find it's stats.
   local item = PawnGetItemData(link)
 
+  -- ensure we get an item structure from Pawn
   if not item then
-    Debug(false, string.format("%s: %s", TEXT("NO_ITEM_DBG"), iname))
     return false
   end
 
+  -- Grab the values for the item from Auctioneer
   local aValE, aVal = PawnGetSingleValueFromItem(item, _scalename)
 
+  -- ensure we have valid values
   if aVal == nil then
     aVal = 0
   end
@@ -677,7 +689,9 @@ function GetPawnValueItem(itemData)
   return aValE, aVal
 end
 
-
+-------------------------------------------------------------------
+-- Returns true if the user has a 2h weapon equipped
+-------------------------------------------------------------------
 function Is2hEquipped()
   local mainslot = 16 -- Main Hand Inventory Slot
   local mItem = PawnGetItemDataForInventorySlot(mainslot)
@@ -709,6 +723,8 @@ function IsUpgrade(itemData)
   local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
   local is2hweap = Is2hEquipped()
 
+  -- Don't allow offhand items to show up in the search if the
+  -- user has a 2h weapon equipped
   if is2hweap and mainslot == 17 then
     return false, ""
   end
@@ -723,13 +739,11 @@ function IsUpgrade(itemData)
     oValE, oVal = GetPawnValueEquipped(otherslot)
   end
 
-  local slots = convertSlot[ipos]
-
   local retval = false
   local dStr = ""
 
   local mainValue = mValE
-  local otherValue = oValE
+  local otherValue = oValE -- this will be 0 when users have 2h weapon equipped
 
   -- compare 2-handed weapons against both main hand and off hand
   if ipos == 17 then
@@ -744,6 +758,9 @@ function IsUpgrade(itemData)
       dStr = ("%07.2f"):format(aValE - mainValue)
       retval = true
     else -- Check Other Slot
+      -- when checking 1h weapons, only check the offhand slot
+      -- if the user does not have a 2h weapon equipped
+      -- otherwise always check offhand/alternate slot (rings/trinkets)
       if mainslot ~= 16 or (mainslot == 16 and not is2hweap) then
         if otherslot and aValE > otherValue then
           dStr = ("%07.2f"):format(aValE - otherValue)
@@ -752,6 +769,10 @@ function IsUpgrade(itemData)
       end
     end
   end
+  
+  -- example output
+  -- if false: return back false, ""
+  -- if true: return back true, "20.5204"
 
   return retval, dStr
 end
@@ -766,10 +787,7 @@ end
 --      delta -  zero padded pawn delta
 -------------------------------------------------------------------
 function lib.Search(itemData)
-  local debugfalse = get("search.pawn.debugfalse")
-  local debugtrue = get("search.pawn.debugtrue")
   local usebuyout = get("search.pawn.buyout")
-
 
   -- What kind of choice should we present
   local reason = TEXT("REASON_BID")
