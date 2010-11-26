@@ -91,9 +91,10 @@ local scaletable = {}
 -- ShadowVall
 -- http://www.wowwiki.com/API_TYPE_InventorySlotName
 -- Rather than use hard-coded ID's for inventory slots, each slot is mapped to a numeric ID at runtime using the API GetInventorySlotInfo function. This allows for future expansion and addition of new slots, as well as re-ordering of slots in the underlying code. Known slot ID's are as follows (and appear to be case insensitive
+
 local convertSlot = {
   {
-    HeadSlot, -- [1] mainslot
+    1, -- [1] mainslot
     -1, -- [2] otherslot
   }, -- [1] head
   {
@@ -295,7 +296,7 @@ function lib:MakeGuiConfig(gui)
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.trinket", TEXT("SHOW_TRINKET"))
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.weapon", TEXT("SHOW_WEAPON"))
   -- ShadowVall
-  -- I think next check box must be under the main hand weapon checkbox
+  -- I think next check box better place under the main hand weapon checkbox
   gui:AddControl(id, "Checkbox",   0.65, 2, "search.pawn.force2h", TEXT("FORCE2H_WEAP"))
   gui:AddTip(id, TEXT("FORCE2H_TIP"))
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.offhand", TEXT("SHOW_OFFHAND"))
@@ -453,8 +454,6 @@ local function ConvertSlot(ipos,itype,subtype)
 
     -- Ensure they can dual wield before
     -- allowing them to compare against offhand
-	-- ShadowVall
-	-- There is another ipos=22 in auc-advanced wich need to check
 	if ipos == 13 and not candual then
       otherslot = nil
     end
@@ -501,8 +500,7 @@ function SlotOK(slot)
   if retval == nil then
     retval = false
   else
-    -- ShadowVall :)
-	if type(retval) ~= "boolean" then
+    if type(retval) ~= "boolean" then
       retval = false
     end
   end
@@ -567,6 +565,7 @@ end
 -- 9) if the user cannot afford the item and they only want to see what they can afford
 -------------------------------------------------------------------
 function FilterItem(itemData)
+
   local link = itemData[Const.LINK]
   local iname = itemData[Const.NAME]
   local ipos  = ConvertIpos(itemData[Const.IEQUIP])
@@ -586,9 +585,9 @@ function FilterItem(itemData)
   -- Don't let bags through
   -- ShadowVall
   -- NoNeed because we have SlotOk() function
-  if ipos == 18 then
-    return false
-  end
+  --if ipos == 18 then
+  --  return false
+  --end
 
   -- deprecated
   -- Don't show Ammo/thrown for non ammo classes
@@ -645,8 +644,8 @@ end
 -------------------------------------------------------------------
 function GetPawnValueEquipped(slot)
   local mItem = PawnGetItemDataForInventorySlot(slot,false)
-  local mVal = 0 -- ShadowVall: enchantedpawnscore (current player enchants, current player gems) not useful for comparison i think
-  local mValE = 0 -- ShadowVall: pawnscore (NO enchants, gems setup by pawn. should use this value for comparison
+  local mVal = 0 -- ShadowVall: pawnscore (NO enchants, gems setup by pawn. should use this value for comparison
+  local mValE = 0 -- ShadowVall: enchantedpawnscore (current player enchants, current player gems) not useful for comparison i think
 
   -- If there is no item equipped in that slot, then any item is an upgrade
   if not mItem then
@@ -654,6 +653,8 @@ function GetPawnValueEquipped(slot)
   end
 
   -- Grab the values for the item equipped in the main slot
+  -- PawnGetSingleValueFromItem(Item, ScaleName)
+  -- return Value, UnenchantedValue
   mValE, mVal = PawnGetSingleValueFromItem(mItem, _scalename)
 
   -- ensure we have valid values
@@ -703,8 +704,8 @@ end
 -- Returns true if the user has a 2h weapon equipped
 -------------------------------------------------------------------
 function Is2hEquipped()
-  local mainslot = 16 -- Main Hand Inventory Slot ShadowVall: Really should use global const "MainHandSlot"
-  local mItem = PawnGetItemDataForInventorySlot(mainslot)
+  --local mainslot = 16 -- Main Hand Inventory Slot ShadowVall: I think we should use global const "MainHandSlot" and function GetInventorySlotId
+  local mItem = PawnGetItemDataForInventorySlot(16)
   if mItem.Stats then
     for StatName, Value in pairs(mItem.Stats) do
       if StatName == "TwoHandDps" then
@@ -735,8 +736,9 @@ function IsUpgrade(itemData)
 
   -- Don't allow offhand items to show up in the search if the
   -- user has a 2h weapon equipped
-  -- ShadowVall: why? if offHand weapon is BETTER than gray 2H on tweank character? should check want 2 hand instead!
-  if is2hweap and mainslot == 17 then
+  -- ShadowVall: why? if offHand weapon is BETTER than gray 2H on low level character? should check "want 2 hand" instead!
+  -- if is2hweap and mainslot == 17 and then
+  if mainslot == 17 and get("search.pawn.force2h")==true then
     return false, ""
   end
 
@@ -757,7 +759,7 @@ function IsUpgrade(itemData)
   local otherValue = oValE -- this will be 0 when users have 2h weapon equipped
 
   -- ShadowVall:
-  -- dont like the code below - difficult to understand:(
+  -- I dont like the code below - difficult to understand:(
   -- seem there is missed dualwield characters?
 
   -- compare 2-handed weapons against both main hand and off hand
@@ -777,9 +779,10 @@ function IsUpgrade(itemData)
       -- if the user does not have a 2h weapon equipped
       -- otherwise always check offhand/alternate slot (rings/trinkets)
       if mainslot ~= 16 or (mainslot == 16 and not is2hweap) then
-        -- ShadowVall: aucitem=the best 200 dagger can be equipped in both hand
-		-- charclass warlock, equipped tome score=0 in offhand.
-		-- dagger is better but i can not use it in offhand:(
+        -- ShadowVall: Look for example
+		-- aucitem is the best iLvL=200 "dagger", can be equipped in both hand
+		-- CharClass warlock, equipped some "tome" score=0 in offhand.
+		-- dagger is better, but i can not use it in offhand:(
 		if otherslot and aValE > otherValue then
           dStr = ("%07.2f"):format(aValE - otherValue)
           retval = true
