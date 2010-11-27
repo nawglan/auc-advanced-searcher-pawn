@@ -406,22 +406,31 @@ end
 -- Limit one-handed weapon checks to main hand unless class can dual wield
 -------------------------------------------------------------------
 local function CanDualWield()
+
   local pclass = UnitClass("player")
   local plevel = UnitLevel("player")
 
 -- ShadowVall
--- Need to change level req for dual wield classes for 4.x.x
+-- Do Warrior and Shaman get dualwield by specialization on level 10?
+-- How to manage Warrior talant Titan Grip for 2hweapon?
 
-  if (pclass == TEXT("WARRIOR") or pclass == TEXT("HUNTER") and plevel >= 20) then
+  if (pclass == TEXT("DEATH_KNIGHT") and plevel >= 20) then
     return true
   end
-  if (pclass == TEXT("SHAMAN") and plevel >= 40) then
+
+  if (pclass == TEXT("HUNTER") and plevel >= 20) then
     return true
   end
-  if (pclass == TEXT("ROGUE") and plevel >= 10) then
+
+  if (pclass == TEXT("ROGUE") and plevel >= 20) then
     return true
   end
-  if (pclass == TEXT("DEATH_KNIGHT")) then
+
+  if (pclass == TEXT("SHAMAN") and plevel >= 20) then
+    return true
+  end
+
+  if (pclass == TEXT("WARRIOR") and plevel >= 20) then
     return true
   end
 
