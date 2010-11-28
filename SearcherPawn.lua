@@ -422,7 +422,7 @@ local function CanDualWield()
     return true
   end
 
-  if (pclass == TEXT("ROGUE") and plevel >= 20) then
+  if (pclass == TEXT("ROGUE") and plevel >= 1) then
     return true
   end
 
