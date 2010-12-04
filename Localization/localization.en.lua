@@ -41,7 +41,6 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "Use buyout instead of bid when checking auction prices.";
     FORCE2H_WEAP      = "Only 2H Weapons";
     FORCE2H_TIP       = "When comparing weapons, only consider 2-Handed Weapons.";
-
     INCLUDE_IN_SEARCH = "Include these slots when searching:";
     SHOW_HEAD         = "Head";
     SHOW_NECK         = "Neck";
@@ -72,6 +71,10 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     LIBRAMS = "Librams";
     IDOLS   = "Idols";
     SIGILS  = "Sigils";
+    
+    --Stat
+    TWOHANDDPS = "TwoHandDps"; -- This is the text from Pawn.  Not sure if it
+                               -- is localized or not
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";
