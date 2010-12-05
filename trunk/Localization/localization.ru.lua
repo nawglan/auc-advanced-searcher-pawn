@@ -64,13 +64,6 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "Левая рука";
     SHOW_RANGED       = "Дальний бой";
 
-	--SHOW_DEBUG        = "Отображать информацию отладки";
-    --SHOW_DEBUG_TIP    = "Внимание: при включении отладки вы получите огромное количество информации (возможно ненужной) в чате.";
-    --ONLY_FALSE        = "только false";
-    --ONLY_FALSE_TIP    = "Отображать отладочную информацию только для вещей которые НЕ подошли.";
-    --ONLY_TRUE         = "только true";
-    --ONLY_TRUE_TIP     = "Отображать отладочную информацию только для вещей которые подошли.";
-
     --Classes
     WARRIOR      = "Воин";
     HUNTER       = "Охотник";
@@ -89,37 +82,12 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     TWOHANDDPS = "DPS Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
 
     -- Messages
-    NO_SCALE     = "Нет названия шкалы";
-    NO_SCALE_DBG = "DBG: Шкала не определена, выберите шкалу из списка.  Если нет ни одной шкалы то нужно создать шкалу сначала.";
+	BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
+    NOT_WANTED  = "Данный слот не нужен";
+    NOT_UPGRADE = "Значение Pawn очень низкое";
 
-    SCALE_BLANK     = "Шкала пуста";
-    SCALE_BLANK_DBG = "DBG: Шкала не определена, выберите шкалу из списка.  Если шкала не заполена значениями то нужно заполнить шкалу сначала.";
+    REASON_BUY = "Buy";
+    REASON_BID = "Bid";
 
-    SCALE_NOT_FOUND     = "Шкала не найдена";
-    SCALE_NOT_FOUND_DBG = "DBG: Ошибка! Шкала Pawn не найдена";
-
-    NO_LINK     = "Нет линка";
-    NO_LINK_DBG = "DBG: нет линка";
-
-    CANNOT_USE     = "Не используется";
-    CANNOT_USE_DBG = "DBG: Нельзя использовать эту вещь";
-
-    NOT_EQUIPPABLE     = "Не одеваемое";
-    NOT_EQUIPPABLE_DBG = "DBG: Нельзя одеть эту вещь";
-
-    CANNOT_AFFORD_BUYOUT = "Нельзя выкупить";
-    CANNOT_AFFORD_BID    = "Нельзя сделать ставку";
-    CANNOT_AFFORD_DBG    = "DBG: Нельзя сделать ставку/выкупить эту вещь";
-
-    REASON_BUY = "выкуп";
-    REASON_BID = "ставка";
-
-    NO_ITEM     = "Нет вещи";
-    NO_ITEM_DBG = "DBG: У Pawn нет данных на эту вещь";
-
-    EMPTY_SLOT = "Пусто";
-
-    NOT_UPGRADE     = "Значение Pawn слишком мало.";
-    NOT_UPGRADE_DBG = "DBG: Не улучшение. Значние Pawn слишком мало";
   },
 nil, true) -- Protected
