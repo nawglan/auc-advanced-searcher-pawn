@@ -895,14 +895,14 @@ function IsUpgrade(itemData)
 	-- ShadowVall: seem it is ok
     local bValue = mainValue + otherValue
     if aValE > bValue then
-      dStr = string.format("%07.2f", aValE - bValue)
+      dStr = string.format(" +%0.1f", aValE - bValue)
       retval = true
     end
   else
     -- We are not checking a 2h weapon
     -- Check for Main Slot
     if mainslot and aValE > mainValue then
-	  dStr = ("%07.2f"):format(aValE - mainValue)
+	  dStr = (" +%0.1f"):format(aValE - mainValue)
       retval = true
     else -- Check Other Slot
       -- when checking 1h weapons, only check the offhand slot
@@ -914,7 +914,7 @@ function IsUpgrade(itemData)
 		-- CharClass warlock, equipped some "tome" score=0 in offhand.
 		-- dagger is better, but i can not use it in offhand:(
 		if otherslot and aValE > otherValue then
-          dStr = ("%07.2f"):format(aValE - otherValue)
+          dStr = (" +%0.1f"):format(aValE - otherValue)
           retval = true
         end
       end
@@ -959,6 +959,7 @@ function lib.Search(itemData)
   -- Ok At this point we can use the item and possibly can afford it
   -- Check to see if it is an upgrade
   local isUpgrade, dStr = IsUpgrade(itemData)
+
   if isUpgrade then
     if not AucAdvanced.Modules.Util.PriceLevel then
       return reason,nil,0,dStr
