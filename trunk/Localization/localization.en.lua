@@ -1,20 +1,20 @@
 -- English text strings
 
-Localization.RegisterAddonStrings("enUS", "Localization", 
+Localization.RegisterAddonStrings("enUS", "Localization",
   {
     -- Locales
     enUS      = "English";
     enGB      = "English";
     frFR      = "French";
     deDE      = "German";
-    
+
     -- Frame Strings
     Confirm         = "Confirm";
     Cancel          = "Cancel";
     RemoveUnused    = "Remove unused locales from memory.";
     SelectPreferred = "Select a preferred localization:";
     AvailLangs      = "Available Languages";
-    
+
     --Earth Button
     Localization  = "Localization";
     ShowPrompt    = "Show Prompt";
@@ -22,7 +22,7 @@ Localization.RegisterAddonStrings("enUS", "Localization",
   },
 nil, true) -- Protected
 
-Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn", 
+Localization.RegisterAddonStrings("enUS", "Auc-Searcher-",
   {
     -- Config
     MAIN_TITLE        = "Search for items which Pawn considers an upgrade";
@@ -71,7 +71,7 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     LIBRAMS = "Librams";
     IDOLS   = "Idols";
     SIGILS  = "Sigils";
-    
+
     --Stat
     TWOHANDDPS = "TwoHandDps"; -- This is the text from Pawn.  Not sure if it
                                -- is localized or not

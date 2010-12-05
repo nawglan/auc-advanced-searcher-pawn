@@ -91,13 +91,10 @@ local scaletable = {}
 
 local convertSlot = {
   {
-<<<<<<< .mine
     "HeadSlot", -- [1] mainslot
     nil, -- [2] otherslot
-=======
     1, -- [1] mainslot
     -1, -- [2] otherslot
->>>>>>> .r20
   }, -- [1] head
   {
     "NeckSlot", -- [1] mainslot
@@ -299,11 +296,6 @@ function lib:MakeGuiConfig(gui)
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.finger", TEXT("SHOW_FINGER"))
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.trinket", TEXT("SHOW_TRINKET"))
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.weapon", TEXT("SHOW_WEAPON"))
-<<<<<<< .mine
-=======
-  -- ShadowVall
-  -- I think next check box better place under the main hand weapon checkbox
->>>>>>> .r20
   gui:AddControl(id, "Checkbox",   0.65, 2, "search.pawn.force2h", TEXT("FORCE2H_WEAP"))
   gui:AddTip(id, TEXT("FORCE2H_TIP"))
   gui:AddControl(id, "Checkbox",   0.65, 0, "search.pawn.offhand", TEXT("SHOW_OFFHAND"))
@@ -480,14 +472,13 @@ local function ConvertSlot(ipos,itype,subtype)
 
     -- Ensure they can dual wield before
     -- allowing them to compare against offhand
-    if ipos == 22 and not candual then
+    if ipos == 22 and not candual then -- ipos=22 is "weaponoffhand"
       mainslot = nil
     end
-    if ipos == 13 and not candual then
+    if ipos == 13 and not candual then -- ipos=13 is "weapon"
       otherslot = nil
     end
 
-<<<<<<< .mine
     if type(mainslot) == "string" then
       -- Check cache first
       if not slotCache[mainslot] then
@@ -527,22 +518,25 @@ local function ConvertSlot(ipos,itype,subtype)
     -- 80 player (due to item matching against an empty slot)
     if is2hweap and not force2h and mainslot == slotCache["SecondaryHandSlot"] then
       -- Check cache first
-      if not slotCache["MainHandSlot"] then
+
+	  -- ShadowVall
+	  -- This peace of code is repeating every time when you want to check or add something in the cache. IMHO need to organize it in separate function CheckCache(SLotName)
+	  if not slotCache["MainHandSlot"] then
         local slotId, textureName = GetInventorySlotInfo("MainHandSlot")
         -- store in cache
         slotCache["MainHandSlot"] = slotId
       end
+	  -- end if repetable code
       mainslot = slotCache["MainHandSlot"]
     else
       if is2hweap and force2h and mainslot == offhand then
         mainslot = nil
       end
-=======
+
     -- Ensure they can dual wield before
     -- allowing them to compare against offhand
-	if ipos == 13 and not candual then
+	if ipos == 13 and not candual then -- ipos=13 is "weapon"
       otherslot = nil
->>>>>>> .r20
     end
   end
 
@@ -554,6 +548,10 @@ end
 -------------------------------------------------------------------
 function SlotOK(slot)
   -- short-circuit if slot is out of bounds
+
+  -- ShadowVall
+  -- I know it will sound strangly, but what you think about BAG upgrades? "BAG for 22 slots" is BETTER than equipped "BAG for 18". Is it UPGRADE?:) But pawn can't tell us this information...
+
   if slot == nil or slot < 0 or slot > 18 then
     return false
   end
@@ -563,7 +561,7 @@ function SlotOK(slot)
       get("search.pawn.head"),     -- [1] head
       get("search.pawn.neck"),     -- [2] neck
       get("search.pawn.shoulder"), -- [3] shoulder
-      false,                       -- [4] shirt
+      false,                      -- [4] shirt
       get("search.pawn.chest"),    -- [5] chest
       get("search.pawn.waist"),    -- [6] waist
       get("search.pawn.legs"),     -- [7] legs
@@ -587,12 +585,7 @@ function SlotOK(slot)
   if retval == nil then
     retval = false
   else
-<<<<<<< .mine
-    -- ShadowVall :)
     if type(retval) ~= "boolean" then
-=======
-    if type(retval) ~= "boolean" then
->>>>>>> .r20
       retval = false
     end
   end
@@ -705,8 +698,6 @@ function FilterItem(itemData)
     return false
   end
 
-<<<<<<< .mine
-=======
   -- Don't let bags through
   -- ShadowVall
   -- NoNeed because we have SlotOk() function
@@ -721,7 +712,6 @@ function FilterItem(itemData)
   --  return false
   --end
 
->>>>>>> .r20
   -- Only filter items that can be equipped
   if (not IsEquippableItem(link)) then
     return false
@@ -774,13 +764,12 @@ end
 -------------------------------------------------------------------
 function GetPawnValueEquipped(slot)
   local mItem = PawnGetItemDataForInventorySlot(slot,false)
-<<<<<<< .mine
+
   local mVal = 0 -- ShadowVall: enchantedpawnscore (current player enchants, current player gems) not useful for comparison i think
   local mValE = 0 -- ShadowVall: pawnscore (NO enchants, gems setup by pawn. should use this value for comparison (we are, see below)
-=======
+
   local mVal = 0 -- ShadowVall: pawnscore (NO enchants, gems setup by pawn. should use this value for comparison
   local mValE = 0 -- ShadowVall: enchantedpawnscore (current player enchants, current player gems) not useful for comparison i think
->>>>>>> .r20
 
   -- If there is no item equipped in that slot, then any item is an upgrade
   if not mItem then
@@ -836,8 +825,6 @@ function GetPawnValueItem(itemData)
 end
 
 -------------------------------------------------------------------
-<<<<<<< .mine
-=======
 -- Returns true if the user has a 2h weapon equipped
 -------------------------------------------------------------------
 function Is2hEquipped()
@@ -855,7 +842,6 @@ function Is2hEquipped()
 end
 
 -------------------------------------------------------------------
->>>>>>> .r20
 -- Check to see if the item is an upgrade or not
 -------------------------------------------------------------------
 function IsUpgrade(itemData)
@@ -871,9 +857,9 @@ function IsUpgrade(itemData)
   -- we can assume mainslot is defined and otherslot might be defined at this point
   -- but we will double check just in case
   local mainslot, otherslot = ConvertSlot(ipos,itype,subtype)
-<<<<<<< .mine
+
   if not mainslot then
-=======
+
   local is2hweap = Is2hEquipped()
 
   -- Don't allow offhand items to show up in the search if the
@@ -881,7 +867,7 @@ function IsUpgrade(itemData)
   -- ShadowVall: why? if offHand weapon is BETTER than gray 2H on low level character? should check "want 2 hand" instead!
   -- if is2hweap and mainslot == 17 and then
   if mainslot == 17 and get("search.pawn.force2h")==true then
->>>>>>> .r20
+
     return false, ""
   end
 
@@ -902,13 +888,10 @@ function IsUpgrade(itemData)
   local mainValue = mValE
   local otherValue = oValE -- this will be 0 when users have 2h weapon equipped
 
-<<<<<<< .mine
-=======
   -- ShadowVall:
   -- I dont like the code below - difficult to understand:(
   -- seem there is missed dualwield characters?
 
->>>>>>> .r20
   -- compare 2-handed weapons against both main hand and off hand
   if ipos == 17 then
     -- If user has 2h equipped, mainValue will have it's value and otherValue will be 0 so it compares 2h with 2h
