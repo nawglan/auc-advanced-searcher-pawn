@@ -7,7 +7,7 @@ Localization.RegisterAddonStrings("ruRU", "Localization",
     enGB      = "English";
     frFR      = "French";
     deDE      = "German";
-    ruRU      = "Русская";
+    ruRU      = "Русский";
 
     -- Frame Strings
     Confirm         = "Подтвердить";
@@ -84,6 +84,9 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     LIBRAMS = "Манускрипты";
     IDOLS   = "Идолы";
     SIGILS  = "Печати";
+
+	--Stat
+    TWOHANDDPS = "DPS Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
 
     -- Messages
     NO_SCALE     = "Нет названия шкалы";
