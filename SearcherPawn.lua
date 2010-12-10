@@ -74,9 +74,9 @@ local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn"
 
 -------------------------------------------------------------------
 -- DEBUGGING
-local showdbg = false -- set to true to enable debugging
-local showfalse = false
-local showtrue = false
+local showdbg = true -- set to true to enable debugging
+local showfalse = true
+local showtrue = true
 
 -- Sprinkle these throughout the code to debug.
 -- Debug(false, string.format("%s [%s]", somevar, somevar))
@@ -216,7 +216,8 @@ local function Debug(Reason, Text)
     return
   end
 
-  print(string.format("%s", Text))
+  print(Text)
+
 end
 
 -------------------------------------------------------------------
@@ -355,28 +356,39 @@ end
 local _candualcache = nil
 -------------------------------------------------------------------
 local function CanDualWield()
-  if _candualcache == nil then 
-    local pclass = UnitClass("player")
-    local plevel = UnitLevel("player")
-    local checkTalent = false
-    local talentTree = 0
+	if _candualcache == nil then
+		local pclass = UnitClass("player")
+		local plevel = UnitLevel("player")
+		local checkTalent = false
+		local talentTree = 0
 
-    _candualcache = false
+		_candualcache = false
 
-    -- Warriors only get Dual Wield if they go Fury which is tab index 2
-    if pclass == TEXT("WARRIOR") or pclass == TEXT("SHAMAN") then
-      talentTree = 2 -- Fury for Warrrior / Enhancement for Shaman
-      local _, _, _, _, _, _, _, isUnlocked = GetTalentTabInfo(talentTree, false, false, GetActiveTalentGroup())
-      _candualcache = isUnlocked
-    else
-      if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") or pclass == TEXT("HUNTER") then
-        -- see if they have learned Dual Wield yet
-        local name = GetSpellInfo(TEXT("DUALWIELD"))
-        if name then  -- name will be defined if the user has learned Dual Wield
-          _candualcache = true
-        end
-      end -- hunter / rogue / death knight
-    end -- warrior
+		if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") then
+			--Rogues and DK get DualWield for Free after character creation
+			_candualcache = true
+		else
+			if pclass == TEXT("WARRIOR") or pclass == TEXT("SHAMAN") then
+			-- Warriors and Shaman get Dual Wield if they go Fury/Enchacment which is tab index 2
+			  talentTree = 2
+			  local _, _, _, _, _, _, _, isUnlocked = GetTalentTabInfo(talentTree, false, false, GetActiveTalentGroup())
+			   _candualcache = isUnlocked
+				--print("Warrior or Shaman")
+				--if _candualcache then
+				--	print("DualWield=true")
+				--else
+				--	print("DualWield=false")
+				--end
+			else
+				if pclass == TEXT("HUNTER") and plevel>=20 then
+					-- see if Hunter have learned "Dual Wield" yet
+					local name = GetSpellInfo(TEXT("DUALWIELD"))
+					if name then  -- name will be defined if the user has learned "Dual Wield"
+						_candualcache = true
+					end
+				end -- hunter / rogue / death knight
+			end -- warrior
+		end
   end -- cache nill
 
   return _candualcache
@@ -450,9 +462,11 @@ local function ConvertSlot(ipos,itype,subtype)
 
     -- Ensure they can dual wield before
     -- allowing them to compare against offhand
-      -- ShadowVall: Sorry, I dont understand code below:(  ipos=22 is offhand weapon. why You erase primary slot?
-        -- Reason, this turns off checking offhand items for weapons you cannot use.
-        -- (it filters the item out later on in the code, due to primary slot being nil)
+    -- ShadowVall: Sorry, I dont understand code below:(  ipos=22 is offhand weapon. why You erase primary slot?
+	-- Reason, this turns off checking offhand items for weapons you cannot use.
+    -- (it filters the item out later on in the code, due to primary slot being nil)
+	-- ShadowVall: it is smart, strange and difficult to understand:)
+
     if not candual then
       if ipos == Const.EquipEncode["INVTYPE_WEAPONOFFHAND"] then
         primaryslot = nil
@@ -687,7 +701,7 @@ end -- function GetPawnValueEquipped(slot)
 -------------------------------------------------------------------
 -- Returns back value of equipped items
 --   for primary and secondary slots
--- 
+--
 -- Global Used:
 local _equippedValCache = {};
 -------------------------------------------------------------------
@@ -795,6 +809,7 @@ local function IsUpgrade(itemData)
   -- example output
   -- if false: return back false, ""
   -- if true: return back true, "0020.52" (all numbers returned will be positive, so no need to put a + in the output text)
+  -- ShadowVall: I mean "+20.52" is BETTER than equipped in 20.52 score units
   if retval then
     dStr = string.format(" %07.2f", diff) -- THIS MUST BE ZERO PADDED FOR SORTING TO WORK:  7 = length including dot, 2 = precision
   end
@@ -870,6 +885,7 @@ function lib.Search(itemData)
   local usebuyout = get("search.pawn.buyout")
 
   -- What kind of choice should we present
+  -- ShadowVall: Are you sure that is necessary? May be no "reason" at all is ok?
   local reason = TEXT("REASON_BID")
   if usebuyout then
     reason = TEXT("REASON_BUY")
