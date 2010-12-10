@@ -81,6 +81,9 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
 	--Stat
     TWOHANDDPS = "DPS Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
 
+	-- Skill
+    DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
+
     -- Messages
 	BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
     NOT_WANTED  = "Данный слот не нужен";
