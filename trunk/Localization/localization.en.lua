@@ -22,7 +22,7 @@ Localization.RegisterAddonStrings("enUS", "Localization",
   },
 nil, true) -- Protected
 
-Localization.RegisterAddonStrings("enUS", "Auc-Searcher-",
+Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
   {
     -- Config
     MAIN_TITLE        = "Search for items which Pawn considers an upgrade";
@@ -75,6 +75,9 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-",
     --Stat
     TWOHANDDPS = "TwoHandDps"; -- This is the text from Pawn.  Not sure if it
                                -- is localized or not
+
+    -- Skill
+    DUALWIELD = "Dual Wield";  -- used to see if a hunter has learned the ability or not
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";
