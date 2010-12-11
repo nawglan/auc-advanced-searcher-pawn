@@ -79,7 +79,7 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     SIGILS  = "Печати";
 
 	--Stat
-    TWOHANDDPS = "DPS Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
+    TWOHANDDPS = "УВС Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
 
 	-- Skill
     DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
@@ -89,8 +89,8 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     NOT_WANTED  = "Данный слот не нужен";
     NOT_UPGRADE = "Значение Pawn очень низкое";
 
-    REASON_BUY = "Buy";
-    REASON_BID = "Bid";
+    REASON_BUY = "Выкуп";
+    REASON_BID = "Ставка";
 
   },
 nil, true) -- Protected
