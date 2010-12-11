@@ -74,9 +74,9 @@ local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn"
 
 -------------------------------------------------------------------
 -- DEBUGGING
-local showdbg = true -- set to true to enable debugging
-local showfalse = true
-local showtrue = true
+local showdbg = false -- set to true to enable debugging
+local showfalse = false
+local showtrue = false
 
 -- Sprinkle these throughout the code to debug.
 -- Debug(false, string.format("%s [%s]", somevar, somevar))
@@ -156,7 +156,7 @@ local convertSlot = {
   }, -- [16] cloak
   {
     "MainHandSlot", -- [1] primary slot
-    nil, -- [2] secondary slot
+    "SecondaryHandSlot", -- [2] secondary slot
   }, -- [17] 2hweapon
   {
     nil, -- [1] primary slot
@@ -221,7 +221,10 @@ local function Debug(Reason, Text)
 end
 
 -------------------------------------------------------------------
--- Refetch Pawn Scales
+-- Refetch Pawn Scales -- Called by the config menu
+--  * Needed to ensure that we have updated scales
+--  * If we don't do this, then new scales will not be found
+--  * until the user logs out
 --
 -- local Globals used:
 -- Cache for valid scales
@@ -292,7 +295,7 @@ function ValidateScale()
 
     local scalefound = PawnDoesScaleExist(scalename)
     -- Error, Pawn doesn't recognize the scale number
-    if not scalefound or scalefound ~= true then
+    if not scalefound then
       return false
     end
 
@@ -315,37 +318,42 @@ end
 
 -------------------------------------------------------------------
 -- Create and scan a tooltip looking for red text.
+-- Global Used for Cache:
+local _canUseCache = {}
 -------------------------------------------------------------------
 local function CanUse(link)
-  MyScanningTooltip:ClearLines()
-  MyScanningTooltip:SetHyperlink(link)
-  local retval = true
+  if _canUseCache[link] == nil then
+    MyScanningTooltip:ClearLines()
+    MyScanningTooltip:SetHyperlink(link)
+    local retval = true
 
-  for i=1,MyScanningTooltip:NumLines() do
-    --Check left side text to see if it is red, if so, can't use
-    local mytext = getglobal("MyScanningTooltipTextLeft" .. i)
-    local text = mytext:GetText()
-    if text then
-      local r,g,b,a = mytext:GetTextColor()
-      local hex = RGBPercToHex(r,g,b)
-      if (hex == "fe1f1f") then
-        retval = false
+    for i=1,MyScanningTooltip:NumLines() do
+      --Check left side text to see if it is red, if so, can't use
+      local mytext = getglobal("MyScanningTooltipTextLeft" .. i)
+      local text = mytext:GetText()
+      if text then
+        local r,g,b,a = mytext:GetTextColor()
+        local hex = RGBPercToHex(r,g,b)
+        if (hex == "fe1f1f") then
+          retval = false
+        end
+      end
+
+      --Check right side text to see if it is red, if so, can't use
+      local mytextr = getglobal("MyScanningTooltipTextRight" .. i)
+      local textr = mytextr:GetText()
+      if textr then
+        local r,g,b,a = mytextr:GetTextColor()
+        local hex = RGBPercToHex(r,g,b)
+        if hex == "fe1f1f" then
+          retval = false
+        end
       end
     end
-
-    --Check right side text to see if it is red, if so, can't use
-    local mytextr = getglobal("MyScanningTooltipTextRight" .. i)
-    local textr = mytextr:GetText()
-    if textr then
-      local r,g,b,a = mytextr:GetTextColor()
-      local hex = RGBPercToHex(r,g,b)
-      if hex == "fe1f1f" then
-        retval = false
-      end
-    end
+    _canUseCache[link] = retval
   end
 
-  return retval
+  return _canUseCache[link]
 end
 
 -------------------------------------------------------------------
@@ -356,39 +364,33 @@ end
 local _candualcache = nil
 -------------------------------------------------------------------
 local function CanDualWield()
-	if _candualcache == nil then
-		local pclass = UnitClass("player")
-		local plevel = UnitLevel("player")
-		local checkTalent = false
-		local talentTree = 0
+  if _candualcache == nil then
+    local pclass = UnitClass("player")
+    local plevel = UnitLevel("player")
+    local checkTalent = false
+    local talentTree = 0
 
-		_candualcache = false
+    _candualcache = false
 
-		if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") then
-			--Rogues and DK get DualWield for Free after character creation
-			_candualcache = true
-		else
-			if pclass == TEXT("WARRIOR") or pclass == TEXT("SHAMAN") then
-			-- Warriors and Shaman get Dual Wield if they go Fury/Enchacment which is tab index 2
-			  talentTree = 2
-			  local _, _, _, _, _, _, _, isUnlocked = GetTalentTabInfo(talentTree, false, false, GetActiveTalentGroup())
-			   _candualcache = isUnlocked
-				--print("Warrior or Shaman")
-				--if _candualcache then
-				--	print("DualWield=true")
-				--else
-				--	print("DualWield=false")
-				--end
-			else
-				if pclass == TEXT("HUNTER") and plevel>=20 then
-					-- see if Hunter have learned "Dual Wield" yet
-					local name = GetSpellInfo(TEXT("DUALWIELD"))
-					if name then  -- name will be defined if the user has learned "Dual Wield"
-						_candualcache = true
-					end
-				end -- hunter / rogue / death knight
-			end -- warrior
-		end
+    if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") then
+      --Rogues and DK get DualWield for Free after character creation
+      _candualcache = true
+    else
+      if pclass == TEXT("WARRIOR") or pclass == TEXT("SHAMAN") then
+        -- Warriors and Shaman get Dual Wield if they go Fury/Enchacment which is tab index 2
+        talentTree = 2
+        local _, _, _, _, _, _, _, isUnlocked = GetTalentTabInfo(talentTree, false, false, GetActiveTalentGroup())
+         _candualcache = isUnlocked
+      else
+        if pclass == TEXT("HUNTER") and plevel >= 20 then
+          -- see if Hunter have learned "Dual Wield" yet
+          local name = GetSpellInfo(TEXT("DUALWIELD"))
+          if name then  -- name will be defined if the user has learned "Dual Wield"
+            _candualcache = true
+          end
+        end -- hunter
+      end -- warrior
+    end -- rogue / death knight
   end -- cache nill
 
   return _candualcache
@@ -461,14 +463,15 @@ local function ConvertSlot(ipos,itype,subtype)
     secondaryslot = slots[2]
 
     -- Ensure they can dual wield before
-    -- allowing them to compare against offhand
+    -- allowing them to compare against off-hand
     -- ShadowVall: Sorry, I dont understand code below:(  ipos=22 is offhand weapon. why You erase primary slot?
-	-- Reason, this turns off checking offhand items for weapons you cannot use.
-    -- (it filters the item out later on in the code, due to primary slot being nil)
-	-- ShadowVall: it is smart, strange and difficult to understand:)
-
+       -- Reason, this turns off checking off-hand items for weapons you cannot use.
+       -- (it filters the item out later on in the code, due to primary slot being nil)
+          -- ShadowVall: it is smart, strange and difficult to understand:)
+             -- This is done so that the FilterItem function can filter these out
     if not candual then
       if ipos == Const.EquipEncode["INVTYPE_WEAPONOFFHAND"] then
+        -- This filters the object entirely as the weapon can only be equipped in the Off-hand
         primaryslot = nil
       else
         -- This one turns off checking the secondary slot if the weapon can go into either slot and the user cannot dual wield
@@ -478,6 +481,11 @@ local function ConvertSlot(ipos,itype,subtype)
       end
     end
     -- end of misunderstanding
+    
+    -- Short Circuit
+    if primaryslot == nil and secondaryslot == nil then
+      return nil, nil
+    end
 
     if type(primaryslot) == "string" then
       primaryslot = GetCachedSlot(primaryslot)
@@ -490,23 +498,21 @@ local function ConvertSlot(ipos,itype,subtype)
     local force2h = get("search.pawn.force2h")
     local offhandslot = GetCachedSlot("SecondaryHandSlot")
 
-    -- If it is an off-hand item and the user has a 2h weapon equipped
-    -- change the primaryslot to be that of the main hand.
-    -- only items that are better than the 2h weap will be returned
-    if primaryslot == offhandslot and not force2h then
-      primaryslot = GetCachedSlot("MainHandSlot")
-    end
-
-    -- Don't allow offhand items to show up in the search if the
-    -- user has force2h checked (this gets filtered out later)
-    if force2h and primaryslot == offhandslot then
-      primaryslot = nil
-    end
-
-    -- Ensure they can dual wield before
-    -- allowing them to compare against offhand
-    if ipos == Const.EquipEncode["INVTYPE_WEAPON"] and not candual then
-      secondaryslot = nil
+    -- How do we handle offhand --> 2h equipped comparison
+    if force2h then
+      -- Don't allow offhand items to show up in the search
+      --   By setting primary slot to nil, FilterItem will
+      --   flag this item for being filtered
+      if primaryslot == offhandslot then
+        primaryslot = nil
+      end
+    else 
+      -- If it is an off-hand item and the user has a 2h weapon equipped
+      -- change the primaryslot to be that of the main hand.
+      -- only items that are better than the 2h weap will be returned
+      if Is2hEquipped and primaryslot == offhandslot then
+        primaryslot = GetCachedSlot("MainHandSlot")
+      end
     end
   end -- not relics
 
@@ -608,13 +614,12 @@ end
 --
 -- 1) ipos from Auctioneer is undefined
 -- 2) if the item does not have a link
--- 3) if the item is a bag
--- 4) if the item cannot be equipped
--- 5) if the user checked "Only What I Can Use" and the item is not useable
--- 6) if the object doesn't go to a slot we care about (nil / ignore slot)
+-- 3) if the item cannot be equipped
+-- 4) if the user checked "Only What I Can Use" and the item is not useable
+-- 5) if the object doesn't go to a slot we care about (nil / ignore slot - shirts, tabards, etc.)
+-- 6) if the user unchecked the slot in the search option section
 -- 7) if the user only wants 2h weapons and we get a weapon that isn't 2h
--- 8) if the user unchecked the slot in the search option section
--- 9) if the user cannot afford the item and they only want to see what they can afford
+-- 8) if the user cannot afford the item and they only want to see what they can afford
 -------------------------------------------------------------------
 local function FilterItem(itemData)
   local link = itemData[Const.LINK]
@@ -638,7 +643,8 @@ local function FilterItem(itemData)
     return true
   end
 
-  -- Check to see if we can use the item by the user choice
+  -- Check to see if the user can use the item
+  -- but only do this if they checked the "Can Use" checkbox
   local canuse = get("search.pawn.canuse")
   if canuse then
     local icanuse = CanUse(link)
@@ -653,6 +659,7 @@ local function FilterItem(itemData)
     return true
   end
 
+  -- This ensures that 1h main-hand items get filtered if user only wants to see 2h items
   local force2h = get("search.pawn.force2h")
   if force2h and primaryslot == GetCachedSlot("MainHandSlot") and not ipos == Const.EquipEncode["INVTYPE_2HWEAPON"] then
     return true
@@ -734,7 +741,7 @@ local function GetEquippedVal(itemData)
 end
 
 -------------------------------------------------------------------
--- Returns pawn values from a itemData structure
+-- Returns pawn value from a itemData structure
 -------------------------------------------------------------------
 local function GetPawnValueItem(itemData)
   local iname = itemData[Const.NAME]
@@ -767,6 +774,7 @@ end -- function GetPawnValueItem(itemData)
 local function IsUpgrade(itemData)
   -- Get value of Item in Search Results
   local auctionValue = GetPawnValueItem(itemData)
+  local ipos  = ConvertIpos(itemData[Const.IEQUIP])
 
   local retval = false
   local dStr = ""
@@ -778,15 +786,13 @@ local function IsUpgrade(itemData)
   -- compare 2-handed weapons against both main hand and off hand
   -- unless Titan Grip is available in which case only check primary hand value
   if ipos == Const.EquipEncode["INVTYPE_2HWEAPON"] then
-    local bValue
+    local bValue = primaryValue + secondaryValue
     local pclass = UnitClass("player")
     if pclass == TEXT("WARRIOR") then -- Check to see if they have the talent Titan Grip
       local _, _, _, _, currentRank = GetTalentInfo(2, 20) -- Would like to not use literal values here If there is a constant / function to use, I'd rather use that.
       if currentRank > 0 then
         bValue = primaryValue
       end
-    else
-      bValue = primaryValue + secondaryValue
     end
     if auctionValue > bValue then
       diff = auctionValue - bValue
@@ -809,9 +815,9 @@ local function IsUpgrade(itemData)
   -- example output
   -- if false: return back false, ""
   -- if true: return back true, "0020.52" (all numbers returned will be positive, so no need to put a + in the output text)
-  -- ShadowVall: I mean "+20.52" is BETTER than equipped in 20.52 score units
+  -- ShadowVall: I mean "+20.52" is BETTER than equipped by 20.52 score units
   if retval then
-    dStr = string.format(" %07.2f", diff) -- THIS MUST BE ZERO PADDED FOR SORTING TO WORK:  7 = length including dot, 2 = precision
+    dStr = string.format("+%07.2f", diff) -- THIS MUST BE ZERO PADDED FOR SORTING TO WORK:  7 = length including dot, 2 = precision
   end
   return retval, dStr
 end -- function IsUpgrade(itemData)
@@ -885,7 +891,6 @@ function lib.Search(itemData)
   local usebuyout = get("search.pawn.buyout")
 
   -- What kind of choice should we present
-  -- ShadowVall: Are you sure that is necessary? May be no "reason" at all is ok?
   local reason = TEXT("REASON_BID")
   if usebuyout then
     reason = TEXT("REASON_BUY")
