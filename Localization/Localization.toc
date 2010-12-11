@@ -1,4 +1,4 @@
-## Interface: 30200
+## Interface: 40300
 ## Title: Localization
 ## Author: AnduinLothar (karlkfi@cosmosui.org)
 ## Notes: Embeddable addon for sellecting a global localization for addons.
