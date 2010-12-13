@@ -11,8 +11,8 @@
 ## SavedVariables:
 ## SavedVariablesPerCharacter:
 ##
-## Version: 1.2.2
-## Revision: $Id: 1.2.2 20101211 Xit $
+## Version: 1.2.3
+## Revision: $Id: 1.2.3 20101212 Xit $
 ## URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 ##
 Localization\Localization.xml
