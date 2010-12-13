@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.2.2 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.2.2 20101211 Xit $
+  Version: 1.2.3 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.2.3 20101212 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -280,6 +280,10 @@ function ValidateScale()
   -- Error, undefined
   if not scalenum then
     return false
+  end
+
+  if type(scalenum) == "string" then
+    scalenum = tonumber(scalenum)
   end
 
   local isValid = validScales[scalenum]
