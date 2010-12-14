@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.2.3 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.2.3 20101212 Xit $
+  Version: 1.2.4 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.2.4 20101214 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -277,13 +277,15 @@ function ValidateScale()
   -- Did the user pick a scale
   local scalenum = get("search.pawn.scalenum")
 
+  -- Convert strings if we get them to numbers
+  -- seems to happen if no scale is selected
+  if type(scalenum) == "string" then
+    scalenum = tonumber(scalenum)
+  end
+
   -- Error, undefined
   if not scalenum then
     return false
-  end
-
-  if type(scalenum) == "string" then
-    scalenum = tonumber(scalenum)
   end
 
   local isValid = validScales[scalenum]
