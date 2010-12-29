@@ -3,10 +3,12 @@
 Localization.RegisterAddonStrings("enUS", "Localization",
   {
     -- Locales
-    enUS      = "English";
-    enGB      = "English";
-    frFR      = "French";
-    deDE      = "German";
+    enUS	= "English";
+    enGB	= "English";
+    frFR	= "French";
+    deDE	= "German";
+	ruRU	= "Russian";
+	zhTW	= "Traditional Chinese";
 
     -- Frame Strings
     Confirm         = "Confirm";
