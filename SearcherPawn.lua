@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.2.4 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.2.4 20101214 Xit $
+  Version: 1.2.7 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.2.7 20110206 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -426,19 +426,12 @@ local _2hEquipped = nil
 local function Is2hEquipped()
   if _2hEquipped == nil then
     local retval = false
-    local mItem = PawnGetItemDataForInventorySlot(GetCachedSlot("MainHandSlot"))
+    local ItemLink = GetInventoryItemLink("player", GetInventorySlotInfo("MainHandSlot"))
 
-    -- No weapon equipped
-    if mItem then
-      -- Check weapon stats as returned by Pawn
-      -- If it's a 2handed item, it will list
-      -- 2handed dps in the stats
-      if mItem.Stats then
-        for StatName, Value in pairs(mItem.Stats) do
-          if StatName == TEXT("TWOHANDDPS") then
-            retval = true
-          end
-        end -- for
+    if ItemLink then
+      local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(ItemLink)
+      if string.find(itemSubType, TEXT("TWOHAND"), 1, true) ~= nil then
+         retval = true
       end
     end
     _2hEquipped = retval
@@ -516,7 +509,7 @@ local function ConvertSlot(ipos,itype,subtype)
       -- If it is an off-hand item and the user has a 2h weapon equipped
       -- change the primaryslot to be that of the main hand.
       -- only items that are better than the 2h weap will be returned
-      if Is2hEquipped and primaryslot == offhandslot then
+      if Is2hEquipped() and primaryslot == offhandslot then
         primaryslot = GetCachedSlot("MainHandSlot")
       end
     end
@@ -667,8 +660,16 @@ local function FilterItem(itemData)
 
   -- This ensures that 1h main-hand items get filtered if user only wants to see 2h items
   local force2h = get("search.pawn.force2h")
-  if force2h and primaryslot == GetCachedSlot("MainHandSlot") and not ipos == Const.EquipEncode["INVTYPE_2HWEAPON"] then
-    return true
+  if force2h and primaryslot == GetCachedSlot("MainHandSlot") then
+    if ipos == Const.EquipEncode["INVTYPE_WEAPON"] then
+      return true
+    end
+    if ipos == Const.EquipEncode["INVTYPE_WEAPONMAINHAND"] then
+      return true
+    end
+    if ipos == Const.EquipEncode["INVTYPE_WEAPONOFFHAND"] then
+      return true
+    end
   end
 
   -- Check to see if item is wanted

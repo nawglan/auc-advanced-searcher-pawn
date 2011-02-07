@@ -3,12 +3,10 @@
 Localization.RegisterAddonStrings("enUS", "Localization",
   {
     -- Locales
-    enUS	= "English";
-    enGB	= "English";
-    frFR	= "French";
-    deDE	= "German";
-	ruRU	= "Russian";
-	zhTW	= "Traditional Chinese";
+    enUS      = "English";
+    enGB      = "English";
+    frFR      = "French";
+    deDE      = "German";
 
     -- Frame Strings
     Confirm         = "Confirm";
@@ -74,9 +72,8 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     IDOLS   = "Idols";
     SIGILS  = "Sigils";
 
-    --Stat
-    TWOHANDDPS = "TwoHandDps"; -- This is the text from Pawn.  Not sure if it
-                               -- is localized or not
+    --Two Handed substr
+    TWOHAND = "Two-Hand"; -- used to check if user has a 2handed weapon on or not
 
     -- Skill
     DUALWIELD = "Dual Wield";  -- used to see if a hunter has learned the ability or not
