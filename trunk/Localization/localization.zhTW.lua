@@ -76,8 +76,8 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
 	IDOLS = "神像",
 	SIGILS = "符印",
 
-    --Stat
-    TWOHANDDPS = "雙手武器Dps",
+	--Two Handed substr
+    TWOHAND = "Two-Hand"; -- used to check if user has a 2handed weapon on or not
 
     -- Skill
 	DUALWIELD = "雙持",
