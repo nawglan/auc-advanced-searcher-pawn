@@ -7,6 +7,8 @@ Localization.RegisterAddonStrings("enUS", "Localization",
     enGB      = "English";
     frFR      = "French";
     deDE      = "German";
+	ruRU	  = "Russian";
+	zhTW	  = "Traditional Chinese";
 
     -- Frame Strings
     Confirm         = "Confirm";

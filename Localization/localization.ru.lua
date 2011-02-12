@@ -79,8 +79,8 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     IDOLS   = "Идолы";
     SIGILS  = "Печати";
 
-	--Stat
-    TWOHANDDPS = "УВС Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
+	--Two Handed substr
+    TWOHAND = "Двуручное"; -- used to check if user has a 2handed weapon on or not
 
 	-- Skill
     DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
