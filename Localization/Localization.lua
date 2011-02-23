@@ -96,7 +96,7 @@ if (not isBetterInstanceLoaded) then
 			lang[addon] = stringTable
 		else
 			lang = lang[addon]
-			for key, text in stringTable do
+			for key, text in pairs(stringTable) do
 				lang[key] = text
 			end
 		end
