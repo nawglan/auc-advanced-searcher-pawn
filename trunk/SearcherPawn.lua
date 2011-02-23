@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.2.7 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.2.7 20110206 Xit $
+  Version: 1.2.8 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.2.8 20110222 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -237,12 +237,14 @@ function updateScales()
   validScales = {}
 
   local scalecopy = {}
-  scaletable = PawnGetAllScales()
+  scaletable = PawnGetAllScalesEx()
 
   table.insert(scalecopy, { 1, "" })
 
   for i,j in pairs(scaletable) do
-    table.insert(scalecopy, { i+1, j })
+    if j["IsVisible"] then
+      table.insert(scalecopy, { i+1, j["LocalizedName"] })
+    end
   end
 
   return scalecopy
@@ -259,7 +261,7 @@ function GetScaleName(scalenum)
   -- Does the stored scale exist
   for i, j in pairs(scaletable) do
     if i == (scalenum - 1) then -- subtract 1, due to offset introduced in menu
-      scalename = j
+      scalename = j["Name"]
       break
     end
   end
