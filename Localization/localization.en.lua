@@ -7,8 +7,6 @@ Localization.RegisterAddonStrings("enUS", "Localization",
     enGB      = "English";
     frFR      = "French";
     deDE      = "German";
-	ruRU	  = "Russian";
-	zhTW	  = "Traditional Chinese";
 
     -- Frame Strings
     Confirm         = "Confirm";
@@ -75,7 +73,9 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SIGILS  = "Sigils";
 
     --Two Handed substr
-    TWOHAND = "Two-Hand"; -- used to check if user has a 2handed weapon on or not
+    TWOHAND = "Two-Hand";  -- used to check if user has a 2handed weapon on or not
+    STAVES = "Staves";     -- used to check if user has a 2handed weapon on or not
+    POLEARMS = "Polearms"; -- used to check if user has a 2handed weapon on or not
 
     -- Skill
     DUALWIELD = "Dual Wield";  -- used to see if a hunter has learned the ability or not
