@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.3.0 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.3.0 20110222 Xit $
+  Version: 1.3.1 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.3.1 20110301 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -326,53 +326,47 @@ end
 
 -------------------------------------------------------------------
 -- Create and scan a tooltip looking for red text.
--- Global Used for Cache:
-local _canUseCache = {}
 -------------------------------------------------------------------
 local function CanUse(link)
-  if _canUseCache[link] == nil then
-    MyScanningTooltip:ClearLines()
-    MyScanningTooltip:SetHyperlink(link)
-    local retval = true
+  MyScanningTooltip:ClearLines()
+  MyScanningTooltip:SetHyperlink(link)
+  local retval = true
 
-    for i=1,MyScanningTooltip:NumLines() do
-      --Check left side text to see if it is red, if so, can't use
-      local mytext = getglobal("MyScanningTooltipTextLeft" .. i)
-      local text = mytext:GetText()
-      if text then
-        local r,g,b,a = mytext:GetTextColor()
-        local hex = RGBPercToHex(r,g,b)
-        if (hex == "fe1f1f") then
-          retval = false
-        end
-      end
-
-      --Check right side text to see if it is red, if so, can't use
-      local mytextr = getglobal("MyScanningTooltipTextRight" .. i)
-      local textr = mytextr:GetText()
-      if textr then
-        local r,g,b,a = mytextr:GetTextColor()
-        local hex = RGBPercToHex(r,g,b)
-        if hex == "fe1f1f" then
-          retval = false
-        end
+  for i=1,MyScanningTooltip:NumLines() do
+    --Check left side text to see if it is red, if so, can't use
+    local mytext = getglobal("MyScanningTooltipTextLeft" .. i)
+    local text = mytext:GetText()
+    if text then
+      local r,g,b,a = mytext:GetTextColor()
+      local hex = RGBPercToHex(r,g,b)
+      if (hex == "fe1f1f") then
+        retval = false
       end
     end
-    _canUseCache[link] = retval
+
+    --Check right side text to see if it is red, if so, can't use
+    local mytextr = getglobal("MyScanningTooltipTextRight" .. i)
+    local textr = mytextr:GetText()
+    if textr then
+      local r,g,b,a = mytextr:GetTextColor()
+      local hex = RGBPercToHex(r,g,b)
+      if hex == "fe1f1f" then
+        retval = false
+      end
+    end
   end
 
-  return _canUseCache[link]
+  return retval
 end
 
 -------------------------------------------------------------------
 -- Returns true if the user can dual wield, false otherwise
 --
--- TODO: check talents / abilities to see if the user can dual wield
 -- Global used:
 local _candualcache = nil
 -------------------------------------------------------------------
 local function CanDualWield()
-  if _candualcache == nil then
+--  if _candualcache == nil then
     local pclass = UnitClass("player")
     local plevel = UnitLevel("player")
     local checkTalent = false
@@ -399,7 +393,7 @@ local function CanDualWield()
         end -- hunter
       end -- warrior
     end -- rogue / death knight
-  end -- cache nill
+--  end -- cache nill
 
   return _candualcache
 end
@@ -423,23 +417,32 @@ end
 
 -------------------------------------------------------------------
 -- Returns true if the user has a 2h weapon equipped
-local _2hEquipped = nil
+--
+local _2hStatusCache = {}
 -------------------------------------------------------------------
 local function Is2hEquipped()
-  if _2hEquipped == nil then
-    local retval = false
-    local ItemLink = GetInventoryItemLink("player", GetInventorySlotInfo("MainHandSlot"))
+  local retval = false
+  local ItemLink = GetInventoryItemLink("player", GetInventorySlotInfo("MainHandSlot"))
 
-    if ItemLink then
+  if ItemLink then
+    if not _2hStatusCache[ItemLink] then
       local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(ItemLink)
-      if string.find(itemSubType, TEXT("TWOHAND"), 1, true) ~= nil then
+      if itemSubType == TEXT("STAVES") then
          retval = true
+      else
+        if itemSubType == TEXT("POLEARMS") then
+           retval = true
+        else
+          if string.find(itemSubType, TEXT("TWOHAND"), 1, true) ~= nil then
+           retval = true
+          end
+        end
       end
+      _2hStatusCache[ItemLink] = retval
     end
-    _2hEquipped = retval
+    return _2hStatusCache[ItemLink]
   end
-
-  return _2hEquipped
+  return retval
 end
 
 -------------------------------------------------------------------
@@ -511,8 +514,11 @@ local function ConvertSlot(ipos,itype,subtype)
       -- If it is an off-hand item and the user has a 2h weapon equipped
       -- change the primaryslot to be that of the main hand.
       -- only items that are better than the 2h weap will be returned
-      if Is2hEquipped() and primaryslot == offhandslot then
-        primaryslot = GetCachedSlot("MainHandSlot")
+      local is2h = Is2hEquipped()
+      if is2h then
+        if primaryslot == offhandslot then
+          primaryslot = GetCachedSlot("MainHandSlot")
+        end
       end
     end
   end -- not relics
@@ -624,7 +630,6 @@ end
 -------------------------------------------------------------------
 local function FilterItem(itemData)
   local link = itemData[Const.LINK]
-  local iname = itemData[Const.NAME]
   local ipos  = ConvertIpos(itemData[Const.IEQUIP])
   local itype = itemData[Const.ITYPE]
   local subtype = itemData[Const.ISUB]
@@ -697,29 +702,35 @@ end
 local function GetPawnValueEquipped(slot)
   local mItem = PawnGetItemDataForInventorySlot(slot,false)
 
-  local primaryValue = 0
+  local currentValue = 0
+  local baseValue = 0
 
   -- If there is no item equipped in that slot, then any item is an upgrade
   if not mItem then
-    return primaryValue
+    return currentValue
   end
 
   -- Grab the values for the item equipped in the main slot
-  primaryValue = PawnGetSingleValueFromItem(mItem, _scalename)
+  currentValue, baseValue = PawnGetSingleValueFromItem(mItem, _scalename)
 
-  if primaryValue == nil then
-    primaryValue = 0
+  if currentValue == nil then
+    currentValue = 0
   end
 
-  return primaryValue
+  if baseValue == nil then
+    baseValue = 0
+  end
+
+  if currentValue > baseValue then
+    return currentValue
+  end
+
+  return baseValue
 end -- function GetPawnValueEquipped(slot)
 
 -------------------------------------------------------------------
 -- Returns back value of equipped items
 --   for primary and secondary slots
---
--- Global Used:
-local _equippedValCache = {};
 -------------------------------------------------------------------
 local function GetEquippedVal(itemData)
   -- Get value of equivalent slot(s).
@@ -731,50 +742,49 @@ local function GetEquippedVal(itemData)
 
   -- we can assume primaryslot is defined and secondaryslot might be defined at this point
   -- as anything with a nil primaryslot got filtered out before this function was called
-  if not _equippedValCache[primaryslot] then
-    -- Get value for main slot
-    local primaryValue = GetPawnValueEquipped(primaryslot)
-    _equippedValCache[primaryslot] = primaryValue
-  end
-  if not _equippedValCache[secondaryslot] then
-    -- Get value for other slot
-    if secondaryslot then
-      local secondaryValue = GetPawnValueEquipped(secondaryslot)
-      _equippedValCache[secondaryslot] = secondaryValue
-    else
-      return _equippedValCache[primaryslot], -1
-    end
+  -- Get value for main slot
+  local primaryValue = GetPawnValueEquipped(primaryslot)
+  local secondaryValue = -1
+  -- Get value for other slot
+  if secondaryslot then
+    secondaryValue = GetPawnValueEquipped(secondaryslot)
   end
 
-  return _equippedValCache[primaryslot], _equippedValCache[secondaryslot]
+  -- Ensure that primaryValue is not nil
+  if not primaryValue then
+    primaryValue = 0
+  end
+
+  return primaryValue, secondaryValue
 end
 
+local _PawnValueCache = {}
 -------------------------------------------------------------------
 -- Returns pawn value from a itemData structure
 -------------------------------------------------------------------
 local function GetPawnValueItem(itemData)
-  local iname = itemData[Const.NAME]
   local link = itemData[Const.LINK]
 
-  -- Set name to blank for nil names.
-  if not iname then iname = " " end
+  if not _PawnValueCache[link] then
+    -- Get the signature of this item and find it's stats.
+    local item = PawnGetItemData(link)
 
-  -- Get the signature of this item and find it's stats.
-  local item = PawnGetItemData(link)
+    -- ensure we get an item structure from Pawn
+    if not item then
+      return false
+    end
 
-  -- ensure we get an item structure from Pawn
-  if not item then
-    return false
+    -- Grab the values for the item from Auctioneer
+    local auctionValue = PawnGetSingleValueFromItem(item, _scalename)
+
+    -- ensure auctionValue is valid number
+    if not auctionValue then
+      auctionValue = 0
+    end
+    _PawnValueCache[link] = auctionValue
   end
 
-  -- Grab the values for the item from Auctioneer
-  local auctionValue = PawnGetSingleValueFromItem(item, _scalename)
-
-  if auctionValue == nil then
-    auctionValue = 0
-  end
-
-  return auctionValue
+  return _PawnValueCache[link]
 end -- function GetPawnValueItem(itemData)
 
 -------------------------------------------------------------------
