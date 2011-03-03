@@ -78,7 +78,9 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
 
 	--Two Handed substr
     TWOHAND = "Two-Hand"; -- used to check if user has a 2handed weapon on or not
-
+	STAVES = "Staves";     -- used to check if user has a 2handed weapon on or not
+    POLEARMS = "Polearms"; -- used to check if user has a 2handed weapon on or not
+	
     -- Skill
 	DUALWIELD = "雙持",
 
