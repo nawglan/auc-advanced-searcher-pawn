@@ -81,10 +81,12 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
 
 	--Two Handed substr
     TWOHAND = "Двуручное"; -- used to check if user has a 2handed weapon on or not
-
+	STAVES = "Посохи";     -- used to check if user has a 2handed weapon on or not
+    POLEARMS = "Древковое"; -- used to check if user has a 2handed weapon on or not
+	
 	-- Skill
     DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
-
+	
     -- Messages
 	BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
     NOT_WANTED  = "Данный слот не нужен";
