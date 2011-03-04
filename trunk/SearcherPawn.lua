@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
   Version: 1.3.1 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.3.1 20110301 Xit $
+  Revision: $Id: SearcherPawn.lua 1.3.1 20110303 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -418,29 +418,28 @@ end
 -------------------------------------------------------------------
 -- Returns true if the user has a 2h weapon equipped
 --
-local _2hStatusCache = {}
+local is2h = {}
 -------------------------------------------------------------------
 local function Is2hEquipped()
   local retval = false
   local ItemLink = GetInventoryItemLink("player", GetInventorySlotInfo("MainHandSlot"))
 
+  local tsize = #(is2h)
+  if tsize == 0 then
+    table.insert(is2h, TEXT("STAVES"))
+    table.insert(is2h, TEXT("POLEARMS"))
+  end
+
   if ItemLink then
-    if not _2hStatusCache[ItemLink] then
-      local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(ItemLink)
-      if itemSubType == TEXT("STAVES") then
-         retval = true
-      else
-        if itemSubType == TEXT("POLEARMS") then
-           retval = true
-        else
-          if string.find(itemSubType, TEXT("TWOHAND"), 1, true) ~= nil then
-           retval = true
-          end
-        end
+    local _, _, _, _, _, _, itemSubType = GetItemInfo(ItemLink)
+    if tContains(is2h,itemSubType) then
+       retval = true
+    else
+      local start, _ = string.find(itemSubType, TEXT("TWOHAND"), 1, true)
+      if start then
+        retval = true
       end
-      _2hStatusCache[ItemLink] = retval
     end
-    return _2hStatusCache[ItemLink]
   end
   return retval
 end
@@ -473,13 +472,17 @@ local function ConvertSlot(ipos,itype,subtype)
        -- (it filters the item out later on in the code, due to primary slot being nil)
           -- ShadowVall: it is smart, strange and difficult to understand:)
              -- This is done so that the FilterItem function can filter these out
+    local is1h = false
+    if ipos == Const.EquipEncode["INVTYPE_WEAPON"] then
+      is1h = true
+    end
     if not candual then
       if ipos == Const.EquipEncode["INVTYPE_WEAPONOFFHAND"] then
         -- This filters the object entirely as the weapon can only be equipped in the Off-hand
         primaryslot = nil
       else
         -- This one turns off checking the secondary slot if the weapon can go into either slot and the user cannot dual wield
-        if ipos == Const.EquipEncode["INVTYPE_WEAPON"] then
+        if is1h then
           secondaryslot = nil
         end
       end
@@ -502,23 +505,14 @@ local function ConvertSlot(ipos,itype,subtype)
     local force2h = get("search.pawn.force2h")
     local offhandslot = GetCachedSlot("SecondaryHandSlot")
 
-    -- How do we handle offhand --> 2h equipped comparison
-    if force2h then
-      -- Don't allow offhand items to show up in the search
-      --   By setting primary slot to nil, FilterItem will
-      --   flag this item for being filtered
-      if primaryslot == offhandslot then
-        primaryslot = nil
-      end
-    else 
-      -- If it is an off-hand item and the user has a 2h weapon equipped
-      -- change the primaryslot to be that of the main hand.
-      -- only items that are better than the 2h weap will be returned
-      local is2h = Is2hEquipped()
-      if is2h then
-        if primaryslot == offhandslot then
-          primaryslot = GetCachedSlot("MainHandSlot")
-        end
+    -- If the item can go in either hand and the user has a 2h weapon equipped
+    -- change the primaryslot to be that of the main hand and remove the secondaryslot
+    -- only items that are better than the 2h weap will be returned
+    local is2h = Is2hEquipped()
+    if is2h then
+      if primaryslot == offhandslot or is1h then
+        primaryslot = GetCachedSlot("MainHandSlot")
+        secondaryslot = nil
       end
     end
   end -- not relics
