@@ -45,6 +45,8 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     AFFORD_ONLY_TIP   = "Отображать только те вещи которые я могу купить.";
     USE_BUYOUT        = "Ипользовать выкуп";
     USE_BUYOUT_TIP    = "Ипользовать метод выкупа вместо ставок при просмотре цен аукциона";
+    USE_BESTPRICE        = "Отрегулируйте оценка основана на цене.";
+    USE_BESTPRICE_TIP    = "Отрегулируйте оценка по стоимости товара. Для подобных изделий, дешевле пункт будет выше в списке.";
     FORCE2H_WEAP      = "только 2H";
     FORCE2H_TIP       = "Вы хотите найти ДВУРУЧНОЕ оружие, которое будет лучше чем то, что вами используется в данный момент.";
 
@@ -79,14 +81,12 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     IDOLS   = "Идолы";
     SIGILS  = "Печати";
 
-	--Two Handed substr
-    TWOHAND = "Двуручное"; -- used to check if user has a 2handed weapon on or not
-	STAVES = "Посохи";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Древковое"; -- used to check if user has a 2handed weapon on or not
-	
+	--Stat
+    TWOHANDDPS = "УВС Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
+
 	-- Skill
     DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
-	
+
     -- Messages
 	BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
     NOT_WANTED  = "Данный слот не нужен";

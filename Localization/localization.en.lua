@@ -39,6 +39,8 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     AFFORD_ONLY_TIP   = "Only show what you can currently afford to buy.";
     USE_BUYOUT        = "Use buyout";
     USE_BUYOUT_TIP    = "Use buyout instead of bid when checking auction prices.";
+    USE_BESTPRICE        = "Adjust score based on price.";
+    USE_BESTPRICE_TIP    = "Adjust the score returned by pawn by the price of the item.  For similar items, the cheaper item will be higher on the list.";
     FORCE2H_WEAP      = "Only 2H Weapons";
     FORCE2H_TIP       = "When comparing weapons, only consider 2-Handed Weapons.";
     INCLUDE_IN_SEARCH = "Include these slots when searching:";
