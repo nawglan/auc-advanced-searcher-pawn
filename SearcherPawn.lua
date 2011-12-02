@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.3.4 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.3.4 20110917 Xit $
+  Version: 1.3.5 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.3.5 20111202 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
