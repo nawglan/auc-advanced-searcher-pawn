@@ -25,7 +25,7 @@ Localization.RegisterAddonStrings("ptBR", "Localization",
   },
 nil, true) -- Protected
 
-Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
+Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
   {
     -- Config
     MAIN_TITLE        = "Procurar for itens que o Pawn considera um melhoramento";
