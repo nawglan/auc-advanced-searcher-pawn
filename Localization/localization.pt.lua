@@ -3,7 +3,7 @@
 Localization.RegisterAddonStrings("ptBR", "Localization",
   {
     -- Locales
-    enUS      = "English";
+    enUS      = "Inglês";
     enGB      = "Inglês";
     frFR      = "Francês";
     deDE      = "Alemão";
