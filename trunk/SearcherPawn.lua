@@ -1,6 +1,6 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.3.6 (Xit)
+  Version: 1.3.7 (Xit)
   Revision: $Id: SearcherPawn.lua 1.3.6 20111205 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
