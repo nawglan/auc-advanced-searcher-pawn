@@ -83,7 +83,9 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     POLEARMS = "Polearms"; -- used to check if user has a 2handed weapon on or not
 
     -- Skill
-    DUALWIELD = "Dual Wield";  -- used to see if a hunter has learned the ability or not
+    DUALWIELD = "Dual Wield";  -- used to see if a shaman or hunter has learned the ability or not
+    CRAZED_BERZERKER = "Crazed Berzerker"; -- skill that gives warriors dual wield
+    TITANS_GRIP = "Titan's Grip"; -- skill that gives warriors ability to dual wield 2handed weapons
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";

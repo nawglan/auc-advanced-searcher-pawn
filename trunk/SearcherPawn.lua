@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.3.8 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.3.8 20111206 Xit $
+  Version: 1.3.9 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.3.9 20120901 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -378,19 +378,25 @@ local function CanDualWield()
       --Rogues and DK get DualWield for Free after character creation
       _candualcache = true
     else
-      if pclass == TEXT("WARRIOR") or pclass == TEXT("SHAMAN") then
-        -- Warriors and Shaman get Dual Wield if they go Fury/Enchacment which is tab index 2
-        talentTree = 2
-        local _, _, _, _, _, _, _, isUnlocked = GetTalentTabInfo(talentTree, false, false, GetActiveTalentGroup())
-         _candualcache = isUnlocked
+      if pclass == TEXT("WARRIOR") then
+        -- Warriors have Crazed Berzerker spell if they can dual wield
+        -- Additionally, they can have Titan's Grip at level 38 that allows them to dual wield 2 handed weapons
+        local crazed = GetSpellInfo(TEXT("CRAZED_BERZERKER"))
+        if crazed then
+          _candualcache = true
+        end
+        local titans = GetSpellInfo(TEXT("TITANS_GRIP"))
+        if titans then
+          _candualcache = true
+        end
       else
-        if pclass == TEXT("HUNTER") and plevel >= 20 then
-          -- see if Hunter have learned "Dual Wield" yet
-          local name = GetSpellInfo(TEXT("DUALWIELD"))
-          if name then  -- name will be defined if the user has learned "Dual Wield"
-            _candualcache = true
-          end
-        end -- hunter
+        if pclass == TEXT("SHAMAN") or pclass == TEXT("HUNTER") then
+            -- see if Shaman or Hunter has learned "Dual Wield" yet
+            local name = GetSpellInfo(TEXT("DUALWIELD"))
+            if name then  -- name will be defined if the user has learned "Dual Wield"
+              _candualcache = true
+            end
+        end -- shaman / hunter
       end -- warrior
     end -- rogue / death knight
 --  end -- cache nill
@@ -796,15 +802,18 @@ local function IsUpgrade(itemData)
   -- Using the values from Pawn
   local primaryValue, secondaryValue = GetEquippedVal(itemData)
 
-  -- compare 2-handed weapons against both main hand and off hand
+  -- compare 2-handed weapons against both main hand and off hand combined
   -- unless Titan Grip is available in which case only check primary hand value
   if ipos == Const.EquipEncode["INVTYPE_2HWEAPON"] then
     local bValue = primaryValue + secondaryValue
     local pclass = UnitClass("player")
     if pclass == TEXT("WARRIOR") then -- Check to see if they have the talent Titan Grip
-      local _, _, _, _, currentRank = GetTalentInfo(2, 20) -- Would like to not use literal values here If there is a constant / function to use, I'd rather use that.
-      if currentRank > 0 then
+      local hastitans = GetSpellInfo(TEXT("TITANS_GRIP"))
+      if hastitans then
         bValue = primaryValue
+        if secondaryValue > primaryValue then
+          bValue = secondaryValue
+        end
       end
     end
     if auctionValue > bValue then
