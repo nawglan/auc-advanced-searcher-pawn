@@ -75,12 +75,10 @@ local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn"
 -------------------------------------------------------------------
 -- DEBUGGING
 local showdbg = false -- set to true to enable debugging
-local showfalse = false
-local showtrue = false
 
 -- Sprinkle these throughout the code to debug.
--- Debug(false, string.format("%s [%s]", somevar, somevar))
--- Debug(true, string.format("%s [%s]", somevar, somevar))
+-- Debug(string.format("%s [%s]", somevar, somevar))
+-- Debug(string.format("%s [%s]", somevar, somevar))
 --
 -- Items with false for first debug message only get printed if showfalse above is true
 -- Items with true for first debug message only get printed if showtrue above is true
@@ -147,9 +145,9 @@ local convertSlot = {
     nil, -- [2] secondary slot
   }, -- [14] shield
   {
-    "RangedSlot", -- [1] primary slot
+    "MainHandSlot", -- [1] primary slot
     nil, -- [2] secondary slot
-  }, -- [15] rangedright
+  }, -- [15] ranged
   {
     "BackSlot", -- [1] primary slot
     nil, -- [2] secondary slot
@@ -187,11 +185,11 @@ local convertSlot = {
     nil, -- [2] secondary slot
   }, -- [24] ammo deprecated
   {
-    "RangedSlot", -- [1] primary slot
+    "MainHandSlot", -- [1] primary slot
     nil, -- [2] secondary slot
   }, -- [25] thrown
   {
-    "RangedSlot", -- [1] primary slot
+    "MainHandSlot", -- [1] primary slot
     nil, -- [2] secondary slot
   }, -- [26] ranged
 }
@@ -199,7 +197,7 @@ local convertSlot = {
 -------------------------------------------------------------------
 -- Debug Output Function
 -------------------------------------------------------------------
-local function Debug(Reason, Text)
+local function Debug(Text)
   if Text == nil then
     Text = "nil value"
   end
@@ -208,16 +206,7 @@ local function Debug(Reason, Text)
     return
   end
 
-  if not showfalse and Reason == false then
-    return
-  end
-
-  if not showtrue and Reason == true then
-    return
-  end
-
   print(Text)
-
 end
 
 -------------------------------------------------------------------
@@ -362,44 +351,40 @@ end
 -------------------------------------------------------------------
 -- Returns true if the user can dual wield, false otherwise
 --
--- Global used:
-local _candualcache = nil
 -------------------------------------------------------------------
 local function CanDualWield()
---  if _candualcache == nil then
-    local pclass = UnitClass("player")
-    local plevel = UnitLevel("player")
-    local checkTalent = false
-    local talentTree = 0
+  local pclass = UnitClass("player")
+  local plevel = UnitLevel("player")
+  local checkTalent = false
+  local talentTree = 0
 
-    _candualcache = false
+  _candualcache = false
 
-    if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") then
-      --Rogues and DK get DualWield for Free after character creation
-      _candualcache = true
+  if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") then
+    --Rogues and DK get DualWield for Free after character creation
+    _candualcache = true
+  else
+    if pclass == TEXT("WARRIOR") then
+      -- Warriors have Crazed Berzerker spell if they can dual wield
+      -- Additionally, they can have Titan's Grip at level 38 that allows them to dual wield 2 handed weapons
+      local crazed = GetSpellInfo(TEXT("CRAZED_BERZERKER"))
+      if crazed then
+        _candualcache = true
+      end
+      local titans = GetSpellInfo(TEXT("TITANS_GRIP"))
+      if titans then
+        _candualcache = true
+      end
     else
-      if pclass == TEXT("WARRIOR") then
-        -- Warriors have Crazed Berzerker spell if they can dual wield
-        -- Additionally, they can have Titan's Grip at level 38 that allows them to dual wield 2 handed weapons
-        local crazed = GetSpellInfo(TEXT("CRAZED_BERZERKER"))
-        if crazed then
-          _candualcache = true
-        end
-        local titans = GetSpellInfo(TEXT("TITANS_GRIP"))
-        if titans then
-          _candualcache = true
-        end
-      else
-        if pclass == TEXT("SHAMAN") or pclass == TEXT("HUNTER") then
-            -- see if Shaman or Hunter has learned "Dual Wield" yet
-            local name = GetSpellInfo(TEXT("DUALWIELD"))
-            if name then  -- name will be defined if the user has learned "Dual Wield"
-              _candualcache = true
-            end
-        end -- shaman / hunter
-      end -- warrior
-    end -- rogue / death knight
---  end -- cache nill
+      if pclass == TEXT("SHAMAN") or pclass == TEXT("HUNTER") then
+          -- see if Shaman or Hunter has learned "Dual Wield" yet
+          local name = GetSpellInfo(TEXT("DUALWIELD"))
+          if name then  -- name will be defined if the user has learned "Dual Wield"
+            _candualcache = true
+          end
+      end -- shaman / hunter
+    end -- warrior
+  end -- rogue / death knight
 
   return _candualcache
 end
@@ -424,107 +409,104 @@ end
 -------------------------------------------------------------------
 -- Returns true if the user has a 2h weapon equipped
 --
-local is2h = {}
 -------------------------------------------------------------------
+local is2handed = {}
 local function Is2hEquipped()
   local retval = false
   local ItemLink = GetInventoryItemLink("player", GetInventorySlotInfo("MainHandSlot"))
 
-  local tsize = #(is2h)
+  local tsize = #(is2handed)
   if tsize == 0 then
-    table.insert(is2h, TEXT("STAVES"))
-    table.insert(is2h, TEXT("POLEARMS"))
+    table.insert(is2handed, TEXT("STAVES"))
+    table.insert(is2handed, TEXT("POLEARMS"))
   end
 
   if ItemLink then
     local _, _, _, _, _, _, itemSubType = GetItemInfo(ItemLink)
-    if tContains(is2h,itemSubType) then
+    if tContains(is2handed,itemSubType) then
        retval = true
     else
       local start, _ = string.find(itemSubType, TEXT("TWOHAND"), 1, true)
       if start then
         retval = true
+      else
+        start, _ = string.find(itemSubType, TEXT("RANGED"), 1, true)
+        if start then
+          retval = true
+        end
       end
     end
   end
+
   return retval
 end
 
 -------------------------------------------------------------------
 -- Convert between auctioneer equip positions and Pawn equip positions
 -------------------------------------------------------------------
-local function ConvertSlot(ipos,itype,subtype)
+local function ConvertSlot(ipos)
   local primaryslot = nil
   local secondaryslot = nil
 
-  -- Relics
-  if (itype == TEXT("ARMOR")) and ((subtype == TEXT("TOTEMS")) or
-                                   (subtype == TEXT("LIBRAMS")) or
-                                   (subtype == TEXT("IDOLS")) or
-                                   (subtype == TEXT("SIGILS")))
-  then
-    primaryslot = GetCachedSlot("RangedSlot")
-  else -- Not Relics
-    local candual = CanDualWield()
+  local candual = CanDualWield()
 
-    local slots = convertSlot[ipos]
-    primaryslot = slots[1]
-    secondaryslot = slots[2]
+  local slots = convertSlot[ipos]
+  primaryslot = slots[1]
+  secondaryslot = slots[2]
 
-    -- Ensure they can dual wield before
-    -- allowing them to compare against off-hand
-    -- ShadowVall: Sorry, I dont understand code below:(  ipos=22 is offhand weapon. why You erase primary slot?
-       -- Reason, this turns off checking off-hand items for weapons you cannot use.
-       -- (it filters the item out later on in the code, due to primary slot being nil)
-          -- ShadowVall: it is smart, strange and difficult to understand:)
-             -- This is done so that the FilterItem function can filter these out
-    local is1h = false
-    if ipos == Const.EquipEncode["INVTYPE_WEAPON"] then
-      is1h = true
-    end
-    if not candual then
-      if ipos == Const.EquipEncode["INVTYPE_WEAPONOFFHAND"] then
-        -- This filters the object entirely as the weapon can only be equipped in the Off-hand
-        primaryslot = nil
-      else
-        -- This one turns off checking the secondary slot if the weapon can go into either slot and the user cannot dual wield
-        if is1h then
-          secondaryslot = nil
-        end
-      end
-    end
-    -- end of misunderstanding
-    
-    -- Short Circuit
-    if primaryslot == nil and secondaryslot == nil then
-      return nil, nil
-    end
-
-    if type(primaryslot) == "string" then
-      primaryslot = GetCachedSlot(primaryslot)
-    end
-
-    if type(secondaryslot) == "string" then
-      secondaryslot = GetCachedSlot(secondaryslot)
-    end
-
-    local force2h = get("search.pawn.force2h")
-    local offhandslot = GetCachedSlot("SecondaryHandSlot")
-
-    -- If the item can go in either hand and the user has a 2h weapon equipped
-    -- change the primaryslot to be that of the main hand and remove the secondaryslot
-    -- only items that are better than the 2h weap will be returned
-    local is2h = Is2hEquipped()
-    if is2h then
-      if primaryslot == offhandslot or is1h then
-        primaryslot = GetCachedSlot("MainHandSlot")
+  -- Ensure they can dual wield before
+  -- allowing them to compare against off-hand
+  -- ShadowVall: Sorry, I dont understand code below:(  ipos=22 is offhand weapon. why You erase primary slot?
+     -- Reason, this turns off checking off-hand items for weapons you cannot use.
+     -- (it filters the item out later on in the code, due to primary slot being nil)
+        -- ShadowVall: it is smart, strange and difficult to understand:)
+           -- This is done so that the FilterItem function can filter these out
+  local is1h = false
+  if ipos == Const.EquipEncode["INVTYPE_WEAPON"] then
+    is1h = true
+  end
+  if not candual then
+    if ipos == Const.EquipEncode["INVTYPE_WEAPONOFFHAND"] then
+      -- This filters the object entirely as the weapon can only be equipped in the Off-hand
+      primaryslot = nil
+    else
+      -- This one turns off checking the secondary slot if the weapon can go into either slot and the user cannot dual wield
+      if is1h then
         secondaryslot = nil
       end
     end
-  end -- not relics
+  end
+  -- end of misunderstanding
+
+  -- Short Circuit
+  if primaryslot == nil and secondaryslot == nil then
+    return nil, nil
+  end
+
+  if type(primaryslot) == "string" then
+    primaryslot = GetCachedSlot(primaryslot)
+  end
+
+  if type(secondaryslot) == "string" then
+    secondaryslot = GetCachedSlot(secondaryslot)
+  end
+
+  local force2h = get("search.pawn.force2h")
+  local offhandslot = GetCachedSlot("SecondaryHandSlot")
+
+  -- If the item can go in either hand and the user has a 2h weapon equipped
+  -- change the primaryslot to be that of the main hand and remove the secondaryslot
+  -- only items that are better than the 2h weap will be returned
+  local is2h = Is2hEquipped()
+  if is2h then
+    if primaryslot == offhandslot or is1h then
+      primaryslot = GetCachedSlot("MainHandSlot")
+      secondaryslot = nil
+    end
+  end
 
   return primaryslot, secondaryslot
-end -- function ConvertSlot(ipos,itype,subtype)
+end -- function ConvertSlot(ipos)
 
 -------------------------------------------------------------------
 -- Check to see if the user checked the box for this slot
@@ -616,6 +598,23 @@ local function FilterPrice(itemData)
   return true
 end
 
+local isRanged = {}
+local function IsRangedItem(subtype)
+  local tsize = #(isRanged)
+  if tsize == 0 then
+    table.insert(isRanged, TEXT("BOWS"))
+    table.insert(isRanged, TEXT("GUNS"))
+    table.insert(isRanged, TEXT("WANDS"))
+    table.insert(isRanged, TEXT("CROSSBOWS"))
+    table.insert(isRanged, TEXT("THROWN"))
+  end
+  if tContains(isRanged, subtype) then
+    return true
+  end
+
+  return false
+end
+
 -------------------------------------------------------------------
 -- Filter out an item if
 --
@@ -659,7 +658,7 @@ local function FilterItem(itemData)
     end
   end
 
-  local primaryslot, secondaryslot = ConvertSlot(ipos,itype,subtype)
+  local primaryslot, secondaryslot = ConvertSlot(ipos)
   -- Is there a slot to be compared
   if not primaryslot then
     return true
@@ -683,8 +682,13 @@ local function FilterItem(itemData)
   local wanted = SlotOK(primaryslot)
   if not wanted then -- check other slot
     wanted = SlotOK(secondaryslot)
-    if not wanted then -- still not wanted
-      return true
+    if not wanted then -- still not wanted, check if they have ranged checked
+      if get("search.pawn.ranged") then
+        wanted = IsRangedItem(subtype)
+      end
+      if not wanted then
+        return true
+      end
     end
   end
 
@@ -738,7 +742,7 @@ local function GetEquippedVal(itemData)
   local ipos  = ConvertIpos(itemData[Const.IEQUIP])
   local subtype = itemData[Const.ISUB]
 
-  local primaryslot, secondaryslot = ConvertSlot(ipos, itype, subtype)
+  local primaryslot, secondaryslot = ConvertSlot(ipos)
 
   -- we can assume primaryslot is defined and secondaryslot might be defined at this point
   -- as anything with a nil primaryslot got filtered out before this function was called
@@ -811,7 +815,7 @@ local function IsUpgrade(itemData)
       local hastitans = GetSpellInfo(TEXT("TITANS_GRIP"))
       if hastitans then
         bValue = primaryValue
-        if secondaryValue > primaryValue then
+        if secondaryValue < primaryValue then
           bValue = secondaryValue
         end
       end
