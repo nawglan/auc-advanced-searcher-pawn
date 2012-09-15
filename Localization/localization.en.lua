@@ -81,6 +81,13 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     TWOHAND = "Two-Hand";  -- used to check if user has a 2handed weapon on or not
     STAVES = "Staves";     -- used to check if user has a 2handed weapon on or not
     POLEARMS = "Polearms"; -- used to check if user has a 2handed weapon on or not
+    RANGED = "Ranged";     -- used to check if user has a 2handed weapon on or not
+
+    BOWS = "Bows"; -- used to check if a user wants to evaluate Ranged weapons
+    GUNS = "Guns"; -- used to check if a user wants to evaluate Ranged weapons
+    WANDS = "Wands"; -- used to check if a user wants to evaluate Ranged weapons
+    CROSSBOWS = "Crossbows"; -- used to check if a user wants to evaluate Ranged weapons
+    THROWN = "Thrown"; -- used to check if a user wants to evaluate Ranged weapons
 
     -- Skill
     DUALWIELD = "Dual Wield";  -- used to see if a shaman or hunter has learned the ability or not
