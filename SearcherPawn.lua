@@ -1,7 +1,7 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.4.0 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.4.0 20120915 Xit $
+  Version: 1.4.1 (Xit)
+  Revision: $Id: SearcherPawn.lua 1.4.1 20120926 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -376,13 +376,13 @@ local function CanDualWield()
         _candualcache = true
       end
     else
-      if pclass == TEXT("SHAMAN") or pclass == TEXT("HUNTER") then
-          -- see if Shaman or Hunter has learned "Dual Wield" yet
+      if pclass == TEXT("MONK") or pclass == TEXT("SHAMAN") or pclass == TEXT("HUNTER") then
+          -- see if Monk, Shaman or Hunter has learned "Dual Wield" yet
           local name = GetSpellInfo(TEXT("DUALWIELD"))
           if name then  -- name will be defined if the user has learned "Dual Wield"
             _candualcache = true
           end
-      end -- shaman / hunter
+      end -- monk / shaman / hunter
     end -- warrior
   end -- rogue / death knight
 

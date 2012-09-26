@@ -65,6 +65,7 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "Warrior";
+    MONK         = "Monk";
     HUNTER       = "Hunter";
     SHAMAN       = "Shaman";
     ROGUE        = "Rogue";
