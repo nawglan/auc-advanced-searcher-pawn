@@ -1,6 +1,6 @@
 ﻿-- Traditional Chinese Strings
 
-Localization.RegisterAddonStrings("enUS", "Localization",
+Localization.RegisterAddonStrings("zhTW", "Localization",
   {
     -- Locales
     deDE = "德語",
@@ -8,7 +8,8 @@ Localization.RegisterAddonStrings("enUS", "Localization",
 	enUS = "英語",
 	frFR = "法語",
 	ruRU = "俄語",
-	zhTW = "Traditional Chinese", -- Requires localization
+	zhTW = "中國傳統", -- Requires localization
+        ptBR = "葡萄牙",
 
     -- Frame Strings
     Cancel = "取消",
@@ -25,7 +26,7 @@ Localization.RegisterAddonStrings("enUS", "Localization",
   },
 nil, true) -- Protected
 
-Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
+Localization.RegisterAddonStrings("zhTW", "Auc-Searcher-Pawn",
   {
     -- Config
 	MAIN_TITLE = "查詢Pawn判定的提升物品",
@@ -42,6 +43,8 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
 	AFFORD_ONLY_TIP = "只顯示你當前買得起的東西.",
 	USE_BUYOUT = "使用買出價",
 	USE_BUYOUT_TIP = "當選擇拍賣價格時使用買出價來替代競價.",
+        USE_BESTPRICE = "調整價格的基礎上的得分。",
+        USE_BESTPRICE_TIP = "返回該項目的價格調整得分。對於類似的項目，更便宜的項目將名單上的高。",
 	FORCE2H_TIP = "當比較武器時,僅考慮雙手武器.",
 	FORCE2H_WEAP = "僅雙手武器",
 	INCLUDE_IN_SEARCH = "當搜索時包含這些位置:",
@@ -75,14 +78,20 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
 	LIBRAMS = "聖契",
 	IDOLS = "神像",
 	SIGILS = "符印",
+        BOWS = "弓",
+        GUNS = "槍械",
+        WANDS = "魔杖",
+        CROSSBOWS = "弩",
 
 	--Two Handed substr
-    TWOHAND = "Two-Hand"; -- used to check if user has a 2handed weapon on or not
-	STAVES = "Staves";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Polearms"; -- used to check if user has a 2handed weapon on or not
+    THROWN = "投擲武器",
+    TWOHAND = "雙手", -- used to check if user has a 2handed weapon on or not
+	STAVES = "法杖",     -- used to check if user has a 2handed weapon on or not
+    POLEARMS = "長柄武器", -- used to check if user has a 2handed weapon on or not
 	
     -- Skill
 	DUALWIELD = "雙持",
+        TITANS_GRIP = "泰坦之握",
 
     -- Messages
     BAD_SCALE = "請選擇一個有效的比例.",

@@ -3,12 +3,13 @@
 Localization.RegisterAddonStrings("ruRU", "Localization",
   {
     -- Locales
-    enUS	= "English";
-    enGB	= "English";
-    frFR	= "French";
-    deDE	= "German";
-    ruRU	= "Русский";
-	zhTW	= "Китайский традиционный";
+    enUS  = "English";
+    enGB  = "English";
+    frFR  = "French";
+    deDE  = "German";
+    ruRU  = "Русский";
+    zhTW  = "Китайский традиционный";
+    ptBR  = "португальский";
 
     -- Frame Strings
     Confirm         = "Подтвердить";
@@ -28,7 +29,7 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
   {
     -- Config
     MAIN_TITLE        = "Искать вещи которые Pawn считает улучшением";
-	OPTIONS           = "Настройки:";
+    OPTIONS           = "Настройки:";
     HELP_ID           = "Поисковик Auc Searcher Pawn";
     HELP_QUESTION     = "Что делает поисковик?";
     HELP_ANSWER       = "Этот поисковик ищет улучшения для одетых вещей используя шкалы аддона Pawn.";
@@ -50,7 +51,7 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     FORCE2H_WEAP      = "только 2H";
     FORCE2H_TIP       = "Вы хотите найти ДВУРУЧНОЕ оружие, которое будет лучше чем то, что вами используется в данный момент.";
 
-	INCLUDE_IN_SEARCH = "Искать предметы из отмеченных слотов:";
+    INCLUDE_IN_SEARCH = "Искать предметы из отмеченных слотов:";
     SHOW_HEAD         = "Голова";
     SHOW_NECK         = "Шея";
     SHOW_SHOULDER     = "Плечи";
@@ -80,15 +81,21 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     LIBRAMS = "Манускрипты";
     IDOLS   = "Идолы";
     SIGILS  = "Печати";
+    WANDS   = "Жезлы";
+    CROSSBOWS = "Арбалеты";
+    GUNS = "Огнестрельное";
+    BOWS = "Луки";
+    THROWN = "Метательное";
 
-	--Stat
+    --Stat
     TWOHANDDPS = "УВС Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
 
-	-- Skill
+    -- Skill
+    TITANS_GRIP = "Хватка титана";
     DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
 
     -- Messages
-	BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
+    BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
     NOT_WANTED  = "Данный слот не нужен";
     NOT_UPGRADE = "Значение Pawn очень низкое";
 

@@ -1,7 +1,5 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  Version: 1.4.1 (Xit)
-  Revision: $Id: SearcherPawn.lua 1.4.1 20120926 Xit $
   URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
@@ -430,7 +428,7 @@ local function Is2hEquipped()
       if start then
         retval = true
       else
-        start, _ = string.find(itemSubType, TEXT("RANGED"), 1, true)
+        start, _ = string.find(itemSubType, TEXT("SHOW_RANGED"), 1, true)
         if start then
           retval = true
         end
