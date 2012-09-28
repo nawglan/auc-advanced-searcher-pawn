@@ -61,7 +61,7 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     SHOW_TRINKET      = "Berloque";
     SHOW_WEAPON       = "Arma";
     SHOW_OFFHAND      = "Mão secundária";
-    SHOW_RANGED       = "Arremesso";
+    SHOW_RANGED       = "Longo alcance";
 
     --Classes
     WARRIOR      = "Guerreiro";
@@ -76,6 +76,11 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     LIBRAMS = "Incunábulos";
     IDOLS   = "Ídolos";
     SIGILS  = "Signos";
+    BOWS    = "Arcos";
+    GUNS    = "Armas de fogo";
+    WANDS   = "Varinhas";
+    CROSSBOWS = "Bestas";
+    THROWN  = "Arremesso";
 
     --Two Handed substr
     TWOHAND = "Duas Mãos";  -- used to check if user has a 2handed weapon on or not
