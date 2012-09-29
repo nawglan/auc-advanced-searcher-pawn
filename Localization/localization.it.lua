@@ -65,9 +65,6 @@ Localization.RegisterAddonStrings("itIT", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "Guerriero";
-    MONK         = "Monk";
-    HUNTER       = "Cacciatore";
-    SHAMAN       = "Sciamano";
     ROGUE        = "Ladro";
     DEATH_KNIGHT = "Cavaliere della Morte";
 
@@ -88,11 +85,6 @@ Localization.RegisterAddonStrings("itIT", "Auc-Searcher-Pawn",
     WANDS = "Bacchette"; -- used to check if a user wants to evaluate Ranged weapons
     CROSSBOWS = "Balestre"; -- used to check if a user wants to evaluate Ranged weapons
     THROWN = "da Lancio"; -- used to check if a user wants to evaluate Ranged weapons
-
-    -- Skill
-    DUALWIELD = "Dual Wield";  -- used to see if a shaman or hunter has learned the ability or not
-    CRAZED_BERZERKER = "Crazed Berzerker"; -- skill that gives warriors dual wield
-    TITANS_GRIP = "Presa del Titano"; -- skill that gives warriors ability to dual wield 2handed weapons
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";

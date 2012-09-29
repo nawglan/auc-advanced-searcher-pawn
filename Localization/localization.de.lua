@@ -66,9 +66,6 @@ Localization.RegisterAddonStrings("deDE", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "Warrior";
-    MONK         = "Monk";
-    HUNTER       = "Hunter";
-    SHAMAN       = "Shaman";
     ROGUE        = "Rogue";
     DEATH_KNIGHT = "Death Knight";
 
@@ -89,11 +86,6 @@ Localization.RegisterAddonStrings("deDE", "Auc-Searcher-Pawn",
     WANDS = "Zauberstäbe"; -- used to check if a user wants to evaluate Ranged weapons
     CROSSBOWS = "Armbrüste"; -- used to check if a user wants to evaluate Ranged weapons
     THROWN = "Wurfwaffe"; -- used to check if a user wants to evaluate Ranged weapons
-
-    -- Skill
-    DUALWIELD = "Beidhändigkeit";  -- used to see if a shaman or hunter has learned the ability or not
-    CRAZED_BERZERKER = "Crazed Berzerker"; -- skill that gives warriors dual wield
-    TITANS_GRIP = "Titanengriff"; -- skill that gives warriors ability to dual wield 2handed weapons
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";

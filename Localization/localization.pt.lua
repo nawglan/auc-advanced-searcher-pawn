@@ -65,8 +65,6 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "Guerreiro";
-    HUNTER       = "Caçador";
-    SHAMAN       = "Shamã";
     ROGUE        = "Ladino";
     DEATH_KNIGHT = "Cavaleiro da Morte";
 
@@ -86,9 +84,6 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     TWOHAND = "Duas Mãos";  -- used to check if user has a 2handed weapon on or not
     STAVES = "Cajados";     -- used to check if user has a 2handed weapon on or not
     POLEARMS = "Armas de Haste"; -- used to check if user has a 2handed weapon on or not
-
-    -- Skill
-    DUALWIELD = "Duas Armas";  -- used to see if a hunter has learned the ability or not
 
     -- Messages
     BAD_SCALE   = "Por favor seleccione uma escala válida.";

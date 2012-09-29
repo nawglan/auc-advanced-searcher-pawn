@@ -70,8 +70,6 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "Воин";
-    HUNTER       = "Охотник";
-    SHAMAN       = "Шаман";
     ROGUE        = "Разбойник";
     DEATH_KNIGHT = "Рыцарь смерти";
 
@@ -89,10 +87,6 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
 
     --Stat
     TWOHANDDPS = "УВС Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
-
-    -- Skill
-    TITANS_GRIP = "Хватка титана";
-    DUALWIELD = "Бой двумя оружиями";  -- used to see if a hunter has learned the ability or not
 
     -- Messages
     BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
