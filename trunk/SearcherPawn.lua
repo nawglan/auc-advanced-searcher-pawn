@@ -362,26 +362,28 @@ local function CanDualWield()
     --Rogues and DK get DualWield for Free after character creation
     _candualcache = true
   else
-    if pclass == TEXT("WARRIOR") then
-      -- Warriors have Crazed Berzerker spell if they can dual wield
-      -- Additionally, they can have Titan's Grip at level 38 that allows them to dual wield 2 handed weapons
-      local crazed = GetSpellInfo(TEXT("CRAZED_BERZERKER"))
-      if crazed then
-        _candualcache = true
-      end
-      local titans = GetSpellInfo(TEXT("TITANS_GRIP"))
+    -- Warriors have Crazed Berzerker spell if they can dual wield
+    -- Additionally, they can have Titan's Grip at level 38 that allows them to dual wield 2 handed weapons
+    local crazed_localized = GetSpellInfo(23588) -- get the localized name
+    local crazed = GetSpellInfo(crazed_localized) -- check to see if it is in the spellbook
+    if crazed then
+      _candualcache = true
+    end
+    if not _candualcache then
+      local titans_localized = GetSpellInfo(46917) -- get the localized name
+      local titans = GetSpellInfo(titans_localized) -- check to see if it is in the spellbook
       if titans then
         _candualcache = true
       end
-    else
-      if pclass == TEXT("MONK") or pclass == TEXT("SHAMAN") or pclass == TEXT("HUNTER") then
-          -- see if Monk, Shaman or Hunter has learned "Dual Wield" yet
-          local name = GetSpellInfo(TEXT("DUALWIELD"))
-          if name then  -- name will be defined if the user has learned "Dual Wield"
-            _candualcache = true
-          end
-      end -- monk / shaman / hunter
-    end -- warrior
+      if not _candualcache then
+        -- see if Monk, Shaman or Hunter has learned "Dual Wield" yet
+        local dual_localized = GetSpellInfo(674)
+        local dualwield = GetSpellInfo(dual_localized)
+        if dualwield then  -- name will be defined if the user has learned "Dual Wield"
+          _candualcache = true
+        end
+      end
+    end
   end -- rogue / death knight
 
   return _candualcache
@@ -810,7 +812,8 @@ local function IsUpgrade(itemData)
     local bValue = primaryValue + secondaryValue
     local pclass = UnitClass("player")
     if pclass == TEXT("WARRIOR") then -- Check to see if they have the talent Titan Grip
-      local hastitans = GetSpellInfo(TEXT("TITANS_GRIP"))
+      local titans_localized = GetSpellInfo(46917) -- get the localized name
+      local hastitans = GetSpellInfo(titans_localized) -- check to see if it is in the spellbook
       if hastitans then
         bValue = primaryValue
         if secondaryValue < primaryValue then

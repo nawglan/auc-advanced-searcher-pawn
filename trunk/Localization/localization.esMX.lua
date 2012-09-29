@@ -65,9 +65,6 @@ Localization.RegisterAddonStrings("esMX", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "Guerrero";
-    MONK         = "Monk";
-    HUNTER       = "Cazador";
-    SHAMAN       = "Chamán";
     ROGUE        = "Pícaro";
     DEATH_KNIGHT = "Caballero de la Muerte";
 
@@ -88,11 +85,6 @@ Localization.RegisterAddonStrings("esMX", "Auc-Searcher-Pawn",
     WANDS = "Varitas"; -- used to check if a user wants to evaluate Ranged weapons
     CROSSBOWS = "Ballestas"; -- used to check if a user wants to evaluate Ranged weapons
     THROWN = "Arrojadiza"; -- used to check if a user wants to evaluate Ranged weapons
-
-    -- Skill
-    DUALWIELD = "Doble empuñadura";  -- used to see if a shaman or hunter has learned the ability or not
-    CRAZED_BERZERKER = "Crazed Berzerker"; -- skill that gives warriors dual wield
-    TITANS_GRIP = "Empuñadura de Titan"; -- skill that gives warriors ability to dual wield 2handed weapons
 
     -- Messages
     BAD_SCALE   = "Por favor, seleccione una escala válida.";

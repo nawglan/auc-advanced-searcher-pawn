@@ -65,9 +65,6 @@ Localization.RegisterAddonStrings("koKR", "Auc-Searcher-Pawn",
 
     --Classes
     WARRIOR      = "전사";
-    MONK         = "Monk";
-    HUNTER       = "사냥꾼";
-    SHAMAN       = "주술사";
     ROGUE        = "도적";
     DEATH_KNIGHT = "죽음의 기사";
 
@@ -88,11 +85,6 @@ Localization.RegisterAddonStrings("koKR", "Auc-Searcher-Pawn",
     WANDS = "마법봉류"; -- used to check if a user wants to evaluate Ranged weapons
     CROSSBOWS = "석궁류"; -- used to check if a user wants to evaluate Ranged weapons
     THROWN = "투척 무기"; -- used to check if a user wants to evaluate Ranged weapons
-
-    -- Skill
-    DUALWIELD = "쌍수 무기";  -- used to see if a shaman or hunter has learned the ability or not
-    CRAZED_BERZERKER = "Crazed Berzerker"; -- skill that gives warriors dual wield
-    TITANS_GRIP = "티탄의 손아귀"; -- skill that gives warriors ability to dual wield 2handed weapons
 
     -- Messages
     BAD_SCALE   = "유효한 규모를 선택하십시오.";
