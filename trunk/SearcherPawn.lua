@@ -63,12 +63,15 @@ default("search.pawn.trinket", true)
 default("search.pawn.weapon", true)
 default("search.pawn.offhand", true)
 default("search.pawn.ranged", true)
+default("search.pawn.ranged", true)
 -------------------------------------------------------------------
 
 -------------------------------------------------------------------
 -- Interface to the Localization lib
 local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn", key) end
 -------------------------------------------------------------------
+
+default("search.pawn.armorpref", TEXT("NO_PREF"))
 
 -------------------------------------------------------------------
 -- DEBUGGING
@@ -326,7 +329,7 @@ local function CanUse(link)
     if text then
       local r,g,b,a = mytext:GetTextColor()
       local hex = RGBPercToHex(r,g,b)
-      if (hex == "fe1f1f") then
+      if hex == "fe1f1f" then
         retval = false
       end
     end
@@ -351,14 +354,11 @@ end
 --
 -------------------------------------------------------------------
 local function CanDualWield()
-  local pclass = UnitClass("player")
-  local plevel = UnitLevel("player")
-  local checkTalent = false
-  local talentTree = 0
+  local localized_pclass, pclass = UnitClass("player")
 
   _candualcache = false
 
-  if pclass == TEXT("ROGUE") or pclass == TEXT("DEATH_KNIGHT") then
+  if pclass == "ROGUE" or pclass == "DEATHKNIGHT" then
     --Rogues and DK get DualWield for Free after character creation
     _candualcache = true
   else
@@ -626,6 +626,7 @@ end
 -- 6) if the user unchecked the slot in the search option section
 -- 7) if the user only wants 2h weapons and we get a weapon that isn't 2h
 -- 8) if the user cannot afford the item and they only want to see what they can afford
+-- 9) if the item is armor and armor type is not marked as wanted
 -------------------------------------------------------------------
 local function FilterItem(itemData)
   local link = itemData[Const.LINK]
@@ -695,6 +696,26 @@ local function FilterItem(itemData)
   -- Check to see if we can afford the item
   if not FilterPrice(itemData) then
     return true
+  end
+
+  -- Check the armor type to see if it is wanted
+  local armorPref = get("search.pawn.armorpref")
+  if armorPref == TEXT("NO_PREF") then
+    return false
+  else
+    if itype == TEXT("ARMOR") then
+      if subtype == TEXT("MISC") then -- rings / trinkets / necklace
+        return false
+      end
+      if subtype == TEXT("SHIELDS") then
+        return false
+      end
+      if subtype == armorPref then
+        return false
+       else
+        return true
+       end
+    end
   end
 
   return false
@@ -810,10 +831,12 @@ local function IsUpgrade(itemData)
   -- unless Titan Grip is available in which case only check primary hand value
   if ipos == Const.EquipEncode["INVTYPE_2HWEAPON"] then
     local bValue = primaryValue + secondaryValue
-    local pclass = UnitClass("player")
-    if pclass == TEXT("WARRIOR") then -- Check to see if they have the talent Titan Grip
+    local localized_pclass, pclass = UnitClass("player")
+
+    if pclass == "WARRIOR" then -- Check to see if they have the talent Titan Grip
       local titans_localized = GetSpellInfo(46917) -- get the localized name
       local hastitans = GetSpellInfo(titans_localized) -- check to see if it is in the spellbook
+
       if hastitans then
         bValue = primaryValue
         if secondaryValue < primaryValue then
@@ -845,16 +868,20 @@ local function IsUpgrade(itemData)
   -- ShadowVall: I mean "+20.52" is BETTER than equipped by 20.52 score units
   if retval then
     local bestprice = get("search.pawn.bestprice")
+
     if bestprice then
       local buyout = itemData[Const.BUYOUT]
       local bid = itemData[Const.BID]
+
       if buyout == nil then
         buyout = 0
       end
       if bid == nil then
         bid = 0
       end
+
       local price = buyout
+
       if bid > buyout then
         price = bid
       end
@@ -873,6 +900,14 @@ end -- function IsUpgrade(itemData)
 function lib:MakeGuiConfig(gui)
   -- Get our tab and populate it with our controls
   local id = gui:AddTab(lib.tabname, "Searchers")
+  local armorPref = get("search.pawn.armorpref")
+
+  local armorPrefTable = {}
+  table.insert(armorPrefTable, {TEXT("NO_PREF"), TEXT("NO_PREF")})
+  table.insert(armorPrefTable, {TEXT("CLOTH"), TEXT("CLOTH")})
+  table.insert(armorPrefTable, {TEXT("LEATHER"), TEXT("LEATHER")})
+  table.insert(armorPrefTable, {TEXT("MAIL"), TEXT("MAIL")})
+  table.insert(armorPrefTable, {TEXT("PLATE"), TEXT("PLATE")})
 
   -- Add the help
   gui:AddSearcher("Pawn", TEXT("MAIN_TITLE"), 100)
@@ -895,6 +930,9 @@ function lib:MakeGuiConfig(gui)
   gui:AddTip(id, TEXT("USE_BUYOUT_TIP"))
   gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.bestprice", TEXT("USE_BESTPRICE"))
   gui:AddTip(id, TEXT("USE_BESTPRICE_TIP"))
+  gui:AddControl(id, "Subhead", 0, TEXT("ARMOR_PREFERENCE"))
+  gui:AddControl(id, "Selectbox",  0, 1, armorPrefTable, "search.pawn.armorpref", "")
+  gui:AddTip(id, TEXT("ARMORPREF_SELECT_TIP"))
 
   -- Reposition to top for next column
   gui:SetLast(id,last)

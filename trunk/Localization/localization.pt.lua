@@ -63,10 +63,14 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "Mão secundária";
     SHOW_RANGED       = "Longo alcance";
 
-    --Classes
-    WARRIOR      = "Guerreiro";
-    ROGUE        = "Ladino";
-    DEATH_KNIGHT = "Cavaleiro da Morte";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "Ao procurar por armadura, apenas mostrar o tipo de armadura selecionada em resultados de pesquisa. Filtrar todos os tipos de armaduras outros.";
+    ARMOR_PREFERENCE = "Preferência de Armadura";
+    NO_PREF   = "Nenhuma Preferência";
+    CLOTH     = "Tecido";
+    LEATHER   = "Couro";
+    MAIL      = "Malha";
+    PLATE     = "Placas";
 
     --Item Types
     ARMOR   = "Armadura";
@@ -74,16 +78,19 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     LIBRAMS = "Incunábulos";
     IDOLS   = "Ídolos";
     SIGILS  = "Signos";
-    BOWS    = "Arcos";
-    GUNS    = "Armas de fogo";
-    WANDS   = "Varinhas";
-    CROSSBOWS = "Bestas";
-    THROWN  = "Arremesso";
+    SHIELDS = "Escudos";
+    MISC    = "Diversos";
 
     --Two Handed substr
     TWOHAND = "Duas Mãos";  -- used to check if user has a 2handed weapon on or not
     STAVES = "Cajados";     -- used to check if user has a 2handed weapon on or not
     POLEARMS = "Armas de Haste"; -- used to check if user has a 2handed weapon on or not
+
+    BOWS = "Arcos"; -- used to check if a user wants to evaluate Ranged weapons
+    GUNS = "Armas de fogo"; -- used to check if a user wants to evaluate Ranged weapons
+    WANDS = "Varinhas"; -- used to check if a user wants to evaluate Ranged weapons
+    CROSSBOWS = "Bestas"; -- used to check if a user wants to evaluate Ranged weapons
+    THROWN = "Arremesso"; -- used to check if a user wants to evaluate Ranged weapons
 
     -- Messages
     BAD_SCALE   = "Por favor seleccione uma escala válida.";

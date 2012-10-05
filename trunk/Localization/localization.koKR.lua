@@ -63,10 +63,14 @@ Localization.RegisterAddonStrings("koKR", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "보조장비";
     SHOW_RANGED       = "원거리 장비";
 
-    --Classes
-    WARRIOR      = "전사";
-    ROGUE        = "도적";
-    DEATH_KNIGHT = "죽음의 기사";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "갑옷을 검색하면 검색 결과에서 선택한 갑옷 유형을 보여줍니다. 다른 모든 갑옷 유형을 필터링 할 수 있습니다.";
+    ARMOR_PREFERENCE = "갑옷 환경 설정";
+    NO_PREF   = "어떤 환경 설정 없음";
+    CLOTH     = "천";
+    LEATHER   = "가죽";
+    MAIL      = "사슬";
+    PLATE     = "판금";
 
     --Item Types
     ARMOR   = "방어구";
@@ -74,6 +78,8 @@ Localization.RegisterAddonStrings("koKR", "Auc-Searcher-Pawn",
     LIBRAMS = "성서";
     IDOLS   = "우상";
     SIGILS  = "인장";
+    SHIELDS = "방패";
+    MISC    = "기타";
 
     --Two Handed substr
     TWOHAND = "양손";  -- used to check if user has a 2handed weapon on or not

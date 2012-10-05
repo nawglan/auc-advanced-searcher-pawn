@@ -1,14 +1,14 @@
-﻿-- Traditional Chinese Strings
+-- Traditional Chinese Strings
 
 Localization.RegisterAddonStrings("zhTW", "Localization",
   {
     -- Locales
-    deDE = "德語";
-	enGB = "英語";
 	enUS = "英語";
+	enGB = "英語";
 	frFR = "法語";
 	ruRU = "俄語";
 	zhTW = "中國傳統"; -- Requires localization
+    deDE = "德語";
     ptBR = "葡萄牙";
 
     -- Frame Strings
@@ -47,7 +47,6 @@ Localization.RegisterAddonStrings("zhTW", "Auc-Searcher-Pawn",
 	FORCE2H_TIP = "當比較武器時,僅考慮雙手武器.";
 	FORCE2H_WEAP = "僅雙手武器";
 	INCLUDE_IN_SEARCH = "當搜索時包含這些位置:";
-
 	SHOW_BACK = "背部";
 	SHOW_CHEST = "胸部";
 	SHOW_FEET = "腳部";
@@ -64,10 +63,14 @@ Localization.RegisterAddonStrings("zhTW", "Auc-Searcher-Pawn",
 	SHOW_WEAPON = "武器";
 	SHOW_WRIST = "手腕";
 
-    --Classes
-    WARRIOR = "戰士";
-	ROGUE = "盜賊";
-	DEATH_KNIGHT = "死亡騎士";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "尋找裝甲時，在搜索結果中只顯示所選的護甲類型。過濾掉所有其他的裝甲類型。";
+    ARMOR_PREFERENCE = "護甲偏好";
+    NO_PREF   = "無特別偏好";
+    CLOTH     = "布甲";
+    LEATHER   = "皮甲";
+    MAIL      = "鎖甲";
+    PLATE     = "鎧甲";
 
     --Item Types
 	ARMOR = "護甲";
@@ -75,17 +78,20 @@ Localization.RegisterAddonStrings("zhTW", "Auc-Searcher-Pawn",
 	LIBRAMS = "聖契";
 	IDOLS = "神像";
 	SIGILS = "符印";
-    BOWS = "弓";
-    GUNS = "槍械";
-    WANDS = "魔杖";
-    CROSSBOWS = "弩";
+    SHIELDS = "盾牌";
+    MISC    = "其他";
 
 	--Two Handed substr
-    THROWN = "投擲武器";
     TWOHAND = "雙手"; -- used to check if user has a 2handed weapon on or not
 	STAVES = "法杖";     -- used to check if user has a 2handed weapon on or not
     POLEARMS = "長柄武器"; -- used to check if user has a 2handed weapon on or not
 	
+    BOWS = "弓"; -- used to check if a user wants to evaluate Ranged weapons
+    GUNS = "槍械"; -- used to check if a user wants to evaluate Ranged weapons
+    WANDS = "魔杖"; -- used to check if a user wants to evaluate Ranged weapons
+    CROSSBOWS = "弩"; -- used to check if a user wants to evaluate Ranged weapons
+    THROWN = "投擲武器"; -- used to check if a user wants to evaluate Ranged weapons
+
     -- Messages
     BAD_SCALE = "請選擇一個有效的比例.";
     NOT_WANTED = "不需要的物品欄";
