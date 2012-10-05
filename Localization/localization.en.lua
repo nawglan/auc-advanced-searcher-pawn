@@ -21,7 +21,7 @@ Localization.RegisterAddonStrings("enUS", "Localization",
     --Earth Button
     Localization  = "Localization";
     ShowPrompt    = "Show Prompt";
-    EarthTooltip  = "Show Locale Selection Dialogue."
+    EarthTooltip  = "Show Locale Selection Dialogue.";
   },
 nil, true) -- Protected
 
@@ -63,10 +63,14 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "Off-Hand";
     SHOW_RANGED       = "Ranged";
 
-    --Classes
-    WARRIOR      = "Warrior";
-    ROGUE        = "Rogue";
-    DEATH_KNIGHT = "Death Knight";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "Only show the selected armor type in search results.  Filter out all other armor types.";
+    ARMOR_PREFERENCE = "Armor Preference";
+    NO_PREF   = "No Preference";
+    CLOTH     = "Cloth";
+    LEATHER   = "Leather";
+    MAIL      = "Mail";
+    PLATE     = "Plate";
 
     --Item Types
     ARMOR   = "Armor";
@@ -74,6 +78,8 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     LIBRAMS = "Librams";
     IDOLS   = "Idols";
     SIGILS  = "Sigils";
+    SHIELDS = "Shields";
+    MISC    = "Miscellaneous";
 
     --Two Handed substr
     TWOHAND = "Two-Hand";  -- used to check if user has a 2handed weapon on or not

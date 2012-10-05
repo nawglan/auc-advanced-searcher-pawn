@@ -63,10 +63,14 @@ Localization.RegisterAddonStrings("zhCN", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "副手";
     SHOW_RANGED       = "远程";
 
-    --Classes
-    WARRIOR      = "战士";
-    ROGUE        = "潜行者";
-    DEATH_KNIGHT = "死亡骑士";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "寻找装甲时，在搜索结果中只显示所选的护甲类型。过滤掉所有其他的装甲类型。";
+    ARMOR_PREFERENCE = "护甲偏好";
+    NO_PREF   = "无特别偏好";
+    CLOTH     = "布甲";
+    LEATHER   = "皮甲";
+    MAIL      = "锁甲";
+    PLATE     = "板甲";
 
     --Item Types
     ARMOR   = "护甲";
@@ -74,6 +78,8 @@ Localization.RegisterAddonStrings("zhCN", "Auc-Searcher-Pawn",
     LIBRAMS = "圣契";
     IDOLS   = "神像";
     SIGILS  = "魔印";
+    SHIELDS = "盾牌";
+    MISC    = "其它";
 
     --Two Handed substr
     TWOHAND = "双手";  -- used to check if user has a 2handed weapon on or not

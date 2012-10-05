@@ -6,9 +6,9 @@ Localization.RegisterAddonStrings("ruRU", "Localization",
     enUS  = "English";
     enGB  = "English";
     frFR  = "French";
-    deDE  = "German";
     ruRU  = "Русский";
     zhTW  = "Китайский традиционный";
+    deDE  = "German";
     ptBR  = "португальский";
 
     -- Frame Strings
@@ -36,12 +36,8 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     CONFIG_HEADER     = "Критерии поиска";
     SCALE_SELECT      = "Имя шкалы Pawn";
     SCALE_SELECT_TIP  = "Шкала Pawn будет ипользована для определения значения вещи";
-    CHECK_CURRENT     = "Использовать текущее значение";
-    CHECK_CURRENT_TIP = "Если обозначено, вещи будут рассчитываться 'как есть'.  Пустые сокеты будут игнорироваться.  Будут применяться все инчанты.  Если не обозначено, вещи будут рассчитываться без инчантов и для пустых сокетов будут использоваться значения заданные в шкале Pawn.";
     USEABLE_ONLY      = "Только подходящие вещи";
     USEABLE_ONLY_TIP  = "Только вещи которые может использовать ваш персонаж.";
-    FORCE_MAIN        = "Использовать правую руку";
-    FORCE_MAIN_TIP    = "Вещи с левой руки будут сравниваться только с вещью из правой руки.";
     AFFORD_ONLY       = "Только то что я могу купить";
     AFFORD_ONLY_TIP   = "Отображать только те вещи которые я могу купить.";
     USE_BUYOUT        = "Ипользовать выкуп";
@@ -50,7 +46,6 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     USE_BESTPRICE_TIP    = "Отрегулируйте оценка по стоимости товара. Для подобных изделий, дешевле пункт будет выше в списке.";
     FORCE2H_WEAP      = "только 2H";
     FORCE2H_TIP       = "Вы хотите найти ДВУРУЧНОЕ оружие, которое будет лучше чем то, что вами используется в данный момент.";
-
     INCLUDE_IN_SEARCH = "Искать предметы из отмеченных слотов:";
     SHOW_HEAD         = "Голова";
     SHOW_NECK         = "Шея";
@@ -68,10 +63,14 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "Левая рука";
     SHOW_RANGED       = "Дальний бой";
 
-    --Classes
-    WARRIOR      = "Воин";
-    ROGUE        = "Разбойник";
-    DEATH_KNIGHT = "Рыцарь смерти";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "При поиске брони, показывают только выбранный тип брони в результатах поиска. Отфильтровать все другие типы брони.";
+    ARMOR_PREFERENCE = "Броня предпочтения";
+    NO_PREF   = "Без предпочтений";
+    CLOTH     = "Ткань";
+    LEATHER   = "Кожа";
+    MAIL      = "Кольчуга";
+    PLATE     = "Латы";
 
     --Item Types
     ARMOR   = "Броня";
@@ -79,14 +78,19 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     LIBRAMS = "Манускрипты";
     IDOLS   = "Идолы";
     SIGILS  = "Печати";
-    WANDS   = "Жезлы";
-    CROSSBOWS = "Арбалеты";
-    GUNS = "Огнестрельное";
-    BOWS = "Луки";
-    THROWN = "Метательное";
+    SHIELDS = "Щиты";
+    MISC    = "Разное";
 
-    --Stat
-    TWOHANDDPS = "УВС Двуручного оружия"; -- This is the text from Pawn.  Not sure if it is localized or not
+    --Two Handed substr
+    TWOHAND = "Двуручное";  -- used to check if user has a 2handed weapon on or not
+    STAVES = "Посохи";     -- used to check if user has a 2handed weapon on or not
+    POLEARMS = "Древковое"; -- used to check if user has a 2handed weapon on or not
+
+    BOWS = "Луки"; -- used to check if a user wants to evaluate Ranged weapons
+    GUNS = "Огнестрельное"; -- used to check if a user wants to evaluate Ranged weapons
+    WANDS   = "Жезлы"; -- used to check if a user wants to evaluate Ranged weapons
+    CROSSBOWS = "Арбалеты"; -- used to check if a user wants to evaluate Ranged weapons
+    THROWN = "Метательное"; -- used to check if a user wants to evaluate Ranged weapons
 
     -- Messages
     BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
@@ -95,6 +99,5 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
 
     REASON_BUY = "Выкуп";
     REASON_BID = "Ставка";
-
   },
 nil, true) -- Protected

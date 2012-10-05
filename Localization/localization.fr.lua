@@ -60,10 +60,14 @@ Localization.RegisterAddonStrings("frFR", "Auc-Searcher-Pawn",
     SHOW_OFFHAND      = "Main gauche";
     SHOW_RANGED       = "À distance";
 
-    --Classes
-    WARRIOR      = "Guerrier";
-    ROGUE        = "Voleur";
-    DEATH_KNIGHT = "Chevalier de la mort";
+    --Armor Preference
+    ARMORPREF_SELECT_TIP = "Lors de la recherche d'armure, ne montrent que le type d'armure sélectionnée dans les résultats de recherche. Filtrer tous les autres types d'armures.";
+    ARMOR_PREFERENCE = "Orientation Armure";
+    NO_PREF   = "Indifférent";
+    CLOTH     = "Tissu";
+    LEATHER   = "Cuir";
+    MAIL      = "Mailles";
+    PLATE     = "Plaques";
 
     --Item Types
     ARMOR   = "Armure";
@@ -71,6 +75,8 @@ Localization.RegisterAddonStrings("frFR", "Auc-Searcher-Pawn",
     LIBRAMS = "Librams";
     IDOLS   = "Idoles";
     SIGILS  = "Glyphes";
+    SHIELDS = "Boucliers";
+    MISC    = "Divers";
 
     --Two Handed substr
     TWOHAND = "Deux mains";  -- used to check if user has a 2handed weapon on or not
