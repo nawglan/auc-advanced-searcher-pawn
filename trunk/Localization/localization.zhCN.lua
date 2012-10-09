@@ -44,6 +44,8 @@ Localization.RegisterAddonStrings("zhCN", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "检查时，拍卖价格，而不是使用收购出价。";
     USE_BESTPRICE        = "调整价格的基础上的得分。";
     USE_BESTPRICE_TIP    = "返回该项目的价格调整得分。对于类似的项目，更便宜的项目将名单上的高。";
+    USE_UNENCHANTED     = "使用未附魔值";
+    USE_UNENCHANTED_TIP = "使用未附魔的计算值。如果没有选中项的值将包括当前的结界。";
     FORCE2H_WEAP      = "只有两个双手武器。";
     FORCE2H_TIP       = "比较武器时，只考虑两双手武器。";
     INCLUDE_IN_SEARCH = "在搜索时，包括这些插槽：";
@@ -81,16 +83,23 @@ Localization.RegisterAddonStrings("zhCN", "Auc-Searcher-Pawn",
     SHIELDS = "盾牌";
     MISC    = "其它";
 
-    --Two Handed substr
-    TWOHAND = "双手";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "法杖";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "长柄武器"; -- used to check if user has a 2handed weapon on or not
+    --Two Handed sub-string
+    TWOHAND = "双手";
+    
+    -- Two Handed Weapons
+    STAVES = "法杖";
+    POLEARMS = "长柄武器";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "弓"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "枪械"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "魔杖"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "弩"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "投掷武器"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "匕首";
+    BOWS = "弓";
+    GUNS = "枪械";
+    WANDS = "魔杖";
+    CROSSBOWS = "弩";
+    THROWN = "投掷武器"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "请选择一个有效的规模。";

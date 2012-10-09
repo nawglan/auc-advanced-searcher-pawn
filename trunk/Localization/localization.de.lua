@@ -45,6 +45,8 @@ Localization.RegisterAddonStrings("deDE", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "Verwenden Buyout statt Geld bei der Überprüfung Auktionspreise.";
     USE_BESTPRICE        = "Passen Punktzahl basierend auf Preis.";
     USE_BESTPRICE_TIP    = "Passen Sie die Punktzahl durch die Preis des Artikels zurück. Ähnliche Artikel, wird das billigere Produkt höher sein auf der Liste.";
+    USE_UNENCHANTED     = "Verwenden Unenchanted Werte";
+    USE_UNENCHANTED_TIP = "Verwenden unenchanted Werte für Berechnungen. Falls nicht, wird Einzelteil Werte sind aktuelle Verzauberungen.";
     FORCE2H_WEAP      = "Nur Zweihandwaffen";
     FORCE2H_TIP       = "Beim Vergleich Waffen, berücksichtigen nur Zweihandwaffen.";
     INCLUDE_IN_SEARCH = "Fügen Sie diese Slots bei der Suche:";
@@ -82,16 +84,23 @@ Localization.RegisterAddonStrings("deDE", "Auc-Searcher-Pawn",
     SHIELDS = "Schilde";
     MISC    = "Verschiedenes";
 
-    --Two Handed substr
-    TWOHAND = "Zweihändig";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Stäbe";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Stangenwaffen"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "Zweihändig";
+    
+    -- Two Handed Weapons
+    STAVES = "Stäbe";
+    POLEARMS = "Stangenwaffen";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "Bögen"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Schusswaffen"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "Zauberstäbe"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Armbrüste"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "Wurfwaffe"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "Dolche";
+    BOWS = "Bögen";
+    GUNS = "Schusswaffen";
+    WANDS = "Zauberstäbe";
+    CROSSBOWS = "Armbrüste";
+    THROWN = "Wurfwaffe"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";

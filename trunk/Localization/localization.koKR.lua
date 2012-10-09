@@ -44,6 +44,8 @@ Localization.RegisterAddonStrings("koKR", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "경매 가격을 확인할 때 인수 대신 입찰가를 사용합니다.";
     USE_BESTPRICE        = "가격을 기준으로 점수를 조정합니다.";
     USE_BESTPRICE_TIP    = "항목의 가격에 의해 반환 된 점수를 조정합니다. 유사한 항목은 저렴 항목은 목록에서 높을 것입니다.";
+    USE_UNENCHANTED     = "Unenchanted 값을 사용";
+    USE_UNENCHANTED_TIP = "계산에 대한 unenchanted 값을 사용합니다. 선택하지 않으면 항목 값은 현재 enchantments 포함됩니다.";
     FORCE2H_WEAP      = "만 양손 무기";
     FORCE2H_TIP       = "무기를 비교했을 때 만 양손 무기를 고려합니다.";
     INCLUDE_IN_SEARCH = "검색 할 때 다음 슬롯을 포함 :";
@@ -81,16 +83,22 @@ Localization.RegisterAddonStrings("koKR", "Auc-Searcher-Pawn",
     SHIELDS = "방패";
     MISC    = "기타";
 
-    --Two Handed substr
-    TWOHAND = "양손";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "지팡이류";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "장창류"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "양손"; 
+    
+    -- Two Handed Weapons
+    STAVES = "지팡이류";
+    POLEARMS = "장창류";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "활류"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "총기류"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "마법봉류"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "석궁류"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "투척 무기"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    BOWS = "활류";
+    GUNS = "총기류";
+    WANDS = "마법봉류";
+    CROSSBOWS = "석궁류";
+    THROWN = "투척 무기"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "유효한 규모를 선택하십시오.";

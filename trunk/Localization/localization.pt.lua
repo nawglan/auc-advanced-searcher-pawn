@@ -44,6 +44,8 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "Usar Arremate em vez de Dar lance quando verificar os preços dos leilões.";
     USE_BESTPRICE     = "Ajustar o valor baseado no preço.";
     USE_BESTPRICE_TIP = "Ajustar pelo preço do item o valor mostrado. Para itens similares, o mais barato ficará acima na lista.";
+    USE_UNENCHANTED     = "Usar valores Unenchanted";
+    USE_UNENCHANTED_TIP = "Use valores unenchanted para cálculos. Se não for marcada, os valores de itens inclui encantamentos atuais.";
     FORCE2H_WEAP      = "Apenas de 2M";
     FORCE2H_TIP       = "Ao comparar armas, considerar apenas Armas de Duas mãos";
     INCLUDE_IN_SEARCH = "Incluir estes compartimentos ao procurar:";
@@ -81,16 +83,23 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     SHIELDS = "Escudos";
     MISC    = "Diversos";
 
-    --Two Handed substr
-    TWOHAND = "Duas Mãos";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Cajados";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Armas de Haste"; -- used to check if user has a 2handed weapon on or not
-
-    BOWS = "Arcos"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Armas de fogo"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "Varinhas"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Bestas"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "Arremesso"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Two Handed sub-string
+    TWOHAND = "Duas Mãos";
+    
+    -- Two Handed Weapons
+    STAVES = "Cajados";
+    POLEARMS = "Armas de Haste";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
+    
+    -- Ranged
+    DAGGERS = "Adagas";
+    BOWS = "Arcos";
+    GUNS = "Armas de fogo";
+    WANDS = "Varinhas";
+    CROSSBOWS = "Bestas";
+    THROWN = "Arremesso"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "Por favor seleccione uma escala válida.";

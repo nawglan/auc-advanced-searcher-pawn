@@ -44,6 +44,8 @@ Localization.RegisterAddonStrings("itIT", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "Uso buyout invece di offerta quando il controllo dei prezzi d'asta.";
     USE_BESTPRICE        = "Regolare punteggio in base al prezzo.";
     USE_BESTPRICE_TIP    = "Regolare il punteggio restituito dal prezzo del prodotto. Articoli simili, l'elemento più economico sarà più alto nella lista.";
+    USE_UNENCHANTED     = "Utilizzare valori Unenchanted";
+    USE_UNENCHANTED_TIP = "Utilizzare i valori unenchanted per i calcoli. Se non è selezionato, i valori voce include incantesimi attuali.";
     FORCE2H_WEAP      = "Solo armi a due mani.";
     FORCE2H_TIP       = "Quando si confrontano le armi, in considerazione solo armi a due mani.";
     INCLUDE_IN_SEARCH = "Includere questi slot per la ricerca:";
@@ -81,16 +83,23 @@ Localization.RegisterAddonStrings("itIT", "Auc-Searcher-Pawn",
     SHIELDS = "Scudi";
     MISC    = "Varie";
 
-    --Two Handed substr
-    TWOHAND = "a Due Mani";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Bastoni";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Armi ad Asta"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "a Due Mani";
+    
+    -- Two-Handed Weapons
+    STAVES = "Bastoni";
+    POLEARMS = "Armi ad Asta";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "Archi"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Armi da fuoco"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "Bacchette"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Balestre"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "da Lancio"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "Pugnali";
+    BOWS = "Archi";
+    GUNS = "Armi da fuoco";
+    WANDS = "Bacchette";
+    CROSSBOWS = "Balestre";
+    THROWN = "da Lancio"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";
