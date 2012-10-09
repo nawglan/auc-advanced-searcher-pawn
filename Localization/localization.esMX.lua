@@ -44,6 +44,8 @@ Localization.RegisterAddonStrings("esMX", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "Utilice compra en lugar de la oferta al comprobar los precios de subasta.";
     USE_BESTPRICE        = "Ajuste puntuación basada en el precio.";
     USE_BESTPRICE_TIP    = "Ajustar la puntuación devuelta por el precio del artículo. Para elementos similares, el material más barato será más alta en la lista.";
+    USE_UNENCHANTED     = "Utilice valores sin encantamientos";
+    USE_UNENCHANTED_TIP = "Utilice valores sin encantamientos para los cálculos. Si no se marca, valores de los elementos se incluyen encantamientos actuales.";
     FORCE2H_WEAP      = "Sólo armas a dos manos.";
     FORCE2H_TIP       = "Al comparar las armas, sólo se consideran armas a dos manos.";
     INCLUDE_IN_SEARCH = "Incluya estas ranuras al buscar:";
@@ -81,16 +83,23 @@ Localization.RegisterAddonStrings("esMX", "Auc-Searcher-Pawn",
     SHIELDS = "Escudos";
     MISC    = "Miscelánea";
 
-    --Two Handed substr
-    TWOHAND = "Dos Manos";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Bastones";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Armas de asta"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "Dos Manos";
+    
+    -- Two Handed Weapons
+    STAVES = "Bastones";
+    POLEARMS = "Armas de asta";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "Arcos"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Pistolas"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "Varitas"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Ballestas"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "Arrojadiza"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "Dagas";
+    BOWS = "Arcos";
+    GUNS = "Pistolas";
+    WANDS = "Varitas";
+    CROSSBOWS = "Ballestas";
+    THROWN = "Arrojadiza"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "Por favor, seleccione una escala válida.";

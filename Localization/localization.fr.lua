@@ -41,6 +41,8 @@ Localization.RegisterAddonStrings("frFR", "Auc-Searcher-Pawn",
     USE_BUYOUT_TIP    = "Utilisez rachat au lieu de l'offre lors de la vérification des prix aux enchères.";
     USE_BESTPRICE        = "Réglez score basé sur le prix.";
     USE_BESTPRICE_TIP    = "Réglez le score renvoyé par le prix de l'article. Rechercher des articles similaires, moins cher article sera élevé sur la liste.";
+    USE_UNENCHANTED     = "Utiliser les valeurs non enchantés";
+    USE_UNENCHANTED_TIP = "Utiliser les valeurs non enchantés pour les calculs. Si ce n'est pas cochée, les valeurs des éléments comprendront enchantements actuelles.";
     FORCE2H_WEAP      = "Seules les armes à deux mains";
     FORCE2H_TIP       = "Lorsque l'on compare les armes, ne considère armes à deux mains.";
     INCLUDE_IN_SEARCH = "Inclure ces emplacements lors de la recherche:";
@@ -78,16 +80,23 @@ Localization.RegisterAddonStrings("frFR", "Auc-Searcher-Pawn",
     SHIELDS = "Boucliers";
     MISC    = "Divers";
 
-    --Two Handed substr
-    TWOHAND = "Deux mains";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Bâtons";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Armes d'hast"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "Deux mains";
+    
+    -- Two Handed Weapons
+    STAVES = "Bâtons";
+    POLEARMS = "Armes d'hast";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "Arcs"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Fusils"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "Baguettes"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Arbalètes"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "Armes de jets"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "Dagues";
+    BOWS = "Arcs";
+    GUNS = "Fusils";
+    WANDS = "Baguettes";
+    CROSSBOWS = "Arbalètes";
+    THROWN = "Armes de jets"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "S'il vous plaît sélectionner un barème en vigueur.";

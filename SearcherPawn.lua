@@ -36,7 +36,7 @@ end
 --local print,decode,_,_,replicate,empty,_,_,_,debugPrint,fill = AucAdvanced.GetModuleLocals()
 local get,set,default,Const, resources = parent.GetSearchLocals()
 
-Localization.SetAddonDefault("Auc-Searcher-Pawn", "enUS");
+Localization.SetAddonDefault("Auc-Searcher-Pawn", "enUS")
 
 -------------------------------------------------------------------
 -- Set the name of the Auctioneer Search Option
@@ -64,6 +64,7 @@ default("search.pawn.weapon", true)
 default("search.pawn.offhand", true)
 default("search.pawn.ranged", true)
 default("search.pawn.ranged", true)
+default("search.pawn.unenchanted", false)
 -------------------------------------------------------------------
 
 -------------------------------------------------------------------
@@ -74,15 +75,8 @@ local function TEXT(key) return Localization.GetClientString("Auc-Searcher-Pawn"
 default("search.pawn.armorpref", TEXT("NO_PREF"))
 
 -------------------------------------------------------------------
--- DEBUGGING
-local showdbg = false -- set to true to enable debugging
-
 -- Sprinkle these throughout the code to debug.
--- Debug(string.format("%s [%s]", somevar, somevar))
--- Debug(string.format("%s [%s]", somevar, somevar))
---
--- Items with false for first debug message only get printed if showfalse above is true
--- Items with true for first debug message only get printed if showtrue above is true
+-- print(string.format("Sometext %s [%d]", somevar, somevar2))
 -------------------------------------------------------------------
 
 -------------------------------------------------------------------
@@ -194,21 +188,6 @@ local convertSlot = {
     nil, -- [2] secondary slot
   }, -- [26] ranged
 }
-
--------------------------------------------------------------------
--- Debug Output Function
--------------------------------------------------------------------
-local function Debug(Text)
-  if Text == nil then
-    Text = "nil value"
-  end
-
-  if not showdbg then
-    return
-  end
-
-  print(Text)
-end
 
 -------------------------------------------------------------------
 -- Refetch Pawn Scales -- Called by the config menu
@@ -392,7 +371,7 @@ end
 --------------------------------------------------------------------
 -- Get Slot info, store it in cache and return
 -- Globals used:
-local slotCache = {};
+local slotCache = {}
 --------------------------------------------------------------------
 local function GetCachedSlot(SlotName)
   -- ensure we have a valid keyname
@@ -419,6 +398,9 @@ local function Is2hEquipped()
   if tsize == 0 then
     table.insert(is2handed, TEXT("STAVES"))
     table.insert(is2handed, TEXT("POLEARMS"))
+    table.insert(is2handed, TEXT("BOWS"))
+    table.insert(is2handed, TEXT("GUNS"))
+    table.insert(is2handed, TEXT("CROSSBOWS"))
   end
 
   if ItemLink then
@@ -429,11 +411,6 @@ local function Is2hEquipped()
       local start, _ = string.find(itemSubType, TEXT("TWOHAND"), 1, true)
       if start then
         retval = true
-      else
-        start, _ = string.find(itemSubType, TEXT("SHOW_RANGED"), 1, true)
-        if start then
-          retval = true
-        end
       end
     end
   end
@@ -606,7 +583,8 @@ local function IsRangedItem(subtype)
     table.insert(isRanged, TEXT("GUNS"))
     table.insert(isRanged, TEXT("WANDS"))
     table.insert(isRanged, TEXT("CROSSBOWS"))
-    table.insert(isRanged, TEXT("THROWN"))
+    table.insert(isRanged, TEXT("DAGGERS"))
+    table.insert(isRanged, TEXT("THROWN")) -- These may be removed from the game.
   end
   if tContains(isRanged, subtype) then
     return true
@@ -725,7 +703,8 @@ end
 -- Returns pawn values for a given equipped slot
 -------------------------------------------------------------------
 local function GetPawnValueEquipped(slot)
-  local mItem = PawnGetItemDataForInventorySlot(slot,false)
+  local useUnenchanted = get("search.pawn.unenchanted")
+  local mItem = PawnGetItemDataForInventorySlot(slot,useUnenchanted)
 
   local currentValue = 0
   local baseValue = 0
@@ -746,11 +725,11 @@ local function GetPawnValueEquipped(slot)
     baseValue = 0
   end
 
-  if currentValue > baseValue then
-    return currentValue
+  if useUnenchanted then
+    return baseValue
   end
-
-  return baseValue
+  
+  return currentValue
 end -- function GetPawnValueEquipped(slot)
 
 -------------------------------------------------------------------
@@ -776,7 +755,7 @@ local function GetEquippedVal(itemData)
   end
 
   -- Ensure that primaryValue is not nil
-  if not primaryValue then
+  if primaryValue == nil then
     primaryValue = 0
   end
 
@@ -789,21 +768,26 @@ local _PawnValueCache = {}
 -------------------------------------------------------------------
 local function GetPawnValueItem(itemData)
   local link = itemData[Const.LINK]
+  local useUnenchanted = get("search.pawn.unenchanted")
 
   if not _PawnValueCache[link] then
     -- Get the signature of this item and find it's stats.
     local item = PawnGetItemData(link)
 
     -- ensure we get an item structure from Pawn
-    if not item then
+    if item == nil then
       return false
     end
 
     -- Grab the values for the item from Auctioneer
-    local auctionValue = PawnGetSingleValueFromItem(item, _scalename)
+    local auctionValue, unenchantedValue = PawnGetSingleValueFromItem(item, _scalename)
+
+    if useUnenchanted then
+      auctionValue = unenchantedValue
+    end
 
     -- ensure auctionValue is valid number
-    if not auctionValue then
+    if auctionValue == nil then
       auctionValue = 0
     end
     _PawnValueCache[link] = auctionValue
@@ -930,6 +914,8 @@ function lib:MakeGuiConfig(gui)
   gui:AddTip(id, TEXT("USE_BUYOUT_TIP"))
   gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.bestprice", TEXT("USE_BESTPRICE"))
   gui:AddTip(id, TEXT("USE_BESTPRICE_TIP"))
+  gui:AddControl(id, "Checkbox",   0, 0, "search.pawn.unenchanted", TEXT("USE_UNENCHANTED"))
+  gui:AddTip(id, TEXT("USE_UNENCHANTED_TIP"))
   gui:AddControl(id, "Subhead", 0, TEXT("ARMOR_PREFERENCE"))
   gui:AddControl(id, "Selectbox",  0, 1, armorPrefTable, "search.pawn.armorpref", "")
   gui:AddTip(id, TEXT("ARMORPREF_SELECT_TIP"))

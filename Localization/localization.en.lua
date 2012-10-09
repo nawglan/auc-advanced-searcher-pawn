@@ -42,8 +42,10 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     AFFORD_ONLY_TIP   = "Only show what you can currently afford to buy.";
     USE_BUYOUT        = "Use buyout";
     USE_BUYOUT_TIP    = "Use buyout instead of bid when checking auction prices.";
-    USE_BESTPRICE        = "Adjust score based on price.";
-    USE_BESTPRICE_TIP    = "Adjust the score returned by the price of the item.  For similar items, the cheaper item will be higher on the list.";
+    USE_BESTPRICE       = "Adjust score based on price.";
+    USE_BESTPRICE_TIP   = "Adjust the score returned by the price of the item.  For similar items, the cheaper item will be higher on the list.";
+    USE_UNENCHANTED     = "Use Unenchanted Values";
+    USE_UNENCHANTED_TIP = "Use unenchanted values for calculations. If not checked, item values will include current enchantements.";
     FORCE2H_WEAP      = "Only 2H Weapons";
     FORCE2H_TIP       = "When comparing weapons, only consider 2-Handed Weapons.";
     INCLUDE_IN_SEARCH = "Include these slots when searching:";
@@ -81,16 +83,23 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SHIELDS = "Shields";
     MISC    = "Miscellaneous";
 
-    --Two Handed substr
-    TWOHAND = "Two-Hand";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Staves";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Polearms"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "Two-Hand";
+    
+    -- Two Handed Weapons
+    STAVES = "Staves";
+    POLEARMS = "Polearms";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "Bows"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Guns"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS = "Wands"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Crossbows"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "Thrown"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "Daggers";
+    BOWS = "Bows";
+    GUNS = "Guns";
+    WANDS = "Wands";
+    CROSSBOWS = "Crossbows";
+    THROWN = "Thrown"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "Please select a valid scale.";

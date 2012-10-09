@@ -42,8 +42,10 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     AFFORD_ONLY_TIP   = "Отображать только те вещи которые я могу купить.";
     USE_BUYOUT        = "Ипользовать выкуп";
     USE_BUYOUT_TIP    = "Ипользовать метод выкупа вместо ставок при просмотре цен аукциона";
-    USE_BESTPRICE        = "Отрегулируйте оценка основана на цене.";
-    USE_BESTPRICE_TIP    = "Отрегулируйте оценка по стоимости товара. Для подобных изделий, дешевле пункт будет выше в списке.";
+    USE_BESTPRICE        = "Изменять оценку с учетом цены";
+    USE_BESTPRICE_TIP    = "Корректирует выводимую оценку с учетом цены предмета. Для похожих предметов, более дешевый предмет будет выше в списке.";
+    USE_UNENCHANTED     = "Не учитывать зачарования";
+    USE_UNENCHANTED_TIP = "Использовать оценки без учета зачарований для расчетов. Если не отмечено, оценки предметов будут включать текущие зачарования.";
     FORCE2H_WEAP      = "только 2H";
     FORCE2H_TIP       = "Вы хотите найти ДВУРУЧНОЕ оружие, которое будет лучше чем то, что вами используется в данный момент.";
     INCLUDE_IN_SEARCH = "Искать предметы из отмеченных слотов:";
@@ -64,8 +66,8 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     SHOW_RANGED       = "Дальний бой";
 
     --Armor Preference
-    ARMORPREF_SELECT_TIP = "При поиске брони, показывают только выбранный тип брони в результатах поиска. Отфильтровать все другие типы брони.";
-    ARMOR_PREFERENCE = "Броня предпочтения";
+    ARMORPREF_SELECT_TIP = "При поиске брони, показывать только выбранный тип брони в результатах поиска. Отфильтровать все другие типы брони.";
+    ARMOR_PREFERENCE = "Предпочитаемая броня";
     NO_PREF   = "Без предпочтений";
     CLOTH     = "Ткань";
     LEATHER   = "Кожа";
@@ -81,16 +83,23 @@ Localization.RegisterAddonStrings("ruRU", "Auc-Searcher-Pawn",
     SHIELDS = "Щиты";
     MISC    = "Разное";
 
-    --Two Handed substr
-    TWOHAND = "Двуручное";  -- used to check if user has a 2handed weapon on or not
-    STAVES = "Посохи";     -- used to check if user has a 2handed weapon on or not
-    POLEARMS = "Древковое"; -- used to check if user has a 2handed weapon on or not
+    -- Two Handed sub-string
+    TWOHAND = "Двуручное";
+    
+    -- Two Handed Weapons
+    STAVES = "Посохи";
+    POLEARMS = "Древковое";
+    -- CROSSBOWS
+    -- GUNS
+    -- BOWS
 
-    BOWS = "Луки"; -- used to check if a user wants to evaluate Ranged weapons
-    GUNS = "Огнестрельное"; -- used to check if a user wants to evaluate Ranged weapons
-    WANDS   = "Жезлы"; -- used to check if a user wants to evaluate Ranged weapons
-    CROSSBOWS = "Арбалеты"; -- used to check if a user wants to evaluate Ranged weapons
-    THROWN = "Метательное"; -- used to check if a user wants to evaluate Ranged weapons
+    -- Ranged
+    DAGGERS = "Кинжалы";
+    BOWS = "Луки";
+    GUNS = "Огнестрельное";
+    WANDS   = "Жезлы";
+    CROSSBOWS = "Арбалеты";
+    THROWN = "Метательное"; -- may be removed
 
     -- Messages
     BAD_SCALE   = "Пожалуйста, выберите Шкалу Pawn";
