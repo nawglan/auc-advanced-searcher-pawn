@@ -1,0 +1,23 @@
+﻿## Title: Auc-Advanced-Searcher-Pawn
+## Notes: This addon helps you FIND BETTER GEAR ON AUCTION house (need AUCTIONEER) with better Scales defined in PAWN for your current character equipped Gear.
+## Notes-ruRU: Позволяет найти на Аукционе вещи с более высокими характеристиками (оценками) Pawn
+## Autor: Xit_Draka, ShadowVall, mgotovtsev
+## X-WebSite: http://wow.curseforge.com/addons/auc-advanced-searcher-pawn/
+##
+## Interface: 50001
+## LoadOnDemand: 0
+## Dependencies: Auc-Advanced
+## OptionalDependencies: Auc-Util-SearchUI Localization
+## SavedVariables:
+## SavedVariablesPerCharacter:
+##
+## Version: 1.4.5
+## Revision: $Id: 1.4.5 20121008 Xit $
+## URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
+## X-Curse-Packaged-Version: v1.4.5
+## X-Curse-Project-Name: Auc-Advanced-Searcher-Pawn
+## X-Curse-Project-ID: auc-advanced-searcher-pawn
+## X-Curse-Repository-ID: wow/auc-advanced-searcher-pawn/mainline
+
+Localization\Localization.xml
+SearcherPawn.xml
