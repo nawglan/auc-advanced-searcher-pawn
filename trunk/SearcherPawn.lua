@@ -222,7 +222,6 @@ end
 -------------------------------------------------------------------
 -- Return the name of the scale
 -- Globals Used:
-local _scalename = ""
 -------------------------------------------------------------------
 function GetScaleName(scalenum)
   local scalename = ""
@@ -235,10 +234,7 @@ function GetScaleName(scalenum)
     end
   end
 
-  -- Store in cache for faster lookups later
-  _scalename = scalename
-
-  return _scalename
+  return scalename
 end
 
 -------------------------------------------------------------------
@@ -715,7 +711,9 @@ local function GetPawnValueEquipped(slot)
   end
 
   -- Grab the values for the item equipped in the main slot
-  currentValue, baseValue = PawnGetSingleValueFromItem(mItem, _scalename)
+  local scalenum = get("search.pawn.scalenum")
+  local scalename = GetScaleName(scalenum)
+  currentValue, baseValue = PawnGetSingleValueFromItem(mItem, scalename)
 
   if currentValue == nil then
     currentValue = 0
@@ -762,7 +760,6 @@ local function GetEquippedVal(itemData)
   return primaryValue, secondaryValue
 end
 
-local _PawnValueCache = {}
 -------------------------------------------------------------------
 -- Returns pawn value from a itemData structure
 -------------------------------------------------------------------
@@ -770,30 +767,29 @@ local function GetPawnValueItem(itemData)
   local link = itemData[Const.LINK]
   local useUnenchanted = get("search.pawn.unenchanted")
 
-  if not _PawnValueCache[link] then
-    -- Get the signature of this item and find it's stats.
-    local item = PawnGetItemData(link)
+  -- Get the signature of this item and find it's stats.
+  local item = PawnGetItemData(link)
 
-    -- ensure we get an item structure from Pawn
-    if item == nil then
-      return false
-    end
-
-    -- Grab the values for the item from Auctioneer
-    local auctionValue, unenchantedValue = PawnGetSingleValueFromItem(item, _scalename)
-
-    if useUnenchanted then
-      auctionValue = unenchantedValue
-    end
-
-    -- ensure auctionValue is valid number
-    if auctionValue == nil then
-      auctionValue = 0
-    end
-    _PawnValueCache[link] = auctionValue
+  -- ensure we get an item structure from Pawn
+  if item == nil then
+    return false
   end
 
-  return _PawnValueCache[link]
+  -- Grab the values for the item from Auctioneer
+  local scalenum = get("search.pawn.scalenum")
+  local scalename = GetScaleName(scalenum)
+  local auctionValue, unenchantedValue = PawnGetSingleValueFromItem(item, scalename)
+
+  if useUnenchanted then
+    auctionValue = unenchantedValue
+  end
+
+  -- ensure auctionValue is valid number
+  if auctionValue == nil then
+    auctionValue = 0
+  end
+
+  return auctionValue
 end -- function GetPawnValueItem(itemData)
 
 -------------------------------------------------------------------
@@ -848,8 +844,7 @@ local function IsUpgrade(itemData)
 
   -- example output
   -- if false: return back false, ""
-  -- if true: return back true, "0020.52" (all numbers returned will be positive, so no need to put a + in the output text)
-  -- ShadowVall: I mean "+20.52" is BETTER than equipped by 20.52 score units
+  -- if true: return back true, "  20.52"
   if retval then
     local bestprice = get("search.pawn.bestprice")
 
@@ -869,9 +864,9 @@ local function IsUpgrade(itemData)
       if bid > buyout then
         price = bid
       end
-      dStr = string.format("+%7.2f", (100*diff) / (price/10000)) -- THIS MUST BE ZERO PADDED FOR SORTING TO WORK:  7 = length including dot, 2 = precision
+      dStr = string.format("+%7.2f", (100*diff) / (price/10000))
     else
-      dStr = string.format("+%7.2f", diff) -- THIS MUST BE ZERO PADDED FOR SORTING TO WORK:  7 = length including dot, 2 = precision
+      dStr = string.format("+%7.2f", diff)
     end
   end
   return retval, dStr
