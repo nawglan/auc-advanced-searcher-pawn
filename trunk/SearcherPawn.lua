@@ -1,6 +1,6 @@
 --[[
   Auctioneer Advanced - Search UI - Searcher Pawn
-  URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
+  URL: http://www.curse.com/addons/wow/auc-advanced-searcher-pawn
 
   This is a plugin module for the SearchUI that assists in searching by evaluating items with Pawn
 
@@ -579,7 +579,7 @@ local function IsRangedItem(subtype)
     table.insert(isRanged, TEXT("GUNS"))
     table.insert(isRanged, TEXT("WANDS"))
     table.insert(isRanged, TEXT("CROSSBOWS"))
-    table.insert(isRanged, TEXT("DAGGERS"))
+    --table.insert(isRanged, TEXT("DAGGERS"))
     table.insert(isRanged, TEXT("THROWN")) -- These may be removed from the game.
   end
   if tContains(isRanged, subtype) then
@@ -726,7 +726,7 @@ local function GetPawnValueEquipped(slot)
   if useUnenchanted then
     return baseValue
   end
-  
+
   return currentValue
 end -- function GetPawnValueEquipped(slot)
 
@@ -846,6 +846,8 @@ local function IsUpgrade(itemData)
   -- if false: return back false, ""
   -- if true: return back true, "  20.52"
   if retval then
+    -- What kind of choice should we present
+    local usebuyout = get("search.pawn.buyout")
     local bestprice = get("search.pawn.bestprice")
 
     if bestprice then
@@ -855,14 +857,15 @@ local function IsUpgrade(itemData)
       if buyout == nil then
         buyout = 0
       end
+
       if bid == nil then
         bid = 0
       end
 
-      local price = buyout
+      local price = bid
 
-      if bid > buyout then
-        price = bid
+      if usebuyout then
+        price = buyout
       end
       dStr = string.format("+%7.2f", (100*diff) / (price/10000))
     else
@@ -879,7 +882,6 @@ end -- function IsUpgrade(itemData)
 function lib:MakeGuiConfig(gui)
   -- Get our tab and populate it with our controls
   local id = gui:AddTab(lib.tabname, "Searchers")
-  local armorPref = get("search.pawn.armorpref")
 
   local armorPrefTable = {}
   table.insert(armorPrefTable, {TEXT("NO_PREF"), TEXT("NO_PREF")})
