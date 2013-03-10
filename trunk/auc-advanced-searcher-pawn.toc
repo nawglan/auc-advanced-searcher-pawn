@@ -4,15 +4,15 @@
 ## Autor: Xit_Draka, ShadowVall, mgotovtsev
 ## X-WebSite: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 ##
-## Interface: 50100
+## Interface: 50200
 ## LoadOnDemand: 0
 ## Dependencies: Auc-Advanced
 ## OptionalDependencies: Auc-Util-SearchUI Localization
 ## SavedVariables:
 ## SavedVariablesPerCharacter:
 ##
-## Version: 1.4.7
-## Revision: $Id: 1.4.7 20121127 Xit $
+## Version: 1.4.8
+## Revision: $Id: 1.4.8 20130309 Xit $
 ## URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 ## X-Curse-Packaged-Version: v1.4.7
 ## X-Curse-Project-Name: Auc-Advanced-Searcher-Pawn
