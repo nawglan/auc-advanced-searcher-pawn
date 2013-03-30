@@ -6,15 +6,15 @@
 ##
 ## Interface: 50200
 ## LoadOnDemand: 0
-## Dependencies: Auc-Advanced
+## Dependencies: Auc-Advanced Pawn
 ## OptionalDependencies: Auc-Util-SearchUI Localization
 ## SavedVariables:
 ## SavedVariablesPerCharacter:
 ##
-## Version: 1.4.8
-## Revision: $Id: 1.4.8 20130309 Xit $
+## Version: 1.4.9
+## Revision: $Id: 1.4.9 20130330 Xit $
 ## URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
-## X-Curse-Packaged-Version: v1.4.7
+## X-Curse-Packaged-Version: v1.4.9
 ## X-Curse-Project-Name: Auc-Advanced-Searcher-Pawn
 ## X-Curse-Project-ID: auc-advanced-searcher-pawn
 ## X-Curse-Repository-ID: wow/auc-advanced-searcher-pawn/mainline
