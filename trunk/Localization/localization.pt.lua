@@ -63,7 +63,6 @@ Localization.RegisterAddonStrings("ptBR", "Auc-Searcher-Pawn",
     SHOW_TRINKET      = "Berloque";
     SHOW_WEAPON       = "Arma";
     SHOW_OFFHAND      = "Mão secundária";
-    SHOW_RANGED       = "Longo alcance";
 
     --Armor Preference
     ARMORPREF_SELECT_TIP = "Ao procurar por armadura, apenas mostrar o tipo de armadura selecionada em resultados de pesquisa. Filtrar todos os tipos de armaduras outros.";

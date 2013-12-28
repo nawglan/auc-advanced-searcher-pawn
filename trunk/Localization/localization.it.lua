@@ -63,7 +63,6 @@ Localization.RegisterAddonStrings("itIT", "Auc-Searcher-Pawn",
     SHOW_TRINKET      = "Orecchino";
     SHOW_WEAPON       = "Arma";
     SHOW_OFFHAND      = "Mano Secondaria";
-    SHOW_RANGED       = "a Distanza";
 
     --Armor Preference
     ARMORPREF_SELECT_TIP = "Durante la ricerca di armi, mostra solo il tipo selezionato armatura nei risultati di ricerca. Filtra tutti i tipi di armature altri.";

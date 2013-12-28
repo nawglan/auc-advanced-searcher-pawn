@@ -63,7 +63,6 @@ Localization.RegisterAddonStrings("enUS", "Auc-Searcher-Pawn",
     SHOW_TRINKET      = "Trinket";
     SHOW_WEAPON       = "Weapon";
     SHOW_OFFHAND      = "Off-Hand";
-    SHOW_RANGED       = "Ranged";
 
     --Armor Preference
     ARMORPREF_SELECT_TIP = "Only show the selected armor type in search results.  Filter out all other armor types.";
