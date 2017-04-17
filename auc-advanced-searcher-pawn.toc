@@ -11,10 +11,10 @@
 ## SavedVariables:
 ## SavedVariablesPerCharacter:
 ##
-## Version: 1.5.6
-## Revision: $Id: 1.5.6 20170415 Xit $
+## Version: 1.5.7
+## Revision: $Id: 1.5.7 20170416 Xit $
 ## URL: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
-## X-Curse-Packaged-Version: v1.5.6
+## X-Curse-Packaged-Version: v1.5.7
 ## X-Curse-Project-Name: Auc-Advanced-Searcher-Pawn
 ## X-Curse-Project-ID: auc-advanced-searcher-pawn
 ## X-Curse-Repository-ID: wow/auc-advanced-searcher-pawn/mainline
