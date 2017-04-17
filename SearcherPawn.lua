@@ -746,7 +746,7 @@ local function GetPawnValueItem(itemData)
 
   -- ensure we get an item structure from Pawn
   if item == nil then
-    return false
+    return 0
   end
 
   -- Grab the values for the item from Auctioneer
