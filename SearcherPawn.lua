@@ -63,7 +63,6 @@ default("search.pawn.trinket", true)
 default("search.pawn.weapon", true)
 default("search.pawn.offhand", true)
 default("search.pawn.ranged", true)
-default("search.pawn.ranged", true)
 default("search.pawn.unenchanted", false)
 -------------------------------------------------------------------
 
