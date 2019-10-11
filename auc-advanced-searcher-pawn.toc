@@ -1,7 +1,7 @@
-﻿## Title: Auc-Advanced-Searcher-Pawn
+﻿## Title: Auc-Advanced-Searcher-Pawn-classic
 ## Notes: This addon helps you find better gear on the auction house (need AUCTIONEER-SUITE) using scales defined in PAWN.
 ## Notes-ruRU: Позволяет найти на Аукционе вещи с более высокими характеристиками (оценками) Pawn
-## Autor: Xit_Draka, ShadowVall, mgotovtsev
+## Author: Xit_Draka, ShadowVall, mgotovtsev
 ## X-WebSite: http://wow.curse.com/downloads/wow-addons/details/auc-advanced-searcher-pawn.aspx
 ##
 ## Interface: 11302
