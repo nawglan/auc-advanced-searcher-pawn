@@ -302,7 +302,7 @@ local function CanUse(link)
     if text then
       local r,g,b,a = mytext:GetTextColor()
       local hex = RGBPercToHex(r,g,b)
-      if hex == "fe1f1f" then
+      if hex == "ff2020" then
         retval = false
       end
     end
@@ -313,7 +313,7 @@ local function CanUse(link)
     if textr then
       local r,g,b,a = mytextr:GetTextColor()
       local hex = RGBPercToHex(r,g,b)
-      if hex == "fe1f1f" then
+      if hex == "ff2020" then
         retval = false
       end
     end
